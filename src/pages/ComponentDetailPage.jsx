@@ -12,6 +12,7 @@ import { twilight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import NotFound from "./NotFound";
 function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
@@ -20,9 +21,7 @@ function ComponentDetailPage() {
   const navigate=useNavigate();
   if (!component) {
     return (
-      <div className="flex flex-col gap-1 h-full overflow-x-hidden  w-full bg-black items-center justify-center">
-        <h1 className="text-4xl font-bold"> Component not found</h1>
-      </div>
+      <NotFound/>
     );
   }
   const handleCopy = async () => {
@@ -70,10 +69,12 @@ function ComponentDetailPage() {
             ))}
           </div>
           
-          <div className="flex border rounded-lg w-fit px-1 py-1 bg-neutral-900 border-neutral-700">
+          <div
+          
+          className="flex border rounded-lg w-fit px-1 py-1 bg-neutral-900 border-neutral-700">
             <button
               onClick={() => setActiveTab("preview")}
-              className={` px-5 py-2  font-bold tracking-tight relative rounded-md transition duration-200 ${activeTab == "preview"
+              className={` px-5 py-2 cursor-pointer font-bold tracking-tight relative rounded-md transition duration-200 ${activeTab == "preview"
                 ? "text-white border border-neutral-500 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600"
                 : "text-white"
                 }`}
@@ -81,8 +82,9 @@ function ComponentDetailPage() {
               Preview
             </button>
             <button
+            
               onClick={() => setActiveTab("code")}
-              className={`px-5 py-2 font-bold tracking-tight relative rounded-md transition duration-200 ${activeTab == "code"
+              className={`px-5 py-2 cursor-pointer font-bold tracking-tight relative rounded-md transition duration-200 ${activeTab == "code"
                 ? "text-white border border-neutral-500 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600"
                 : "text-white"
                 }`}
@@ -92,7 +94,7 @@ function ComponentDetailPage() {
           </div>
           {activeTab == "preview" &&
             (PreviewComponent ? (
-              <div className="flex mb-10 justify-center border border-zinc-600 border-2 items-center bg-gradient-to-t from-neutral-700 via-neutral-600 to-neutral-500 h-100 w-full rounded-lg">
+              <div className="flex mb-10 justify-center border border-zinc-600 border-2 items-center bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-700 h-100 w-full rounded-lg">
                 <div className="bg-black  h-92 w-full mx-4 justify-center flex items-center rounded-lg">
                   <PreviewComponent />
                 </div>
@@ -110,7 +112,7 @@ function ComponentDetailPage() {
               className=" max-w-5xl mb-10 bg- p-4 border relative rounded-2xl  border-white">
                 
 
-                <div className="flex justify-end">
+                <div className="flex justify-between">
                   <motion.button
                     initial={{ opacity: 0.8, scale: 0.95 }}
                     whileHover={{ opacity: 1, scale: 1.1 }}
@@ -126,13 +128,15 @@ function ComponentDetailPage() {
                       <ContentCopyIcon />
                     )}{" "}
                   </motion.button>
-                  <div className="flex  absolute gap-2 top-[5%] left-[2%]">
+                  
+                  <div className="flex relative gap-2">
                   <div className="h-3 w-3 rounded-full animate-pulse bg-red-500"></div>
                   <div className="h-3 w-3 rounded-full animate-pulse delay:100 bg-yellow-500"></div>
                   <div className="h-3 w-3 rounded-full animate-pulse delay:200 bg-green-500"></div>
                   
                 </div>
                 </div>
+                
                 <SyntaxHighlighter
                   
                   language="jsx"
@@ -140,6 +144,7 @@ function ComponentDetailPage() {
                   customStyle={{
                     padding: "1rem",
                     fontSize: "1rem",
+                    height:"25rem"
                   }}
                   wrapLongLines={false}
                   showLineNumbers={true}
