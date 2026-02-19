@@ -8,16 +8,15 @@ import Footer from './components/Footer'
 function App() {
   const location = useLocation();
   return (
-    <div className='text-white min-h-screen flex flex-col'>
+    <div className='text-white  min-h-screen flex flex-col'>
       <main className='flex-1'>
-        <Routes location={location} key={location.pathname}>
+        <Routes location={location}>
           <Route path="/" element={<HomePage />} />
           <Route path="/components" element={<ComponentsPage />} />
           <Route path="/components/:slug" element={<ComponentDetailPage />} />
         </Routes>
         <Footer />
       </main>
-
     </div>
   )
 }

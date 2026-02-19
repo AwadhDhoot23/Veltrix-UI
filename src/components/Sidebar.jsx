@@ -10,7 +10,7 @@
     const currentSlug = location.pathname.split('/')[2];
     const navigate=useNavigate();
     return (
-      <div className="absolute left-0 md:block overflow-hidden shrink-0 h-screen hidden w-0 md:w-64 bg-black text-white flex flex-col gap-2 p-4 border-r border-white">
+      <div className="absolute left-0 md:block overflow-x-hidden code-scroll pb-20 shrink-0 h-full hidden w-0 md:w-64 bg-black text-white flex flex-col gap-2 p-4 border-r border-white">
         
         <motion.h2 
         initial={{scale:0.95,opacity:0.9}}
@@ -52,12 +52,15 @@
             </div>
           );
         })}
+        <div className='h-px w-full bg-neutral-700 mt-20 mb-1'></div>
         <motion.div
             initial={{scale:0.90,opacity:0.95}}
             animate={{scale:1.05,opacity:1}}
             transition={{duration:0.5}}
-            onClick={()=>navigate('/')} className='absolute text-neutral-600 bottom-6 cursor-pointer flex left-20 gap-1'><HomeIcon />Home</motion.div>
+            onClick={()=>navigate('/')} className='relative text-neutral-600 cursor-pointer -bottom-4 flex left-18 gap-1'><HomeIcon />Home</motion.div>
+            <div className='h-px w-full bg-neutral-700 mt-10'></div>
       </div>
+      
     );
   }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
 function Footer() {
+  
   return (
     <div 
     style={{
@@ -25,7 +26,7 @@ function Footer() {
         </a>
         </div>
         </div>
-        <div className='flex justify-center items-center mt-10 font-bold text-neutral-600'>© 2026 Awadh. Built with React, Tailwind, Framer Motion.</div>
+        <div className='flex justify-center items-center mt-10 font-bold text-neutral-600'>© 2026 Awadh. Built with React, Tailwind, Framer and GSAP.</div>
     </div>
   )
 }

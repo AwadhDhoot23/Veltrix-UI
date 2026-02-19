@@ -5,9 +5,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import Sidebar from "../components/Sidebar";
 import ClearIcon from "@mui/icons-material/Clear";
 import CancelIcon from "@mui/icons-material/Cancel";
+import HomeIcon from '@mui/icons-material/Home';
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 function ComponentsPage() {
+  const navigate=useNavigate();
   const [query, setQuery] = useState("");
   const { slug } = useParams();
   const filterComponents = Components.filter(
@@ -20,8 +23,11 @@ function ComponentsPage() {
   );
   return (
     <div>
-      <div className="flex-0 min-h-screen overflow-hidden pl-6 md:pl-80 code-scroll ">
-        <Sidebar className="" />
+      <div className="flex-0 code-scroll min-h-full relative  pl-6 md:pl-80  ">
+        <Sidebar/>
+        <div onClick={()=>navigate('/')} className="absolute  md:hidden top-2 left-6">
+          <HomeIcon className="text-neutral-400"/>
+        </div>
         <div className=" relative mt-5 ml-5">
           <SearchIcon className="relative left-7 md:top-0 md:left-8 pb-1" />
           <input
@@ -38,7 +44,7 @@ function ComponentsPage() {
         </div>
 
         {filterComponents.length === 0 && (
-          <div className="absolute top-15 mt-6 left-166 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-300">
+          <div className="absolute left-45 text-[14px] md:text-lg mt-3md:top-13 md:mt-6 md:left-166 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-300">
             <CancelIcon className="absolute mt-6 top-1 text-red-500" />
             <pre className="absolute text-center">
               No Components found! Try tweeking the search
@@ -47,7 +53,7 @@ function ComponentsPage() {
         )}
         <div
           layoutId={`card-${slug}`}
-          className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4  flex-1 md:gap-1 lg:gap-70 xl:gap-80 overflow-y-auto h-full my-5"
+          className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 overflow-y-auto min-h-screen gap:20"
         >
           {filterComponents.map((item) => (
             <CardComponent

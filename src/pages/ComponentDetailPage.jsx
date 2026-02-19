@@ -17,11 +17,10 @@ function ComponentDetailPage() {
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
   const component = Components.find((item) => item.slug === slug);
-  const navigate=useNavigate('');
+  const navigate=useNavigate();
   if (!component) {
     return (
-      <div className="flex flex-col gap-1 min-h-screen w-full bg-black items-center justify-center">
-        <ErrorOutlineIcon className="text-red-400" sx={{ fontSize: 45 }} />
+      <div className="flex flex-col gap-1 h-full overflow-x-hidden  w-full bg-black items-center justify-center">
         <h1 className="text-4xl font-bold"> Component not found</h1>
       </div>
     );
@@ -76,8 +75,8 @@ function ComponentDetailPage() {
           </div>
           {activeTab == "preview" &&
             (PreviewComponent ? (
-              <div className="flex justify-center border border-zinc-600 border-2 items-center bg-gradient-to-t from-neutral-700 via-neutral-600 to-neutral-500 h-100 w-full rounded-lg">
-                <div className="bg-black h-92 w-full mx-4 justify-center flex items-center rounded-lg">
+              <div className="flex mb-10 justify-center border border-zinc-600 border-2 items-center bg-gradient-to-t from-neutral-700 via-neutral-600 to-neutral-500 h-100 w-full rounded-lg">
+                <div className="bg-black  h-92 w-full mx-4 justify-center flex items-center rounded-lg">
                   <PreviewComponent />
                 </div>
               </div>
