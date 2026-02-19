@@ -10,13 +10,13 @@
     const currentSlug = location.pathname.split('/')[2];
     const navigate=useNavigate();
     return (
-      <div className="absolute left-0 md:block overflow-x-hidden code-scroll pb-20 shrink-0 h-full hidden w-0 md:w-64 bg-black text-white flex flex-col gap-2 p-4 border-r border-white">
+      <div className="absolute top-0 left-0 md:block overflow-x-hidden pb-20 shrink-0 h-full hidden w-0 md:w-64 bg-neutral-950/50 backdrop-blur-xl text-white flex flex-col gap-2 p-4 border-r border-neutral-300">
         
         <motion.h2 
         initial={{scale:0.95,opacity:0.9}}
         animate={{scale:1.05,opacity:1}}
         transition={{duration:0.5}}
-        className="text-xl font-bold text-center mb-10 cursor-pointer tracking-tight " onClick={()=>navigate('/components')} >Components</motion.h2>
+        className="text-xl font-bold text-center my-5 cursor-pointer tracking-tight " onClick={()=>navigate('/components')} >Components</motion.h2>
         
 
         {Components.map((item) => {

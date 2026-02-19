@@ -10,7 +10,7 @@ function CardComponent({ name, description, slug }) {
       <motion.div
         initial={{ scale: .97 }} whileHover={{ scale: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}
         onClick={() => navigate(`/components/${slug}`)}
-        className='size-80 hover:border-2 hover:border-white hover:shadow-[2px_4px_48px_rgba(230,230,230,0.1)] border rounded-lg my-10 flex flex-col cursor-pointer overflow-hidden'
+        className='size-80 hover:border-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-neutral-200 hover:shadow-[2px_4px_48px_rgba(230,230,230,0.05)] border rounded-lg my-10 flex flex-col cursor-pointer overflow-hidden'
       >
         <motion.div
           initial={{ opacity: 1, scale: 0.95 }}

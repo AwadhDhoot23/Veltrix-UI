@@ -1,26 +1,25 @@
 @import "tailwindcss";
 
-/* Thin, dark scrollbar for code blocks */
-.code-scroll::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.code-scroll::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.code-scroll::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 999px;
 }
 
-.code-scroll::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #666;
 }
 
-/* Firefox */
-.code-scroll {
+/* Apply to ALL scrollbars in Firefox */
+* {
   scrollbar-width: thin;
   scrollbar-color: #444 transparent;
 }

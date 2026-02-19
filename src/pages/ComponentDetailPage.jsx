@@ -32,7 +32,23 @@ function ComponentDetailPage() {
   };
   const PreviewComponent = PreviewRegistry[slug];
   return (
-    <div>
+    <motion.div 
+      initial={{
+            opacity:0,
+            y:20,
+          }}
+          animate={{
+            opacity:1,
+            y:0,
+          }}
+          exit={{
+            opacity:0,
+            y:-20,
+          }}
+          transition={{
+            duration:0.4,
+          }}
+    >
       <div className="flex min-h-screen w-full bg-black px-6 pl-1 md:pl-80">
         <Sidebar />
         <div onClick={()=>navigate('/components')} className="md:hidden mt-2">
@@ -53,6 +69,7 @@ function ComponentDetailPage() {
               </span>
             ))}
           </div>
+          
           <div className="flex border rounded-lg w-fit px-1 py-1 bg-neutral-900 border-neutral-700">
             <button
               onClick={() => setActiveTab("preview")}
@@ -91,7 +108,9 @@ function ComponentDetailPage() {
                 backgroundSize:"10px 10px",
               }}
               className=" max-w-5xl mb-10 bg- p-4 border relative rounded-2xl  border-white">
-                <div className="flex justify-start">
+                
+
+                <div className="flex justify-end">
                   <motion.button
                     initial={{ opacity: 0.8, scale: 0.95 }}
                     whileHover={{ opacity: 1, scale: 1.1 }}
@@ -107,9 +126,15 @@ function ComponentDetailPage() {
                       <ContentCopyIcon />
                     )}{" "}
                   </motion.button>
+                  <div className="flex  absolute gap-2 top-[5%] left-[2%]">
+                  <div className="h-3 w-3 rounded-full animate-pulse bg-red-500"></div>
+                  <div className="h-3 w-3 rounded-full animate-pulse delay:100 bg-yellow-500"></div>
+                  <div className="h-3 w-3 rounded-full animate-pulse delay:200 bg-green-500"></div>
+                  
+                </div>
                 </div>
                 <SyntaxHighlighter
-                  className="code-scroll"
+                  
                   language="jsx"
                   style={twilight}
                   customStyle={{
@@ -127,7 +152,7 @@ function ComponentDetailPage() {
             ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

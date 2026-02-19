@@ -8,14 +8,16 @@ import CardComponent from "../components/CardComponent";
 import { PreviewRegistry } from "../data/PreviewRegistry";
 import { Components } from "../data/Components";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import {motion} from 'framer-motion'
+import { duration } from "@mui/material";
 function HomePage() {
   useGSAP(() => {
     const tl = gsap.timeline();
     gsap.to(".background", {
-      y: 500,
+      y: 400,
       repeat: -1,
       ease: "sine.inOut",
-      duration: 6,
+      duration: 12,
       yoyo: true,
       repeat: -1,
     });
@@ -24,7 +26,7 @@ function HomePage() {
       opacity: 0,
       scale: 1.6,
       ease: "power3.inOut",
-      duration: 0.8,
+      duration: 1.2,
       stagger: 0.1,
     });
     tl.from(".head", {
@@ -70,7 +72,7 @@ function HomePage() {
       scrollTrigger: {
         trigger: ".componentSection",
         start: "top 90%",
-        end: "bottom 90%",
+        end: "bottom 80%",
         scrub: true,
       },
     });
@@ -86,7 +88,22 @@ function HomePage() {
 
   const featuredComponents = Components.filter((item) => item.featured);
   return (
-    <div
+    <motion.div
+      initial={{
+        opacity:0,
+        y:10,
+      }}
+      animate={{
+        opacity:1,
+        y:0,
+      }}
+      exit={{
+        opacity:0,
+        y:-10,
+      }}
+      transition={{
+        duration:0.4,
+      }}
       className="min-h-screen relative w-full overflow-hidden  bg-black"
       style={{
         // backgroundImage:
@@ -98,9 +115,10 @@ function HomePage() {
       }}
     >
       
-      <div className="absolute top-9 w-full head md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-neutral-700+ to-neutral-100  text-center p-4 font-bold text-4xl z-1">Veltrix-UI</div>
-      <div className="absolute background top-[-2%] h-40 w-140 bg-indigo-700 blur-[250px] pointer-events-none"></div>
-      <div className="absolute background top-[-2%] right-0  h-40 w-140 bg-purple-600 blur-[300px] pointer-events-none"></div>
+      <div className="absolute top-9 w-full head md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 animate-pulse to-neutral-100 text-center p-4 font-bold text-4xl z-1">Veltrix-UI</div>
+      <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
+      <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none "></div>
+      <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none"></div>
 
       {/* Hero Section */}
       <div className="flex flex-col h-screen md:flex-row items-center justify-between px-6">
@@ -181,7 +199,12 @@ function HomePage() {
       </div>
 
       {/* Hero Section Ends */}
-      <div className="relative bg-neutral-700/5 md:mt-0 mt-80 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
+      <div
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 85%, transparent)'
+  }}
+      className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-85 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
         {/* w-max is important so the track sizes itself to the content */}
         <div className="track flex w-max h-15">
           {/* HALF 1 */}
@@ -252,7 +275,7 @@ function HomePage() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
