@@ -101,21 +101,19 @@ function ComponentsPage() {
           </div>
 
         {filterComponents.length === 0 && (
-          <div className="absolute left-45 text-xs md:text-xl top-[10%] text-[14px] md:text-lg mt-3md:top-13 md:mt-6 md:left-166 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-300">
-            <CancelIcon className="absolute mt-6 top-1 text-red-500" />
+          <div className="absolute left-50 text-xs md:text-xl top-[10%] text-[14px] mt-10 md:top-30 md:left-170 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-300">
+            <CancelIcon className="absolute mt-8 top-1 text-red-500" />
             <pre className="absolute text-center">
               No Components found! Try tweeking the search
             </pre>
           </div>
         )}
-        <div
-          layoutId={`card-${slug}`}
-          className="overflow-y-hidden grid gridBox grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 overflow-y-auto min-h-screen gap:20"
+        <div className="overflow-y-hidden grid gridBox grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 overflow-y-auto min-h-screen gap:20"
         >
           {filterComponents.map((item) => (
-            <div className="componentCard ">
+            <div key={item.slug} className="componentCard ">
               <CardComponent
-                key={item.slug}
+                
                 name={item.name}
                 description={item.description}
                 slug={item.slug}

@@ -1,5 +1,6 @@
 import React from 'react'
-import SimpleButton from '../ui/SimpleButton?raw';
+import GridShadowButton from '../ui/GridShadowButton.jsx?raw';
+import SpotlightCard from '../ui/SpotlightCard.jsx?raw';
 export const FilterTags = [
   "All",
   "button",
@@ -7,11 +8,16 @@ export const FilterTags = [
   "3d",
 ];
 export const Components=[
-    {name:'3D Cards' ,slug:'3d-cards', description:'A card which looks 3d as if coming out of screen with smooth animations.',tags:['card','3d','animation'],featured:true},
+    
 
-    {name:'Simple Button' ,slug:'simple-button', description:'A very well simple and minimal button that can be used anywhere.',
-    tags:['button','simple','minimal'],  
+  {name:'Grid Shadow Button' ,slug:'grid-shadow-button', description:'A sleek, dark-themed button that lifts on hover to reveal a stylish dotted grid pattern underneath, creating a 3D offset effect.',
+    tags:['button','grid','hover'],  
     featured:true,
-    code:SimpleButton,}
+    code:GridShadowButton,},
+
+  {name:'Spotlight Card' ,slug:'spotlight-card', description:'An interactive card with a soft, glowing radial gradient that smoothly tracks the mouse cursor across its surface and borders.',
+    tags:['card','interactive','hover'],  
+    featured:true,
+    code:SpotlightCard,},
 
 ]

@@ -2,9 +2,7 @@
   import { Link, useLocation, useNavigate } from 'react-router-dom';
   import { Components } from '../data/Components';
   import {motion} from 'framer-motion'
-  import { duration } from '@mui/material';
   import HomeIcon from '@mui/icons-material/Home';
-
   function Sidebar() {
     const location = useLocation();
     const currentSlug = location.pathname.split('/')[2];
@@ -16,7 +14,9 @@
         initial={{scale:0.95,opacity:0.9}}
         animate={{scale:1.05,opacity:1}}
         transition={{duration:0.5}}
-        className="text-xl font-bold text-center my-5 cursor-pointer tracking-tight " onClick={()=>navigate('/components')} >Components</motion.h2>
+        className="text-xl font-bold text-center my-5 mb-10 cursor-pointer flex flex-col items-center text-neutral-300/90 hover:text-white tracking-tight group " onClick={()=>navigate('/components')} >Components
+        <div className=' h-[2.5px] w-22 bg-gradient-to-r from-transparent via-neutral-500 to-transparent mt-1 group-hover:w-38 group-hover:via-neutral-200 transition-all duration-500 ease-out '></div>
+        </motion.h2>
         
 
         {Components.map((item) => {
@@ -31,14 +31,12 @@
               transition={{ duration: 0.7 }}
             >
             <Link
-              initial={{ scale: 0.95, opacity: 0.9 }}
-              animate={isActive ? { scale: 1.05, opacity: 1 } : { scale: 1, opacity: 0.9 }}
-              transition={{ duration: 0.7 }}
+              
               
               to={`/components/${item.slug}`}
               className={`relative block w-full px-4 py-2 mb-2 rounded-md transition ${
                 isActive
-                  ? ' text-white bg-gradient-to-r from-black via-neutral-800 to-neutral-500 pl-10'
+                  ? ' text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 pl-10'
                   : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
               }`}
             >

@@ -8,15 +8,16 @@ function CardComponent({ name, description, slug }) {
   return (
     <div>
       <motion.div
+        
         initial={{ scale: .97 }} whileHover={{ scale: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}
         onClick={() => navigate(`/components/${slug}`)}
-        className='size-80 hover:border-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-neutral-200 hover:shadow-[2px_4px_48px_rgba(230,230,230,0.05)] border rounded-lg my-10 flex flex-col cursor-pointer overflow-hidden'
+        className='w-80 h-full hover:border-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-neutral-300 hover:shadow-[2px_4px_48px_rgba(230,230,230,0.05)] border border-neutral-400 rounded-lg my-10 flex flex-col cursor-pointer overflow-hidden'
       >
         <motion.div
-          initial={{ opacity: 1, scale: 0.95 }}
-          whileHover={{ opacity: 1, scale: 1.05 }}
+          initial={{ opacity: 1, scale: 0.9 }}
+          whileHover={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className='h-60 flex items-center justify-center'>
+          className='h-50 w-full border border-neutral-900/50 rounded-lg overflow-hidden flex items-center justify-center'>
           {Preview ? <Preview /> : "Preview not available!"}
         </motion.div>
 
@@ -28,8 +29,8 @@ function CardComponent({ name, description, slug }) {
           }}
         >
 
-          <h3 className="font-bold text-xl mb-2" >{name}</h3>
-          <p className='text-neutral-400'>{description}</p>
+          <h3 className="font-bold mt-1 text-xl" >{name}</h3>
+          <p className='text-neutral-400 mt-2'>{description}</p>
         </div>
       </motion.div>
     </div>

@@ -1,8 +1,10 @@
 import React from 'react'
-import SimpleButton from '../ui/SimpleButton'
+import GridShadowButton from '../ui/GridShadowButton'
+import SpotlightCard from '../ui/SpotlightCard'
 export const PreviewRegistry=
     {
-        'simple-button':SimpleButton,
+        'grid-shadow-button':GridShadowButton,
+        'spotlight-card':SpotlightCard, 
     }
     
     

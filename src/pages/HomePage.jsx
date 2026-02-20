@@ -9,7 +9,6 @@ import { PreviewRegistry } from "../data/PreviewRegistry";
 import { Components } from "../data/Components";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {motion} from 'framer-motion'
-import { duration } from "@mui/material";
 function HomePage() {
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -19,7 +18,6 @@ function HomePage() {
       ease: "sine.inOut",
       duration: 12,
       yoyo: true,
-      repeat: -1,
     });
     gsap.from(".codeBlock", {
       x: 400,
@@ -204,7 +202,7 @@ function HomePage() {
         maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
         WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 85%, transparent)'
   }}
-      className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-85 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
+      className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
         {/* w-max is important so the track sizes itself to the content */}
         <div className="track flex w-max h-15">
           {/* HALF 1 */}

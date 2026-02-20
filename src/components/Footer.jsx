@@ -10,7 +10,7 @@ function Footer() {
       "linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)",
     backgroundSize: "74px 74px",
   }}
-    className='relative h-44 w-full '>
+    className='relative h-fit w-full '>
         <div className='w-full h-px bg-white '></div>
         <div className='flex items-center justify-between'>
         <div>
@@ -26,7 +26,7 @@ function Footer() {
         </a>
         </div>
         </div>
-        <div className='flex justify-center items-center mt-10 font-bold text-neutral-600'>© 2026 Awadh. Built with React, Tailwind, Framer and GSAP.</div>
+        <div className='flex justify-center items-center pb-4 mt-10 font-bold text-neutral-600'>© 2026 Awadh. Built with React, Tailwind, Framer and GSAP.</div>
     </div>
   )
 }
