@@ -3,12 +3,14 @@
   import { Components } from '../data/Components';
   import {motion} from 'framer-motion'
   import HomeIcon from '@mui/icons-material/Home';
+  import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
   function Sidebar() {
     const location = useLocation();
     const currentSlug = location.pathname.split('/')[2];
     const navigate=useNavigate();
     return (
-      <div className="absolute top-0 left-0 md:block overflow-x-hidden pb-20 shrink-0 h-full hidden w-0 md:w-64 bg-neutral-950/50 backdrop-blur-xl text-white flex flex-col gap-2 p-4 border-r border-neutral-300">
+      <div className="absolute top-0 z-20 left-0 md:block overflow-x-hidden pb-20 shrink-0 min-h-screen md:h-full w-full md:w-64 bg-neutral-950/50 backdrop-blur-xl text-white flex flex-col gap-2 p-4 border-r border-neutral-300">
         
         <motion.h2 
         initial={{scale:0.95,opacity:0.9}}
@@ -50,12 +52,15 @@
             </div>
           );
         })}
-        <div className='h-px w-full bg-neutral-700 mt-20 mb-1'></div>
+        {/* <div className='relative -bottom-8 text-neutral- flex items-center justify-center gap-1'>
+          <FavoriteBorderIcon sx={{fontSize:19}}/>Favorites
+        </div> */}
+        <div className='h-px w-full bg-neutral-700 mt-12 mb-1'></div>
         <motion.div
             initial={{scale:0.90,opacity:0.95}}
             animate={{scale:1.05,opacity:1}}
             transition={{duration:0.5}}
-            onClick={()=>navigate('/')} className='relative text-neutral-600 cursor-pointer -bottom-4 flex left-18 gap-1'><HomeIcon />Home</motion.div>
+            onClick={()=>navigate('/')} className='relative text-neutral-600 cursor-pointer -bottom-4 flex justify-center gap-1'><HomeIcon />Home</motion.div>
             <div className='h-px w-full bg-neutral-700 mt-10'></div>
       </div>
       

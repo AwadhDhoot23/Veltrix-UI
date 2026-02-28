@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -8,7 +8,7 @@ import CardComponent from "../components/CardComponent";
 import { PreviewRegistry } from "../data/PreviewRegistry";
 import { Components } from "../data/Components";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import {motion} from 'framer-motion'
+import { motion, useAnimate, stagger } from 'framer-motion'
 function HomePage() {
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -27,13 +27,6 @@ function HomePage() {
       duration: 1.2,
       stagger: 0.1,
     });
-    tl.from(".head", {
-      y: -100,
-      duration: 0.5,
-      opacity: 0,
-      ease: "back.inOut",
-    });
-
     tl.from(".description", {
       x: -400,
       opacity: 0,
@@ -50,6 +43,7 @@ function HomePage() {
       },
       "-=0.7",
     );
+
 
     gsap.from(".popular", {
       opacity: 0,
@@ -79,28 +73,46 @@ function HomePage() {
       duration: 15,
       repeat: -1,
       ease: "linear",
-      
+
     });
   }, []);
+  const text = "Build Faster with Reusable UI Components";
   const navigate = useNavigate();
+  const [scope, animate] = useAnimate();
+  useEffect(() => {
+    startAnimating();
+  }, [])
+  const startAnimating = () => {
+    animate("span", {
+      opacity: 1,
+      filter: 'blur(0px)',
+      y: 0,
+    },
+      {
+        duration: 0.5,
+        ease: 'easeInOut',
+        delay: stagger(0.1)
+      }
+    );
+  }
 
   const featuredComponents = Components.filter((item) => item.featured);
   return (
     <motion.div
       initial={{
-        opacity:0,
-        y:10,
+        opacity: 0,
+        y: 10,
       }}
       animate={{
-        opacity:1,
-        y:0,
+        opacity: 1,
+        y: 0,
       }}
       exit={{
-        opacity:0,
-        y:-10,
+        opacity: 0,
+        y: -10,
       }}
       transition={{
-        duration:0.4,
+        duration: 0.4,
       }}
       className="min-h-screen relative w-full overflow-hidden  bg-black"
       style={{
@@ -112,19 +124,20 @@ function HomePage() {
         backgroundSize: "26px 26px",
       }}
     >
-      
+
       <div className="absolute top-9 w-full head md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 animate-pulse to-neutral-100 text-center p-4 font-bold text-4xl z-1">Veltrix-UI</div>
       <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
       <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none "></div>
       <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none"></div>
 
+
       {/* Hero Section */}
       <div className="flex flex-col h-screen md:flex-row items-center justify-between px-6">
         <div className="md:w-[60%] text-center">
-          <div className="head mt-10 md:mt-0 font-bold text-6xl drop-shadow-5xl overflow-hidden tracking-tight text-white text-center p-5 pt-15 flex justify-center">
-            Build Faster with Reusable UI Components
+          <div ref={scope} className=" mt-15 md:mt-0 flex-wrap font-bold text-6xl drop-shadow-5xl overflow-hidden tracking-tight text-white text-center p-5 pt-15 flex justify-center">
+            {text.split(" ").map((word, idx) => <motion.span className="display:block flex flex-col max-w-5xl" style={{ opacity: 0, filter: 'blur(8px)', y: 10 }} key={word + idx}>{word} &nbsp;</motion.span>)}
           </div>
-          <div className="flex justify-center mt-7">
+          <div className="flex justify-center">
             <p className="p-4 description max-w-xl text-lg text-center text-neutral-400 ">
               A curated library of animated, production-ready React components
               with live previews and copy-ready code.
@@ -198,11 +211,11 @@ function HomePage() {
 
       {/* Hero Section Ends */}
       <div
-      style={{
-        maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
-        WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 85%, transparent)'
-  }}
-      className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 85%, transparent)'
+        }}
+        className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
         {/* w-max is important so the track sizes itself to the content */}
         <div className="track flex w-max h-15">
           {/* HALF 1 */}
@@ -230,32 +243,6 @@ function HomePage() {
           </div>
         </div>
       </div>
-      {/* <div className="flex whatYouGet justify-center font-bold text-4xl underline underline-offset-12 md:mt-10 mt-80 mb-20 decoration-neutral-600 text-neutral-300">
-        What You Get
-      </div>
-
-      <div className="grid  grid-cols-1  group md:grid-cols-3 gap-6 px-20 mx-auto px-6 mb-32">
-        <div className="md:col-span-2 getCards relative h-64 group border cursor-pointer border-white/20 p-6 rounded-3xl">
-          <h3>1. Live Previews</h3>
-          <div className="text-9xl opacity-10 absolute top-10 group-hover:opacity-35 -right-6">⚡</div>
-        </div>
-
-        
-        <div className="h-64 border getCards border-white/20 p-6 rounded-3xl">
-          <h3>2. Copy-Ready</h3>
-        </div>
-
-        
-        <div className="h-64 border getCards border-white/20 p-6 rounded-3xl">
-          <h3>3. Motion-Ready</h3>
-        </div>
-
-        
-        <div className="md:col-span-2 getCards h-64 border border-white/20 p-6 rounded-3xl">
-          <h3>4. Instant Search</h3>
-        </div>
-      </div> */}
-
       <div className="flex text-2xl justify-center font-bold md:text-4xl popular underline underline-offset-12 mb-20 decoration-neutral-600 text-neutral-300">
         Popular Components
       </div>

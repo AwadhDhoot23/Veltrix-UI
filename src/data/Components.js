@@ -1,6 +1,7 @@
 import React from 'react'
 import GridShadowButton from '../ui/GridShadowButton.jsx?raw';
 import SpotlightCard from '../ui/SpotlightCard.jsx?raw';
+import SpinningBorder from '../ui/SpinningBorder.jsx?raw';
 export const FilterTags = [
   "All",
   "button",
@@ -19,5 +20,9 @@ export const Components=[
     tags:['card','interactive','hover'],  
     featured:true,
     code:SpotlightCard,},
+  {name:'Spinning Border' ,slug:'spinning-border', description:'A border around a button that spins continously.',
+    tags:['border','button','animation'],  
+    featured:true,
+    code:SpinningBorder,},
 
 ]
