@@ -19,9 +19,6 @@
 
 <br/>
 
-[🚀 Live Demo](#) • [✨ Features](#-features) • [🛠 Tech Stack](#-tech-stack) • [📦 Getting Started](#-getting-started) • [📂 Project Structure](#-project-structure)
-
-<br/>
 
 </div>
 
