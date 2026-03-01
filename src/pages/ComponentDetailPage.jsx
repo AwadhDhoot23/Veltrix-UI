@@ -16,6 +16,7 @@ import { twilight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import MobileSideBar from "../components/MobileSideBar";
+import DependenciesDropdown from "../components/DependenciesDropdown";
 function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
@@ -119,13 +120,16 @@ function ComponentDetailPage() {
                 }}
                 className=" max-w-[1090px] mb-10 bg- p-4 border relative rounded-2xl  border-white"
               >
+                <div className="hidden md:block md:left-[12%] absolute lg:left-[6%] ">
+                  <DependenciesDropdown dependencies={component.dependencies}/>
+                </div>
                 <div className="flex justify-between">
                   <div>
                     <Toaster position="top-right" />
                     <motion.button
                       initial={{ opacity: 0.8, scale: 0.95 }}
-                      whileHover={{ opacity: 1, scale: 1.12 }}
-                      transition={{ duration: 2, ease: "backInOut" }}
+                      whileHover={{ opacity: 1, scale: 1.05 }}
+                      transition={{ duration: 0.7, ease: "easeInOut" }}
                       onClick={handleCopy}
                       className="cursor-pointer text-white px-2 pb-1 rounded relative"
                     >
