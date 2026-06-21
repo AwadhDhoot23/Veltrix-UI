@@ -134,7 +134,7 @@ function HomePage() {
       {/* Hero Section */}
       <div className="flex flex-col h-screen md:flex-row items-center justify-between px-6">
         <div className="md:w-[60%] text-center">
-          <div ref={scope} className=" mt-15 md:mt-0 flex-wrap font-bold text-6xl drop-shadow-5xl overflow-hidden tracking-tight text-white text-center p-5 pt-15 flex justify-center">
+          <div ref={scope} className="mt-15 md:mt-0 flex-wrap font-bold text-6xl drop-shadow-5xl overflow-hidden tracking-tight text-white text-center p-5 pt-15 flex justify-center">
             {text.split(" ").map((word, idx) => <motion.span className="display:block flex flex-col max-w-5xl" style={{ opacity: 0, filter: 'blur(8px)', y: 10 }} key={word + idx}>{word} &nbsp;</motion.span>)}
           </div>
           <div className="flex justify-center">
