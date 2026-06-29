@@ -14,6 +14,8 @@ exports.getComponentBySlug = async (req, res) => {
     if (!component) {
       return res.status(404).json({ message: 'Component not found' });
     }
+    component.viewsCount += 1;
+    await component.save();
     res.json(component);
   } catch (error) {
     res.status(500).json({ message: error.message });

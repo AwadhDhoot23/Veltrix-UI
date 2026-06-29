@@ -48,7 +48,7 @@ exports.removeFavorite = async (req, res) => {
 
     const user = await User.findById(req.user.id);
 
-    if (!user.favorites.includes(componentId)) {
+    if (!user.favorites.some(id => id.toString() === componentId)) {
       return res.status(400).json({ message: 'Component not in favorites' });
     }
 
