@@ -4,6 +4,7 @@ const cors=require('cors');
 const dotenv = require('dotenv');
 const authRoutes=require("./routes/auth.routes");
 const componentRoutes = require('./routes/component.routes');
+const favoriteRoutes = require('./routes/favorite.routes');
 
 dotenv.config();
 connectDB();
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json())
 app.use('/api/auth',authRoutes);
 app.use('/api/components', componentRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 app.get('/',(req,res)=>{
     res.json({message:'Veltrix UI API is running'})
