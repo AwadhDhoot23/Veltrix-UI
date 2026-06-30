@@ -1,3 +1,14 @@
+import React from "react";
+import { cn } from "./cn";
+import { motion, AnimatePresence } from "framer-motion";
+
+export const liveScope = {
+  React,
+  cn,
+  motion,
+  AnimatePresence,
+};
+
 export const prepareCodeForLivePreview = (rawCode) => {
   if (!rawCode) return { code: "", noInline: false };
 

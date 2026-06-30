@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import MobileSideBar from "../components/MobileSideBar";
 import DependenciesDropdown from "../components/DependenciesDropdown";
-import { prepareCodeForLivePreview } from "../utils/livePreviewHelpers";
+import { prepareCodeForLivePreview, liveScope } from "../utils/livePreviewHelpers";
 
 function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
@@ -161,7 +161,7 @@ function ComponentDetailPage() {
                     {PreviewComponent ? (
                       <PreviewComponent />
                     ) : (
-                      <LiveProvider code={liveCode} noInline={noInline}>
+                      <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
                           <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white p-4" />
                           <LiveError className="absolute bottom-0 w-full bg-red-900 text-white p-2 text-sm overflow-y-auto max-h-32" />
                       </LiveProvider>

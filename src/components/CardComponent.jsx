@@ -8,7 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import api from '../utils/api';
 import { toast } from 'sonner';
 import { LiveProvider, LivePreview, LiveError } from 'react-live';
-import { prepareCodeForLivePreview } from '../utils/livePreviewHelpers';
+import { prepareCodeForLivePreview, liveScope } from '../utils/livePreviewHelpers';
 
 function CardComponent({ name, description, slug, code, id, isFavorited, onFavoriteToggle, author }) {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ function CardComponent({ name, description, slug, code, id, isFavorited, onFavor
           <ErrorBoundary fallback={<div className="text-red-400 font-bold p-4">⚠️ Component Crashed</div>}>
             {Preview ? <Preview /> : (
               liveCode ? (
-                <LiveProvider code={liveCode} noInline={noInline}>
+                <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
                   <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white scale-[0.6] origin-center" />
                 </LiveProvider>
               ) : "Preview not available!"
