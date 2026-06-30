@@ -1,5 +1,8 @@
-import React, { useState, Suspense } from "react";
-import { Components } from "../data/Components";
+import React, { useState, Suspense, useEffect } from "react";
+import { useComponents } from "../context/ComponentsContext";
+import { useAuth } from "../context/AuthContext";
+import api from "../utils/api";
+import { LiveProvider, LiveError, LivePreview } from "react-live";
 import { PreviewRegistry } from "../data/PreviewRegistry";
 import Sidebar from "../components/Sidebar";
 import { motion } from "framer-motion";
@@ -7,6 +10,8 @@ import { Toaster, toast } from "sonner";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { ErrorBoundary } from 'react-error-boundary';
 import DoneIcon from "@mui/icons-material/Done";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 const SyntaxHighlighter = React.lazy(() =>
   import("react-syntax-highlighter").then((module) => ({
     default: module.Prism,
@@ -17,11 +22,28 @@ import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import MobileSideBar from "../components/MobileSideBar";
 import DependenciesDropdown from "../components/DependenciesDropdown";
+import { prepareCodeForLivePreview } from "../utils/livePreviewHelpers";
+
 function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
-  const component = Components.find((item) => item.slug === slug);
+  const { components } = useComponents();
+  const { user } = useAuth();
+  const component = components.find((item) => item.slug === slug);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    // Check if it's already favorited
+    if (user && component) {
+      api.get('/favorites').then((res) => {
+        if (res.data.some(f => f._id === component._id)) {
+          setIsFavorite(true);
+        }
+      }).catch(err => console.log("Failed to load favorites"));
+    }
+  }, [user, component]);
+
   if (!component) {
     return <NotFound />;
   }
@@ -31,11 +53,37 @@ function ComponentDetailPage() {
       toast.success("Code Copied", { duration: 2000 });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      
+      // Track copy in analytics
+      await api.post(`/analytics/copy/${slug}`);
     } catch {
       toast.error("Failed to copy", { duration: 2000 });
     }
   };
+
+  const handleFavorite = async () => {
+    if (!user) {
+      toast.error("Please login to favorite components");
+      return;
+    }
+    try {
+      if (isFavorite) {
+        await api.delete(`/favorites/${component._id}`);
+        setIsFavorite(false);
+        toast.success("Removed from favorites");
+      } else {
+        await api.post(`/favorites/${component._id}`);
+        setIsFavorite(true);
+        toast.success("Added to favorites");
+      }
+    } catch (err) {
+      toast.error("Failed to update favorite");
+    }
+  };
+
   const PreviewComponent = PreviewRegistry[slug];
+  const { code: liveCode, noInline } = prepareCodeForLivePreview(component.code);
+
   return (
     <motion.div
       initial={{
@@ -63,7 +111,16 @@ function ComponentDetailPage() {
         </div>
 
         <div className="flex-1 px-6 flex flex-col gap-5 min-w-0">
-          <h1 className="font-bold text-5xl pt-14">{component.name}</h1>
+          <div className="flex justify-between items-center pt-14">
+            <h1 className="font-bold text-5xl">{component.name}</h1>
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
+              onClick={handleFavorite}
+              className="text-red-500 cursor-pointer mr-5"
+            >
+              {isFavorite ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />}
+            </motion.button>
+          </div>
           <p className="text-lg">{component.description}</p>
           <div className="mb-15">
             {component.tags.map((tag) => (
@@ -97,21 +154,24 @@ function ComponentDetailPage() {
               Code
             </button>
           </div>
-          {activeTab == "preview" &&
-            (PreviewComponent ? (
+          {activeTab == "preview" && (
               <div className="flex justify-center mb-10 md:mb-0 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 h-118 w-full rounded-lg">
-                <div className="bg-black  h-114 w-full mx-2 justify-center flex items-center rounded-lg">
+                <div className="bg-black  h-114 w-full mx-2 justify-center flex items-center rounded-lg relative overflow-hidden">
                   <ErrorBoundary fallback={<div className="text-red-500 font-bold p-4">⚠️ Component Crashed</div>}>
-                    <PreviewComponent />
+                    {PreviewComponent ? (
+                      <PreviewComponent />
+                    ) : (
+                      <LiveProvider code={liveCode} noInline={noInline}>
+                          <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white p-4" />
+                          <LiveError className="absolute bottom-0 w-full bg-red-900 text-white p-2 text-sm overflow-y-auto max-h-32" />
+                      </LiveProvider>
+                    )}
                   </ErrorBoundary>
                 </div>
               </div>
-            ) : (
-              "Component not found!"
-            ))}
+          )}
 
-          {activeTab == "code" &&
-            (PreviewComponent ? (
+          {activeTab == "code" && (
               <div
                 style={{
                   backgroundImage:
@@ -173,9 +233,7 @@ function ComponentDetailPage() {
                   </Suspense>
                 </ErrorBoundary>
               </div>
-            ) : (
-              "Component not found!"
-            ))}
+          )}
         </div>
       </div>
     </motion.div>

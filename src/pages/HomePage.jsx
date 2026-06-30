@@ -6,8 +6,15 @@ gsap.registerPlugin(ScrollTrigger);
 import { useNavigate } from "react-router-dom";
 import CardComponent from "../components/CardComponent";
 import { PreviewRegistry } from "../data/PreviewRegistry";
-import { Components } from "../data/Components";
+import { useComponents } from "../context/ComponentsContext";
+import { useAuth } from "../context/AuthContext";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import LogoutIcon from "@mui/icons-material/Logout";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LoginIcon from "@mui/icons-material/Login";
+import CodeIcon from "@mui/icons-material/Code";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { motion, useAnimate, stagger } from 'framer-motion'
 function HomePage() {
   useGSAP(() => {
@@ -78,6 +85,8 @@ function HomePage() {
   }, []);
   const text = "Build Faster with Reusable UI Components";
   const navigate = useNavigate();
+  const { components, loading } = useComponents();
+  const { user, logout } = useAuth();
   const [scope, animate] = useAnimate();
   useEffect(() => {
     startAnimating();
@@ -96,7 +105,7 @@ function HomePage() {
     );
   }
 
-  const featuredComponents = Components.filter((item) => item.featured);
+  const featuredComponents = [...components].sort((a, b) => (b.viewsCount || 0) - (a.viewsCount || 0)).slice(0, 3);
   return (
     <motion.div
       initial={{
@@ -124,6 +133,37 @@ function HomePage() {
         backgroundSize: "26px 26px",
       }}
     >
+      <div className="absolute top-4 right-6 z-50 flex gap-4">
+        {user ? (
+          <>
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center gap-2 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-full text-neutral-300 hover:text-white hover:border-neutral-500 transition-colors"
+            >
+              <DashboardIcon fontSize="small" /> Dashboard
+            </motion.button>
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => { logout(); navigate('/login'); }}
+              className="flex items-center gap-2 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-full text-neutral-300 hover:text-white hover:border-neutral-500 transition-colors"
+            >
+              <LogoutIcon fontSize="small" /> Logout
+            </motion.button>
+          </>
+        ) : (
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/login')}
+            className="flex items-center gap-2 px-6 py-2 bg-white text-black font-bold rounded-full hover:bg-neutral-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          >
+            <LoginIcon fontSize="small" /> Login
+          </motion.button>
+        )}
+      </div>
 
       <div className="absolute top-9 w-full head md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 animate-pulse to-neutral-100 text-center p-4 font-bold text-4xl z-1">Veltrix-UI</div>
       <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
@@ -220,25 +260,25 @@ function HomePage() {
         <div className="track flex w-max h-15">
           {/* HALF 1 */}
           <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Live Preview</span>
+            <span>Community Driven Components</span>
             <span className="text-xl">✦</span>
-            <span>Direct Copy & Paste</span>
+            <span>Live In-Browser Code Editor</span>
             <span className="text-xl">✦</span>
-            <span>Instant Search Option</span>
+            <span>Upload & Share Your UI</span>
             <span className=" text-xl">✦</span>
-            <span>Animation Rich UI</span>
+            <span>Real-Time React Compilation</span>
             <span className=" text-xl">✦</span>
           </div>
 
           {/* HALF 2 (Exact Duplicate of Half 1) */}
           <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Live Preview</span>
+            <span>Community Driven Components</span>
             <span className="text-xl">✦</span>
-            <span>Direct Copy & Paste</span>
+            <span>Live In-Browser Code Editor</span>
             <span className="text-xl">✦</span>
-            <span>Instant Search Option</span>
+            <span>Upload & Share Your UI</span>
             <span className=" text-xl">✦</span>
-            <span>Animation Rich UI</span>
+            <span>Real-Time React Compilation</span>
             <span className=" text-xl">✦</span>
           </div>
         </div>
@@ -255,11 +295,60 @@ function HomePage() {
                 key={item.slug}
                 name={item.name}
                 slug={item.slug}
+                code={item.code}
+                author={item.author}
               />
             </div>
           ))}
         </div>
       </div>
+
+      {/* Join the Community Section - Only for guests */}
+      {!user && (
+        <div className="flex flex-col items-center justify-center mb-32 px-6">
+          <div className="text-2xl md:text-4xl font-bold text-neutral-300 mb-4 text-center">
+            Join the Community
+          </div>
+          <p className="text-neutral-400 text-center max-w-2xl mb-12">
+            Don't just copy code , become a contributor. Create an account to upload your own UI creations, write code in our browser editor, and track your component analytics.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mb-12">
+            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
+              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-indigo-400">
+                <CloudUploadIcon fontSize="large" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Upload & Share</h3>
+              <p className="text-neutral-400 text-sm">Publish your own React components and share them with the world.</p>
+            </div>
+            
+            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
+              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-pink-400">
+                <CodeIcon fontSize="large" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Live Editor</h3>
+              <p className="text-neutral-400 text-sm">Write code directly in the browser with our Monaco editor and instant live-preview.</p>
+            </div>
+            
+            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
+              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-emerald-400">
+                <BarChartIcon fontSize="large" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Track Analytics</h3>
+              <p className="text-neutral-400 text-sm">Save your favorites and track copies/views on your personalized dashboard.</p>
+            </div>
+          </div>
+          
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/register')}
+            className="px-8 py-4 bg-gradient-to-r from-neutral-500 to-neutral-900 text-white font-bold rounded-full text-lg hover:shadow-[0_0_15px_rgba(100,100,100,0.8)] cursor-pointer transition-all"
+          >
+            Create Your Account
+          </motion.button>
+        </div>
+      )}
     </motion.div>
   );
 }

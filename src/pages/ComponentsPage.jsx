@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Components, FilterTags } from "../data/Components";
+import { FilterTags } from "../data/Components";
+import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,7 +10,8 @@ import Sidebar from "../components/Sidebar";
 import ClearIcon from "@mui/icons-material/Clear";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { motion } from "framer-motion";
-
+import { useAuth } from "../context/AuthContext";
+import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import MobileSideBar from "../components/MobileSideBar";
 
@@ -27,15 +29,38 @@ function ComponentsPage() {
     });
   });
   const navigate = useNavigate();
-  const [query, setQuery] = useState("");
-  const filterComponents = Components.filter(
-    (item) =>
-      item.name.toLowerCase().includes(query.toLowerCase()) ||
-      item.description.toLocaleLowerCase().includes(query.toLowerCase()) ||
-      item.tags.some((tag) =>
-        tag.toLowerCase().includes(query.toLocaleLowerCase()),
-      ),
-  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTag, setActiveTag] = useState("All");
+  const { components, loading } = useComponents();
+  const { user } = useAuth();
+  const [favorites, setFavorites] = useState([]);
+
+  React.useEffect(() => {
+    if (user) {
+      api.get('/favorites').then(res => setFavorites(res.data.map(f => f._id))).catch(console.error);
+    }
+  }, [user]);
+
+  const filterComponents = components.filter((item) => {
+    // 1. Tag filter logic
+    if (activeTag === "Favorites") {
+      if (!favorites.includes(item._id)) return false;
+    } else if (activeTag !== "All") {
+      if (!item.tags.some(tag => tag.toLowerCase() === activeTag.toLowerCase())) return false;
+    }
+    
+    // 2. Text search logic
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchesName = item.name.toLowerCase().includes(q);
+      const matchesDesc = item.description.toLowerCase().includes(q);
+      if (!matchesName && !matchesDesc) return false;
+    }
+
+    return true;
+  });
+
+  const displayTags = user ? ["Favorites", ...FilterTags] : FilterTags;
   return (
     <motion.div
       initial={{
@@ -62,34 +87,38 @@ function ComponentsPage() {
           <MobileSideBar />
         </div>
 
-        <div className="relative gap-5 md:flex  md:flex-row mt-5 ml-5">
-          <SearchIcon className="relative left-8 top-0.5 md:top-3 md:left-14 pb-1" />
+        <div className="relative mt-5 ml-5 w-[220px] md:w-[240px] lg:w-[600px] shadow-lg">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <SearchIcon className="text-neutral-400" fontSize="small" />
+          </div>
           <input
-            className="bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-500 text-white px-9 w-55 md:w-60 lg:w-150 rounded-full h-10 border border-neutral-600"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            className="w-full bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-500 text-white pl-10 pr-10 py-2 rounded-full border border-neutral-600 focus:outline-none focus:border-neutral-400 transition-colors placeholder:text-neutral-400 shadow-inner"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             type="text"
-            placeholder="  Search.."
+            placeholder="Search components..."
           />
-
-          <ClearIcon
-            onClick={() => setQuery("")}
-            className="absolute left-53 top-2  md:left-58 lg:left-152 md:top-2 cursor-pointer "
-          />
+          {searchQuery && (
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <ClearIcon
+                onClick={() => setSearchQuery("")}
+                className="text-neutral-400 hover:text-white cursor-pointer"
+                fontSize="small"
+              />
+            </div>
+          )}
         </div>
         <div className="relative flex mt-8 flex-wrap pl-5 items-center gap-3 font-bold">
-          {FilterTags.map((tag) => {
-            const isActive =
-              query.toLowerCase() === tag.toLowerCase() ||
-              (query === "" && tag === "All");
+          {displayTags.map((tag) => {
+            const isActive = activeTag === tag;
 
             return (
               <div
                 key={tag}
-                onClick={() => setQuery(tag === "All" ? "" : tag)}
-                className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-300 capitalize ${isActive
+                onClick={() => setActiveTag(tag)}
+                className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-300 capitalize flex items-center gap-1 ${isActive
                     ? "bg-white text-black border-white "
-                    : "bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 text-neutral-300/80 border-neutral-500 hover:text-white hover:border-neutral-200"
+                    : (tag === "Favorites" ? "bg-red-950/40 text-red-400 border-red-900/50 hover:bg-red-900/60 hover:text-red-200" : "bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 text-neutral-300/80 border-neutral-500 hover:text-white hover:border-neutral-200")
                   }`}
               >
                 {tag}
@@ -106,15 +135,25 @@ function ComponentsPage() {
             </pre>
           </div>
         )}
-        <div className="overflow-y-hidden pl-6 grid gridBox grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 overflow-y-auto min-h-screen gap:20"
+        <div className="overflow-y-hidden pl-6 grid gridBox grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 overflow-y-auto min-h-screen gap-10"
         >
           {filterComponents.map((item) => (
             <div key={item.slug} className="componentCard ">
               <CardComponent
-
                 name={item.name}
                 description={item.description}
                 slug={item.slug}
+                code={item.code}
+                id={item._id}
+                author={item.author}
+                isFavorited={favorites.includes(item._id)}
+                onFavoriteToggle={(id, adding) => {
+                  if (adding) {
+                    setFavorites([...favorites, id]);
+                  } else {
+                    setFavorites(favorites.filter(favId => favId !== id));
+                  }
+                }}
               />
             </div>
           ))}
