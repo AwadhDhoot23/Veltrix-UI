@@ -223,7 +223,17 @@ PORT=5000
 
 ## 📸 Screenshots
 
-> Browse components, preview them live, and copy the code with one click.
+<img width="1806" height="1072" alt="image" src="https://github.com/user-attachments/assets/66ad1edd-a22e-4eb3-8b20-aa1a65c1d0d7" />
+<img width="1820" height="1074" alt="image" src="https://github.com/user-attachments/assets/33a16e33-b34a-47cf-9c91-063900a9c26b" />
+<img width="1859" height="1105" alt="image" src="https://github.com/user-attachments/assets/48791d72-e8aa-4325-9c82-de54e1cb0943" />
+<img width="1859" height="1100" alt="image" src="https://github.com/user-attachments/assets/37826675-7ac6-41c0-a15e-1c6d714394a4" />
+<img width="1856" height="1098" alt="image" src="https://github.com/user-attachments/assets/b7401a57-8810-480d-b7bf-8d1b144ad94b" />
+<img width="1847" height="1088" alt="image" src="https://github.com/user-attachments/assets/9e4432d4-14b1-4b84-9bd7-bf076b469b44" />
+<img width="1850" height="1101" alt="image" src="https://github.com/user-attachments/assets/53d1af6c-5d31-47cb-937d-6557f1acca5c" />
+<img width="1846" height="1089" alt="image" src="https://github.com/user-attachments/assets/c62953f0-dac0-4134-947f-7d9a9dd5c5b3" />
+
+
+
 
 ---
 
