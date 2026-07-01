@@ -24,7 +24,7 @@ function Sidebar() {
         <div className='h-[2.5px] w-22 bg-gradient-to-r from-transparent via-neutral-500 to-transparent mt-1 group-hover:w-38 group-hover:via-neutral-200 transition-all duration-500 ease-out '></div>
       </motion.h2>
       
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {components.map((item) => {
           const isActive = item.slug === currentSlug;
           return (
