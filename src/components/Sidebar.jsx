@@ -36,7 +36,7 @@ function Sidebar() {
               >
                 <Link
                   to={`/components/${item.slug}`}
-                  className={`relative block w-full px-4 py-2 mb-2 rounded-md transition ${
+                  className={`relative block w-full px-4 py-2 mb-2 rounded-md transition overflow-hidden truncate ${
                     isActive
                       ? 'text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 pl-10'
                       : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
