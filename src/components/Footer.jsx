@@ -15,9 +15,9 @@ function Footer() {
       <div className="w-full h-px bg-white "></div>
       <div className="flex items-center justify-between">
         <div>
-          <div className="w-full head bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 animate-pulse to-neutral-100 px-4 my-2 font-bold text-5xl z-1">
-            Veltrix-UI
-          </div>
+          <h2 className="w-full px-5 my-3 font-extrabold text-4xl md:text-5xl tracking-tight text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            Veltrix<span className="text-cyan-400">UI</span>
+          </h2>
           <p className="pl-5 text-lg text-neutral-500">
             A curated library of reusable React UI components.
           </p>

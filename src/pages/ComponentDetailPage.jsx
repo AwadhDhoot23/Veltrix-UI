@@ -94,7 +94,7 @@ function ComponentDetailPage() {
           <MobileSideBar />
         </div>
 
-        <div className="flex-1 px-6 flex flex-col gap-5 min-w-0">
+        <div className="flex-1 px-6 flex flex-col gap-5 min-w-0 pb-20">
           <div className="flex justify-between items-center pt-14">
             <h1 className="font-bold text-5xl">{component.name}</h1>
             <motion.button 
@@ -149,7 +149,7 @@ function ComponentDetailPage() {
           </div>
 
           {activeTab === "preview" && (
-            <div className="flex justify-center mb-10 md:mb-0 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 min-h-[550px] w-full rounded-lg p-2">
+            <div className="flex justify-center mb-20 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 min-h-[550px] w-full rounded-lg p-2">
               <div className="bg-black min-h-[530px] w-full mx-2 justify-center flex items-center rounded-lg relative overflow-y-auto overflow-x-hidden p-8">
                 <ErrorBoundary fallback={<div className="text-red-500 font-bold p-4">⚠️ Component Crashed</div>}>
                   {PreviewComponent ? (
@@ -171,7 +171,7 @@ function ComponentDetailPage() {
                 backgroundImage: "radial-gradient(circle at 1px 1px,rgba(255,255,255,0.15) 1px, transparent 0)",
                 backgroundSize: "10px 10px",
               }}
-              className="max-w-[1090px] mb-10 p-4 border relative rounded-2xl border-white"
+              className="max-w-[1090px] mb-20 p-4 border relative rounded-2xl border-white"
             >
               <div className="hidden md:block md:left-[12%] absolute lg:left-[6%]">
                 <DependenciesDropdown dependencies={component.dependencies}/>
