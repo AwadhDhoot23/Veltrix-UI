@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 import { useNavigate } from "react-router-dom";
 import CardComponent from "../components/CardComponent";
 import { useComponents } from "../context/ComponentsContext";
+import { useAuth } from "../context/AuthContext";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { motion, useAnimate, stagger } from 'framer-motion'
 function HomePage() {
@@ -78,7 +79,7 @@ function HomePage() {
   const text = "Build Faster with Reusable UI Components";
   const navigate = useNavigate();
   const { components, loading } = useComponents();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [scope, animate] = useAnimate();
   useEffect(() => {
     startAnimating();

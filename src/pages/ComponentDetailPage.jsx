@@ -1,6 +1,5 @@
 import React, { useState, Suspense, useEffect } from "react";
 import { useComponents } from "../context/ComponentsContext";
-import api from "../utils/api";
 import { LiveProvider, LiveError, LivePreview } from "react-live";
 import { PreviewRegistry } from "../data/PreviewRegistry";
 import Sidebar from "../components/Sidebar";
@@ -53,8 +52,6 @@ function ComponentDetailPage() {
       toast.success("Code Copied", { duration: 2000 });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      // Track copy — we still fire this so the backend can count it
-      await api.post(`/analytics/copy/${slug}`).catch(() => {});
     } catch {
       toast.error("Failed to copy", { duration: 2000 });
     }
