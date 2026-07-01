@@ -52,7 +52,8 @@ function AdminPage() {
       await login(email, password);
       toast.success('Welcome back, Admin!');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid credentials');
+      const msg = err.response?.data?.message || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Cannot connect to server. Check API URL.' : 'Invalid credentials');
+      toast.error(msg);
     } finally {
       setLoginLoading(false);
     }

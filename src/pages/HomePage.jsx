@@ -219,31 +219,35 @@ function HomePage() {
         {/* w-max is important so the track sizes itself to the content */}
         <div className="track flex w-max h-15">
           {/* HALF 1 */}
-          <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Curated Production-Ready UI</span>
-            <span className="text-xl">✦</span>
-            <span>Live In-Browser Code Editor</span>
-            <span className="text-xl">✦</span>
-            <span>Copy & Paste Ready</span>
-            <span className="text-xl">✦</span>
-            <span>Real-Time React Compilation</span>
-            <span className="text-xl">✦</span>
-            <span>Zero Config Tailwind CSS</span>
-            <span className="text-xl">✦</span>
+          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 uppercase tracking-widest font-bold text-sm md:text-base">
+            <span className="flex items-center gap-2"><span className="text-yellow-400">⚡</span> 10X Faster UI Workflow</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-cyan-400">💎</span> Glassmorphism & Cyberpunk Ready</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-pink-400">✨</span> Interactive Live Code Sandbox</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-orange-400">🔥</span> Curated Dark Mode Aesthetics</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-green-400">🚀</span> One-Click Copy & Paste</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-purple-400">🎨</span> Smooth Framer Motion Animations</span>
+            <span className="text-indigo-500 text-xl">✦</span>
           </div>
 
           {/* HALF 2 (Exact Duplicate of Half 1) */}
-          <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Curated Production-Ready UI</span>
-            <span className="text-xl">✦</span>
-            <span>Live In-Browser Code Editor</span>
-            <span className="text-xl">✦</span>
-            <span>Copy & Paste Ready</span>
-            <span className="text-xl">✦</span>
-            <span>Real-Time React Compilation</span>
-            <span className="text-xl">✦</span>
-            <span>Zero Config Tailwind CSS</span>
-            <span className="text-xl">✦</span>
+          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 uppercase tracking-widest font-bold text-sm md:text-base">
+            <span className="flex items-center gap-2"><span className="text-yellow-400">⚡</span> 10X Faster UI Workflow</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-cyan-400">💎</span> Glassmorphism & Cyberpunk Ready</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-pink-400">✨</span> Interactive Live Code Sandbox</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-orange-400">🔥</span> Curated Dark Mode Aesthetics</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-green-400">🚀</span> One-Click Copy & Paste</span>
+            <span className="text-indigo-500 text-xl">✦</span>
+            <span className="flex items-center gap-2"><span className="text-purple-400">🎨</span> Smooth Framer Motion Animations</span>
+            <span className="text-indigo-500 text-xl">✦</span>
           </div>
         </div>
       </div>
