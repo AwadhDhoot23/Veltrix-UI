@@ -110,11 +110,11 @@ function ComponentsPage() {
 
           {/* Sort dropdown */}
           <div className="relative flex items-center gap-2">
-            <SortIcon className="text-neutral-400 mr-5" fontSize="small" />
+            <SortIcon className="text-neutral-400 ml-10" fontSize="medium" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-neutral-800 text-neutral-300 text-sm border border-neutral-600 rounded-full px-3 py-2 focus:outline-none focus:border-neutral-400 cursor-pointer"
+              className="bg-neutral-800 text-neutral-300 text-sm border border-neutral-600 rounded-full px-2 py-1 focus:outline-none focus:border-neutral-400 cursor-pointer"
             >
               <option value="newest">Newest First</option>
               <option value="most_viewed">Most Viewed</option>
