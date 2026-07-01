@@ -220,26 +220,30 @@ function HomePage() {
         <div className="track flex w-max h-15">
           {/* HALF 1 */}
           <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Community Driven Components</span>
+            <span>Curated Production-Ready UI</span>
             <span className="text-xl">✦</span>
             <span>Live In-Browser Code Editor</span>
             <span className="text-xl">✦</span>
-            <span>Upload & Share Your UI</span>
-            <span className=" text-xl">✦</span>
+            <span>Copy & Paste Ready</span>
+            <span className="text-xl">✦</span>
             <span>Real-Time React Compilation</span>
-            <span className=" text-xl">✦</span>
+            <span className="text-xl">✦</span>
+            <span>Zero Config Tailwind CSS</span>
+            <span className="text-xl">✦</span>
           </div>
 
           {/* HALF 2 (Exact Duplicate of Half 1) */}
           <div className="flex gap-16 shrink-0 items-center justify-center px-8 text-neutral-400 uppercase tracking-widest font-bold">
-            <span>Community Driven Components</span>
+            <span>Curated Production-Ready UI</span>
             <span className="text-xl">✦</span>
             <span>Live In-Browser Code Editor</span>
             <span className="text-xl">✦</span>
-            <span>Upload & Share Your UI</span>
-            <span className=" text-xl">✦</span>
+            <span>Copy & Paste Ready</span>
+            <span className="text-xl">✦</span>
             <span>Real-Time React Compilation</span>
-            <span className=" text-xl">✦</span>
+            <span className="text-xl">✦</span>
+            <span>Zero Config Tailwind CSS</span>
+            <span className="text-xl">✦</span>
           </div>
         </div>
       </div>

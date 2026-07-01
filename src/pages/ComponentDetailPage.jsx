@@ -23,6 +23,7 @@ import MobileSideBar from "../components/MobileSideBar";
 import DependenciesDropdown from "../components/DependenciesDropdown";
 import { prepareCodeForLivePreview, liveScope } from "../utils/livePreviewHelpers";
 
+import api from "../utils/api";
 const FAVORITES_KEY = 'veltrix_favorites';
 function getFavorites() {
   try { return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []; }
@@ -33,13 +34,21 @@ function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
-  const { components } = useComponents();
+  const { components, refreshComponents } = useComponents();
   const component = components.find((item) => item.slug === slug);
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const favs = getFavorites();
     setIsFavorite(favs.includes(slug));
+    
+    // Call backend to increment view count in MongoDB
+    if (slug) {
+      api.get(`/components/${slug}`).then(() => {
+        // Trigger refetch so views update across the app
+        if (refreshComponents) refreshComponents();
+      }).catch(err => console.error("Error updating views:", err));
+    }
   }, [slug]);
 
   if (!component) {
