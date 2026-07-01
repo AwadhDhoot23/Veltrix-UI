@@ -7,7 +7,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LiveProvider, LivePreview } from 'react-live';
-import { prepareCodeForLivePreview, liveScope } from '../utils/livePreviewHelpers';
+import { prepareCodeForLivePreview, liveScope, getPreviewLayoutConfig } from '../utils/livePreviewHelpers';
 
 const FAVORITES_KEY = 'veltrix_favorites';
 
@@ -29,6 +29,7 @@ function CardComponent({ name, description, slug, code, id, viewsCount, createdA
   const navigate = useNavigate();
   const Preview = PreviewRegistry[slug];
   const { code: liveCode, noInline } = prepareCodeForLivePreview(code);
+  const layoutConfig = getPreviewLayoutConfig(code, name, slug);
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
@@ -85,7 +86,7 @@ function CardComponent({ name, description, slug, code, id, viewsCount, createdA
             className='h-72 w-full border border-neutral-800/80 rounded-xl overflow-hidden flex items-center justify-center bg-black relative'
           >
             <ErrorBoundary fallback={<div className="text-red-400 font-bold p-4">⚠️ Preview unavailable</div>}>
-              <div className="w-[640px] max-w-none h-[400px] flex items-center justify-center scale-[0.75] origin-center pointer-events-none p-4">
+              <div className={layoutConfig.containerClass}>
                 {Preview ? <Preview /> : (
                   liveCode ? (
                     <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
