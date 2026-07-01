@@ -6,8 +6,6 @@ gsap.registerPlugin(ScrollTrigger);
 import { useNavigate } from "react-router-dom";
 import CardComponent from "../components/CardComponent";
 import { useComponents } from "../context/ComponentsContext";
-import { useAuth } from "../context/AuthContext";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { motion, useAnimate, stagger } from 'framer-motion'
 function HomePage() {
   useGSAP(() => {
@@ -78,8 +76,7 @@ function HomePage() {
   }, []);
   const text = "Build Faster with Reusable UI Components";
   const navigate = useNavigate();
-  const { components, loading } = useComponents();
-  const { user } = useAuth();
+  const { components } = useComponents();
   const [scope, animate] = useAnimate();
   useEffect(() => {
     startAnimating();
@@ -126,37 +123,7 @@ function HomePage() {
         backgroundSize: "26px 26px",
       }}
     >
-      <div className="absolute top-4 right-6 z-50 flex gap-4">
-        {user ? (
-          <>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-full text-neutral-300 hover:text-white hover:border-neutral-500 transition-colors"
-            >
-              <DashboardIcon fontSize="small" /> Dashboard
-            </motion.button>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => { logout(); navigate('/login'); }}
-              className="flex items-center gap-2 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-full text-neutral-300 hover:text-white hover:border-neutral-500 transition-colors"
-            >
-              <LogoutIcon fontSize="small" /> Logout
-            </motion.button>
-          </>
-        ) : (
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/login')}
-            className="flex items-center gap-2 px-6 py-2 bg-white text-black font-bold rounded-full hover:bg-neutral-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-          >
-            <LoginIcon fontSize="small" /> Login
-          </motion.button>
-        )}
-      </div>
+
 
       <div className="absolute top-9 w-full head md:mb-0 bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 animate-pulse to-neutral-100 text-center p-4 font-bold text-4xl z-1">Veltrix-UI</div>
       <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
