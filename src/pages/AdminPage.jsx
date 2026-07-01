@@ -401,6 +401,9 @@ function AdminPage() {
           </motion.div>
         )}
       </AnimatePresence>
+      <div>
+        <button>Home</button>
+      </div>
     </div>
   );
 }
