@@ -7,16 +7,13 @@ import Footer from './components/Footer'
 import NotFound from './pages/NotFound'
 import { ROUTES } from './utils/constants.js'
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import SubmitComponentPage from './pages/SubmitComponentPage';
-import EditComponentPage from './pages/EditComponentPage';
+import AdminPage from './pages/AdminPage';
 import { Toaster } from 'sonner'
 
 function App() {
   const location = useLocation();
-  const hideFooterPaths = ['/login', '/register', '/dashboard', '/submit'];
-  const showFooter = !hideFooterPaths.includes(location.pathname);
+  const hideFooterPaths = ['/login', '/veltrix-admin'];
+  const showFooter = !hideFooterPaths.some(p => location.pathname.startsWith(p));
   return (
     <div className='text-white min-h-screen flex flex-col'>
       <main className='flex-1'>
@@ -27,10 +24,7 @@ function App() {
           <Route path="/components/:slug" element={<ComponentDetailPage />} />
           <Route path="*" element={<NotFound/>} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/submit" element={<SubmitComponentPage />} />
-          <Route path="/edit/:id" element={<EditComponentPage />} />
+          <Route path="/veltrix-admin" element={<AdminPage />} />
         </Routes>
         {showFooter && <Footer />}
       </main>

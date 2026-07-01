@@ -26,20 +26,10 @@ const ComponentSchema = new mongoose.Schema({
   dependencies: [{
     type: String,
   }],
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
   viewsCount: {
     type: Number,
     default: 0,
   },
-  copiesCount: {
-    type: Number,
-    default: 0,
-  },
-
 },{timestamps:true});
 
 module.exports = mongoose.model('Component', ComponentSchema);

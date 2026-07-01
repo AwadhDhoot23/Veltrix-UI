@@ -5,16 +5,8 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 import { useNavigate } from "react-router-dom";
 import CardComponent from "../components/CardComponent";
-import { PreviewRegistry } from "../data/PreviewRegistry";
 import { useComponents } from "../context/ComponentsContext";
-import { useAuth } from "../context/AuthContext";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import LogoutIcon from "@mui/icons-material/Logout";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import LoginIcon from "@mui/icons-material/Login";
-import CodeIcon from "@mui/icons-material/Code";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import { motion, useAnimate, stagger } from 'framer-motion'
 function HomePage() {
   useGSAP(() => {
@@ -296,59 +288,13 @@ function HomePage() {
                 name={item.name}
                 slug={item.slug}
                 code={item.code}
-                author={item.author}
+                viewsCount={item.viewsCount}
+                createdAt={item.createdAt}
               />
             </div>
           ))}
         </div>
       </div>
-
-      {/* Join the Community Section - Only for guests */}
-      {!user && (
-        <div className="flex flex-col items-center justify-center mb-32 px-6">
-          <div className="text-2xl md:text-4xl font-bold text-neutral-300 mb-4 text-center">
-            Join the Community
-          </div>
-          <p className="text-neutral-400 text-center max-w-2xl mb-12">
-            Don't just copy code , become a contributor. Create an account to upload your own UI creations, write code in our browser editor, and track your component analytics.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mb-12">
-            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
-              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-indigo-400">
-                <CloudUploadIcon fontSize="large" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Upload & Share</h3>
-              <p className="text-neutral-400 text-sm">Publish your own React components and share them with the world.</p>
-            </div>
-            
-            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
-              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-pink-400">
-                <CodeIcon fontSize="large" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Live Editor</h3>
-              <p className="text-neutral-400 text-sm">Write code directly in the browser with our Monaco editor and instant live-preview.</p>
-            </div>
-            
-            <div className="bg-neutral-900/50 border border-neutral-700/50 p-6 rounded-2xl flex flex-col items-center text-center hover:border-neutral-500 transition-colors">
-              <div className="bg-neutral-800 p-3 rounded-full mb-4 text-emerald-400">
-                <BarChartIcon fontSize="large" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Track Analytics</h3>
-              <p className="text-neutral-400 text-sm">Save your favorites and track copies/views on your personalized dashboard.</p>
-            </div>
-          </div>
-          
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/register')}
-            className="px-8 py-4 bg-gradient-to-r from-neutral-500 to-neutral-900 text-white font-bold rounded-full text-lg hover:shadow-[0_0_15px_rgba(100,100,100,0.8)] cursor-pointer transition-all"
-          >
-            Create Your Account
-          </motion.button>
-        </div>
-      )}
     </motion.div>
   );
 }
