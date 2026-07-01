@@ -26,11 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/veltrix-admin" element={<AdminPage />} />
         </Routes>
-        {showFooter && (
-          <div className={location.pathname.startsWith('/components') ? 'md:pl-64 w-full bg-black' : 'w-full bg-black'}>
-            <Footer />
-          </div>
-        )}
+        {showFooter && <Footer />}
       </main>
     </div>
   )
