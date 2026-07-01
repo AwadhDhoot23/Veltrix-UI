@@ -11,11 +11,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-const SyntaxHighlighter = React.lazy(() =>
-  import("react-syntax-highlighter").then((module) => ({
-    default: module.Prism,
-  })),
-);
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { twilight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
