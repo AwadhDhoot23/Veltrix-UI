@@ -207,7 +207,7 @@ function AdminPage() {
 
         {/* Components Table */}
         <div className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-6 py-3 border-b border-neutral-800 text-neutral-500 text-sm font-bold uppercase tracking-wider">
+          <div className="grid grid-cols-[1fr_100px_200px_100px] gap-4 px-6 py-3 border-b border-neutral-800 text-neutral-500 text-sm font-bold uppercase tracking-wider">
             <span>Name</span>
             <span>Views</span>
             <span>Tags</span>
@@ -217,7 +217,7 @@ function AdminPage() {
             <p className="text-neutral-500 text-center py-10">No components yet. Create your first one!</p>
           )}
           {components.map(comp => (
-            <div key={comp._id} className="grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center px-6 py-4 border-b border-neutral-800/50 hover:bg-neutral-800/30 transition-colors">
+            <div key={comp._id} className="grid grid-cols-[1fr_100px_200px_100px] gap-4 items-center px-6 py-4 border-b border-neutral-800/50 hover:bg-neutral-800/30 transition-colors">
               <div>
                 <p className="font-bold text-white">{comp.name}</p>
                 <p className="text-neutral-500 text-xs mt-0.5 line-clamp-1">{comp.description}</p>
