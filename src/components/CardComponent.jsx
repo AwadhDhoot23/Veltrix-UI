@@ -85,7 +85,7 @@ function CardComponent({ name, description, slug, code, id, viewsCount, createdA
             className='h-50 w-full border border-neutral-900/50 rounded-lg overflow-hidden flex items-center justify-center bg-black relative'
           >
             <ErrorBoundary fallback={<div className="text-red-400 font-bold p-4">⚠️ Preview unavailable</div>}>
-              <div className="w-[540px] h-[340px] flex items-center justify-center scale-[0.52] origin-center pointer-events-none overflow-hidden">
+              <div className="w-[720px] h-[460px] flex items-center justify-center scale-[0.42] origin-center pointer-events-none overflow-hidden p-4">
                 {Preview ? <Preview /> : (
                   liveCode ? (
                     <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>

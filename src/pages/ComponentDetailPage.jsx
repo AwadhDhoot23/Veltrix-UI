@@ -149,8 +149,8 @@ function ComponentDetailPage() {
           </div>
 
           {activeTab === "preview" && (
-            <div className="flex justify-center mb-10 md:mb-0 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 h-118 w-full rounded-lg">
-              <div className="bg-black h-114 w-full mx-2 justify-center flex items-center rounded-lg relative overflow-hidden">
+            <div className="flex justify-center mb-10 md:mb-0 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 min-h-[550px] w-full rounded-lg p-2">
+              <div className="bg-black min-h-[530px] w-full mx-2 justify-center flex items-center rounded-lg relative overflow-y-auto overflow-x-hidden p-8">
                 <ErrorBoundary fallback={<div className="text-red-500 font-bold p-4">⚠️ Component Crashed</div>}>
                   {PreviewComponent ? (
                     <PreviewComponent />

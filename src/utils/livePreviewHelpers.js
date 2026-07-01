@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo, useId, useReducer, Fragment } from "react";
 import { cn } from "./cn";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const liveScope = {
   React,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  useId,
+  useReducer,
+  Fragment,
   cn,
   motion,
   AnimatePresence,
