@@ -20,13 +20,19 @@ export const liveScope = {
 export const prepareCodeForLivePreview = (rawCode) => {
   if (!rawCode) return { code: "", noInline: false };
 
+  // Ensure responsive grid columns and flex items never collapse or hide in miniature catalog preview cards or zoomed viewports
+  let processedCode = rawCode
+    .replace(/grid-cols-1\s+md:grid-cols-3/g, 'grid-cols-3')
+    .replace(/hidden\s+md:flex/g, 'flex')
+    .replace(/md:col-span-2/g, 'col-span-2');
+
   // If it's a full file with export default
-  if (rawCode.includes("export default")) {
+  if (processedCode.includes("export default")) {
     // 1. Remove imports
-    let code = rawCode.replace(/import\s+.*?from\s+['"].*?['"];?/g, '');
+    let code = processedCode.replace(/import\s+.*?from\s+['"].*?['"];?/g, '');
     
     // 2. Extract exported component name
-    const exportMatch = rawCode.match(/export\s+default\s+([A-Za-z0-9_]+);?/);
+    const exportMatch = processedCode.match(/export\s+default\s+([A-Za-z0-9_]+);?/);
     if (exportMatch) {
       const componentName = exportMatch[1];
       // Remove export statement
@@ -37,8 +43,5 @@ export const prepareCodeForLivePreview = (rawCode) => {
     }
   }
 
-  // If it's just a functional component without export default but has a function definition
-  // We can try to guess the function name, but usually they'll have export default if they copied a file.
-
-  return { code: rawCode, noInline: false };
+  return { code: processedCode, noInline: false };
 };
