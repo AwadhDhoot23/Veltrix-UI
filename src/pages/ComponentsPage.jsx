@@ -110,7 +110,7 @@ function ComponentsPage() {
 
           {/* Sort dropdown */}
           <div className="relative flex items-center gap-2">
-            <SortIcon className="text-neutral-400" fontSize="small" />
+            <SortIcon className="text-neutral-400 mr-5" fontSize="small" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
