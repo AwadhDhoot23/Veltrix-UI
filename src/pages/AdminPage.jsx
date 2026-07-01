@@ -183,12 +183,17 @@ function AdminPage() {
           <h1 className="text-2xl font-bold">Veltrix Admin</h1>
           <p className="text-neutral-500 text-sm">Logged in as <span className="text-neutral-300">{user.email}</span></p>
         </div>
+        <div className='flex gap-5'>
+        <div>
+        <button onClick={()=>{navigate("/")}} className="px-4 py-2 text-sm rounded-lg border border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-400 transition-colors cursor-pointer">Home</button>
+        </div>
         <button
           onClick={() => { logout(); }}
           className="px-4 py-2 text-sm rounded-lg border border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-400 transition-colors cursor-pointer"
         >
           Sign Out
         </button>
+        </div>
       </div>
 
       <div className="px-8 py-8 max-w-6xl mx-auto">
@@ -404,9 +409,7 @@ function AdminPage() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div>
-        <button onClick={()=>{navigate("/")}}  className=' cursor-pointer transition-transform duration-300 ease-in-out hover:scale-95 absolute bottom-80 left-[47%] text-neutrak-100 border-1 border-neutral-500 font-bold text-xl bg-gradient-to-r from-neutral-600 via-neutral-600 to-neutral-800 px-4 py-1 rounded-2xl'>Home</button>
-      </div>
+      
     </div>
   );
 }
