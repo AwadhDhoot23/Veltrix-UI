@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import LockIcon from '@mui/icons-material/Lock';
-
+import { useNavigate } from "react-router-dom";
 const emptyForm = {
   name: '',
   description: '',
@@ -17,6 +17,7 @@ const emptyForm = {
   tags: '',
   dependencies: '',
 };
+
 
 function AdminPage() {
   const { user, login, logout } = useAuth();
@@ -31,6 +32,7 @@ function AdminPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
+  const navigate=useNavigate();
 
   const fetchComponents = async () => {
     try {
@@ -403,7 +405,7 @@ function AdminPage() {
         )}
       </AnimatePresence>
       <div>
-        <button>Home</button>
+        <button onClick={()=>{navigate("/")}}  className=' cursor-pointer transition-transform duration-300 ease-in-out hover:scale-95 absolute bottom-80 left-[47%] text-neutrak-100 border-1 border-neutral-500 font-bold text-xl bg-gradient-to-r from-neutral-600 via-neutral-600 to-neutral-800 px-4 py-1 rounded-2xl'>Home</button>
       </div>
     </div>
   );
