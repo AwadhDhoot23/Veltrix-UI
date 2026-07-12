@@ -86,7 +86,6 @@ Veltrix-UI/
 │   │   ├── HomePage.jsx          # Landing page
 │   │   ├── ComponentsPage.jsx    # Browse all components
 │   │   ├── ComponentDetailPage.jsx # Single component view
-│   │   ├── LoginPage.jsx         # Login page
 │   │   ├── AdminPage.jsx         # Secret admin panel (/veltrix-admin)
 │   │   └── NotFound.jsx          # 404 page
 │   ├── ui/                       # Static component preview files
