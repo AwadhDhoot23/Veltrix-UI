@@ -36,16 +36,16 @@ function Sidebar() {
               >
                 <Link
                   to={`/components/${item.slug}`}
-                  className={`relative block w-full px-4 py-2 mb-2 rounded-md transition overflow-hidden truncate ${
+                  className={`flex items-center gap-2.5 w-full px-4 py-2 mb-2 rounded-md transition overflow-hidden truncate ${
                     isActive
-                      ? 'text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 pl-10'
+                      ? 'text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600'
                       : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
                   }`}
                 >
                   {isActive && (
-                    <span className='absolute left-2 top-1/2 -translate-y-1/2 h-5 w-1.5 rounded-full bg-neutral-500'></span>
+                    <span className='h-4 w-1.5 shrink-0 rounded-full bg-neutral-400'></span>
                   )}
-                  {item.name}
+                  <span className="truncate">{item.name}</span>
                 </Link>
               </motion.div>
             </div>

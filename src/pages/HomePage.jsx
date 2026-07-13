@@ -45,33 +45,32 @@ function HomePage() {
 
     gsap.from(".popular", {
       opacity: 0,
-      x: -200,
-      duration: 0.5,
+      y: 40,
+      duration: 0.8,
+      ease: "power2.out",
       scrollTrigger: {
         trigger: ".popular",
-        start: "top 95%",
-        end: "bottom 70%",
-        scrub: true,
+        start: "top 85%",
+        toggleActions: "play none none reverse",
       },
     });
     gsap.from(".componentCards", {
-      x: 100,
+      y: 60,
       opacity: 0,
-      stagger: 0.15,
-      ease: "back.inOut",
+      stagger: 0.2,
+      duration: 0.9,
+      ease: "power3.out",
       scrollTrigger: {
         trigger: ".componentSection",
-        start: "top 90%",
-        end: "bottom 80%",
-        scrub: true,
+        start: "top 85%",
+        toggleActions: "play none none reverse",
       },
     });
     gsap.to(".track", {
-      xPercent: -40,
-      duration: 15,
+      xPercent: -50,
+      duration: 28,
       repeat: -1,
-      ease: "linear",
-
+      ease: "none",
     });
   }, []);
   const text = "Build Faster with Reusable UI Components";
@@ -113,7 +112,7 @@ function HomePage() {
       transition={{
         duration: 0.4,
       }}
-      className="min-h-screen relative w-full overflow-hidden  bg-black"
+      className="min-h-screen mb-10 relative w-full overflow-hidden  bg-black"
       style={{
         // backgroundImage:
         //   "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
@@ -147,7 +146,7 @@ function HomePage() {
             <div className="border rounded-2xl cursor-pointer hover:border-dashed">
               <button
                 onClick={() => navigate("/components")}
-                className="px-4 cursor-pointer hover:translate-x-4 hover:-translate-y-4 py-3 bg-gradient-to-r from-neutral-950 via-zinc-800 to-neutral-600 text-white transition duration-400 rounded-2xl border border-neutral-500 text-lg font-bold tracking-tight"
+                className="px-8 cursor-pointer hover:translate-x-1 hover:-translate-y-1 py-3 bg-gradient-to-r from-neutral-950 via-zinc-800 to-neutral-600 text-white transition duration-400 rounded-2xl border border-neutral-500 text-lg font-bold tracking-tight"
               >
                 Explore Components
               </button>
@@ -156,7 +155,7 @@ function HomePage() {
         </div>
         <div className="md:w-[40%] md:pl-20 relative justify-center items-center mt-15">
           <div
-            className="relative codeBlock p-7 w-60 md:w-90 md:h-100 bg-black/40 border border-neutral-500 rounded-xl backdrop-blur-lg shadow-2xl"
+            className="relative codeBlock p-7 w-80 md:w-90 md:h-110 bg-black/40 border border-neutral-500 rounded-xl backdrop-blur-lg shadow-2xl"
             style={{
               transformStyle: "preserve-3d",
               transform: "perspective(1000px) rotateY(-25deg) rotateX(10deg)", // The 3D Tilt
@@ -164,7 +163,7 @@ function HomePage() {
             }}
           >
             {/* Fake Window Controls */}
-            <div className="flex codeBlock animate-pulse  gap-2 mb-6 opacity-80">
+            <div className="flex codeBlock animate-pulse  gap-2 mb-10 opacity-80">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
@@ -172,7 +171,7 @@ function HomePage() {
 
             {/* Fake Code Lines (Skeleton Loader Style) */}
             <div className="space-y-3 codeBlock opacity-80">
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-5">
                 <span className="text-pink-500 font-mono text-sm">import</span>
                 <span className="text-white font-mono text-sm">React</span>
               </div>
@@ -199,7 +198,7 @@ function HomePage() {
               </div>
               <div
                 style={{ transform: "translateZ(120px)" }}
-                className="absolute font-bold flex gap-2 items-center -right-2 text-xs md:text-sm -bottom-22 bg-black/60 border border-neutral-500 text-white rounded-2xl px-4 py-2 backdrop-blur-md"
+                className="absolute font-bold flex gap-2 items-center -right-2 text-xs md:text-sm -bottom-25 bg-black/60 border border-neutral-500 text-white rounded-2xl px-4 py-2 backdrop-blur-md"
               >
                 <div className="h-2 w-2 rounded-full animate-pulse bg-blue-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
                 <span>Live Preview</span>
@@ -213,41 +212,41 @@ function HomePage() {
       <div
         style={{
           maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 85%, transparent)'
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
         }}
-        className="relative bg-neutral-700/5 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-600 backdrop-blur-md py-5  mb-30">
-        {/* w-max is important so the track sizes itself to the content */}
-        <div className="track flex w-max h-15">
+        className="relative bg-neutral-950/40 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-800 backdrop-blur-md py-4 mb-30"
+      >
+        <div className="track flex w-max items-center">
           {/* HALF 1 */}
-          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 uppercase tracking-widest font-bold text-sm md:text-base">
-            <span className="flex items-center gap-2"><span className="text-yellow-400">⚡</span> 10X Faster UI Workflow</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-cyan-400">💎</span> Glassmorphism & Cyberpunk Ready</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-pink-400">✨</span> Interactive Live Code Sandbox</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-orange-400">🔥</span> Curated Dark Mode Aesthetics</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-green-400">🚀</span> One-Click Copy & Paste</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-purple-400">🎨</span> Smooth Framer Motion Animations</span>
-            <span className="text-indigo-500 text-xl">✦</span>
+          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 font-medium text-sm md:text-base tracking-wider">
+            <span>Production-Ready Animated React Components</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Live Interactive JSX Sandboxes</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Hardware-Accelerated GSAP 3 & Framer Motion</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Engineered for High-Performance Modern Web Apps</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>One-Click Copy & Paste Dark Mode Aesthetics</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Curated Tailwind CSS Design System</span>
+            <span className="text-neutral-600 text-xs mr-6">✦</span>
           </div>
 
-          {/* HALF 2 (Exact Duplicate of Half 1) */}
-          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 uppercase tracking-widest font-bold text-sm md:text-base">
-            <span className="flex items-center gap-2"><span className="text-yellow-400">⚡</span> 10X Faster UI Workflow</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-cyan-400">💎</span> Glassmorphism & Cyberpunk Ready</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-pink-400">✨</span> Interactive Live Code Sandbox</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-orange-400">🔥</span> Curated Dark Mode Aesthetics</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-green-400">🚀</span> One-Click Copy & Paste</span>
-            <span className="text-indigo-500 text-xl">✦</span>
-            <span className="flex items-center gap-2"><span className="text-purple-400">🎨</span> Smooth Framer Motion Animations</span>
-            <span className="text-indigo-500 text-xl">✦</span>
+          {/* HALF 2 (Exact Duplicate of Half 1 for 100% seamless infinite loop) */}
+          <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 font-medium text-sm md:text-base tracking-wider">
+            <span>Production-Ready Animated React Components</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Live Interactive JSX Sandboxes</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Hardware-Accelerated GSAP 3 & Framer Motion</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Engineered for High-Performance Modern Web Apps</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>One-Click Copy & Paste Dark Mode Aesthetics</span>
+            <span className="text-neutral-600 text-xs">✦</span>
+            <span>Curated Tailwind CSS Design System</span>
+            <span className="text-neutral-600 text-xs mr-6">✦</span>
           </div>
         </div>
       </div>
