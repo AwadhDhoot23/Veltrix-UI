@@ -86,7 +86,7 @@ function ComponentsPage() {
         </div>
 
         {/* Highlighting Running Border Notice Pinned at Top */}
-        <div className="mx-auto mt-10 mb-5 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-300 to-neutral-800 shadow-lg">
+        <div className=" mt-10 mb-5 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-300 to-neutral-800 shadow-lg">
           <div className="py-2.5 px-4 rounded-xl bg-neutral-950 flex items-center justify-between text-xs sm:text-sm text-neutral-300">
             <p className="flex items-center gap-2">
               <span className="font-bold text-white tracking-wide">Interactive Previews:</span>

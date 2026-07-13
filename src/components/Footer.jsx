@@ -14,7 +14,7 @@ function Footer() {
     >
       <div className="w-full h-px bg-white "></div>
       <div className="flex items-center justify-between">
-        <div>
+        <div className="pt-10">
           <h2 className="w-full px-5 my-3 font-extrabold text-4xl md:text-5xl tracking-tight text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
             Veltrix UI
           </h2>
