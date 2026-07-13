@@ -126,6 +126,10 @@ function AdminPage() {
   // ─── Login Screen ───────────────────────────────────────────────────────────
   if (!user) {
     return (
+      <div>
+        <div>
+        <button onClick={()=>{navigate("/")}} className="px-4 py-2 text-sm absolute right-5 top-5 rounded-lg border border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-400 transition-colors cursor-pointer">Home</button>
+        </div>
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <Toaster theme="dark" position="bottom-right" />
         <motion.div
@@ -168,6 +172,7 @@ function AdminPage() {
             </motion.button>
           </form>
         </motion.div>
+      </div>
       </div>
     );
   }

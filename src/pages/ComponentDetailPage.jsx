@@ -171,7 +171,7 @@ function ComponentDetailPage() {
                 backgroundImage: "radial-gradient(circle at 1px 1px,rgba(255,255,255,0.15) 1px, transparent 0)",
                 backgroundSize: "10px 10px",
               }}
-              className="max-w-[1090px] mb-20 p-4 border relative rounded-2xl border-white"
+              className="w-full mb-20 p-4 border-2 border-zinc-600 relative rounded-lg"
             >
               <div className="hidden md:block md:left-[12%] absolute lg:left-[6%]">
                 <DependenciesDropdown dependencies={component.dependencies}/>

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { getPreviewLayoutConfig } from "../utils/livePreviewHelpers";
 import { FilterTags } from "../data/Components";
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
@@ -84,8 +85,18 @@ function ComponentsPage() {
           <MobileSideBar />
         </div>
 
+        {/* Highlighting Running Border Notice Pinned at Top */}
+        <div className="mx-auto mt-10 mb-5 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-300 to-neutral-800 shadow-lg">
+          <div className="py-2.5 px-4 rounded-xl bg-neutral-950 flex items-center justify-between text-xs sm:text-sm text-neutral-300">
+            <p className="flex items-center gap-2">
+              <span className="font-bold text-white tracking-wide">Interactive Previews:</span>
+              <span>Click any component card below to launch its live sandbox and inspect source code on the Detail Page.</span>
+            </p>
+          </div>
+        </div>
+
         {/* Search + Sort bar */}
-        <div className="flex flex-wrap items-center gap-3 mt-5 ml-5 mr-5">
+        <div className="flex flex-wrap items-center gap-3 mt-4 ml-5 mr-5">
           <div className="relative w-[220px] md:w-[240px] lg:w-[500px] shadow-lg">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <SearchIcon className="text-neutral-400" fontSize="small" />
@@ -123,7 +134,7 @@ function ComponentsPage() {
         </div>
 
         {/* Tag filters */}
-        <div className="relative flex mt-5 flex-wrap pl-5 items-center gap-3 font-bold">
+        <div className="relative flex mt-4 flex-wrap pl-5 items-center gap-3 font-bold">
           {displayTags.map((tag) => {
             const isActive = activeTag === tag;
             const isFavTag = tag === "Favorites";
@@ -154,15 +165,14 @@ function ComponentsPage() {
           </div>
         )}
 
-        {/* Component grid */}
-        <div className="overflow-y-hidden pl-6 grid gridBox grid-cols-1 md:grid-cols-1 lg:grid-cols-2 pb-10 xl:grid-cols-3 flex-1 min-h-screen gap-10">
+        {/* Component Catalog Grid */}
+        <div className="overflow-y-hidden px-6 mt-6 grid gridBox grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start pb-24 flex-1 min-h-screen gap-6">
           {filterComponents.map((item) => (
-            <div key={item.slug} className="componentCard">
+            <div key={item.slug} className="componentCard col-span-1">
               <CardComponent
                 name={item.name}
                 description={item.description}
                 slug={item.slug}
-                code={item.code}
                 id={item._id}
                 viewsCount={item.viewsCount}
                 createdAt={item.createdAt}

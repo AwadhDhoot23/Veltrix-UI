@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PreviewRegistry } from '../data/PreviewRegistry';
 import { motion } from 'framer-motion';
-import { ErrorBoundary } from 'react-error-boundary';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { LiveProvider, LivePreview } from 'react-live';
-import { prepareCodeForLivePreview, liveScope, getPreviewLayoutConfig } from '../utils/livePreviewHelpers';
 
 const FAVORITES_KEY = 'veltrix_favorites';
 
@@ -25,11 +21,18 @@ function isNewComponent(createdAt) {
   return new Date(createdAt) > sevenDaysAgo;
 }
 
-function CardComponent({ name, description, slug, code, id, viewsCount, createdAt }) {
+function getComponentCategory(name = "") {
+  const n = name.toLowerCase();
+  if (n.includes("navbar") || n.includes("dock") || n.includes("header")) return "Navigation";
+  if (n.includes("bento") || n.includes("grid") || n.includes("layout")) return "Layout";
+  if (n.includes("text") || n.includes("reveal") || n.includes("blur") || n.includes("typography")) return "Typography";
+  if (n.includes("button") || n.includes("btn") || n.includes("shimmer")) return "Interactive";
+  if (n.includes("card") || n.includes("spotlight") || n.includes("pricing")) return "Cards";
+  return "UI Primitive";
+}
+
+function CardComponent({ name, description, slug, id, viewsCount, createdAt }) {
   const navigate = useNavigate();
-  const Preview = PreviewRegistry[slug];
-  const { code: liveCode, noInline } = prepareCodeForLivePreview(code);
-  const layoutConfig = getPreviewLayoutConfig(code, name, slug);
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
@@ -51,74 +54,59 @@ function CardComponent({ name, description, slug, code, id, viewsCount, createdA
   };
 
   const isNew = isNewComponent(createdAt);
+  const category = getComponentCategory(name);
 
   return (
-    <div>
+    <div className="w-full h-auto">
       <motion.div
-        initial={{ scale: .97 }} whileHover={{ scale: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className='group w-80 relative h-full hover:border-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-neutral-300 hover:shadow-[2px_4px_48px_rgba(230,230,230,0.05)] border border-neutral-400 rounded-lg my-10 flex flex-col overflow-hidden'
+        initial={{ scale: 0.99 }}
+        whileHover={{ y: -3 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        onClick={() => navigate(`/components/${slug}`)}
+        className="group cursor-pointer w-full bg-neutral-950 border border-neutral-800/80 hover:border-neutral-500 rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black p-6 relative"
       >
-        {/* New badge */}
-        {isNew && (
-          <div className="absolute top-2 left-2 z-10 px-2 py-0.5 bg-emerald-500/90 text-white text-[10px] font-bold rounded-full shadow-[0_0_8px_rgba(16,185,129,0.6)] uppercase tracking-wider">
-            New
+        {/* Top Badges Area */}
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            {isNew && (
+              <span className="px-2 py-0.5 bg-white text-black text-[10px] font-bold rounded-full uppercase tracking-wider">
+                New
+              </span>
+            )}
+            <span className="px-2.5 py-0.5 bg-neutral-900 border border-neutral-800 text-neutral-400 text-[10px] font-medium rounded-full uppercase tracking-wider">
+              {category}
+            </span>
           </div>
-        )}
 
-        {/* Favorite button */}
-        <div 
-          className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          onClick={toggleFavorite}
-        >
-          <motion.div whileTap={{ scale: 0.8 }} className="cursor-pointer bg-black/40 backdrop-blur-md p-1.5 rounded-full text-red-500 hover:bg-black/60 transition-colors">
-            {isFavorited ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
-          </motion.div>
+          <div 
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            onClick={toggleFavorite}
+          >
+            <motion.div whileTap={{ scale: 0.8 }} className="cursor-pointer text-red-500 hover:text-red-400 transition-colors">
+              {isFavorited ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
+            </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          onClick={() => navigate(`/components/${slug}`)}
-          className='cursor-pointer flex-1 flex flex-col'
-        >
-          <motion.div
-            initial={{ opacity: 1, scale: 0.9 }}
-            whileHover={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className='h-72 w-full border border-neutral-800/80 rounded-xl overflow-hidden flex items-center justify-center bg-black relative'
-          >
-            <ErrorBoundary fallback={<div className="text-red-400 font-bold p-4">⚠️ Preview unavailable</div>}>
-              <div className={layoutConfig.containerClass}>
-                {Preview ? <Preview /> : (
-                  liveCode ? (
-                    <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
-                      <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white" />
-                    </LiveProvider>
-                  ) : <div className="text-neutral-500 text-sm">No preview</div>
-                )}
-              </div>
-            </ErrorBoundary>
-          </motion.div>
+        {/* Card Typography */}
+        <div className="my-2">
+          <h3 className="font-bold text-lg text-white tracking-tight group-hover:text-neutral-200 transition-colors">{name}</h3>
+          <p className="text-neutral-400 mt-2 text-sm line-clamp-2 leading-relaxed">{description}</p>
+        </div>
 
-          <span className='h-px w-auto bg-neutral-600'></span>
-          <div className='px-4 cursor-text flex-1 pb-4 bg-zinc-950 pt-3'
-            style={{
-              backgroundImage: 'radial-gradient(circle at 0.5px 0.5px, rgba(255,255,255,0.1) 1px, transparent 0)',
-              backgroundSize: '16px 16px'
-            }}
-          >
-            <h3 className="font-bold mt-1 text-xl">{name}</h3>
-            <p className='text-neutral-400 mt-2 text-sm line-clamp-2'>{description}</p>
-            {/* View count */}
-            {typeof viewsCount === 'number' && (
-              <div className="mt-3 flex items-center gap-1 text-neutral-500 text-xs">
-                <VisibilityIcon sx={{ fontSize: 13 }} />
-                <span>{viewsCount.toLocaleString()} views</span>
-              </div>
-            )}
+        {/* Card Footer */}
+        <div className="mt-6 pt-4 border-t border-neutral-900 flex items-center justify-between text-neutral-500 text-xs font-medium">
+          <div className="flex items-center gap-1.5">
+            <VisibilityIcon sx={{ fontSize: 14 }} />
+            <span>{typeof viewsCount === 'number' ? viewsCount.toLocaleString() : 0} views</span>
           </div>
-        </motion.div>
+          <span className="text-neutral-300 font-mono text-[11px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            Explore ↗
+          </span>
+        </div>
       </motion.div>
     </div>
-  )
+  );
 }
 
-export default CardComponent
+export default CardComponent;

@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
-import { useNavigate } from "react-router-dom";
-import CardComponent from "../components/CardComponent";
+import { motion, useAnimate, stagger } from 'framer-motion';
 import { useComponents } from "../context/ComponentsContext";
-import { motion, useAnimate, stagger } from 'framer-motion'
+import CardComponent from "../components/CardComponent";
+
 function HomePage() {
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -254,15 +255,15 @@ function HomePage() {
         Popular Components
       </div>
 
-      <div className="mt-10 componentSection flex justify-center">
-        <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 max-w-6xl">
+      <div className="mt-10 componentSection flex justify-center px-6">
+        <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full items-start">
           {featuredComponents.map((item) => (
-            <div key={item.slug} className="componentCards">
+            <div key={item.slug} className="componentCard col-span-1">
               <CardComponent
-                key={item.slug}
                 name={item.name}
+                description={item.description}
                 slug={item.slug}
-                code={item.code}
+                id={item._id}
                 viewsCount={item.viewsCount}
                 createdAt={item.createdAt}
               />
