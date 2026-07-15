@@ -13,3 +13,10 @@ export const SITE_METADATA = {
   FOOTER_DESCRIPTION: "A curated library of reusable React UI components.",
   COPYRIGHT: "© 2026 Awadh. Built with React, Tailwind, Framer and GSAP.",
 };
+
+export const FilterTags = [
+  "All",
+  "button",
+  "card",
+  "3d",
+];

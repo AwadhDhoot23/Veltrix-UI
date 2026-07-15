@@ -1,7 +1,6 @@
 import React, { useState, Suspense, useEffect } from "react";
 import { useComponents } from "../context/ComponentsContext";
 import { LiveProvider, LiveError, LivePreview } from "react-live";
-import { PreviewRegistry } from "../data/PreviewRegistry";
 import Sidebar from "../components/Sidebar";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
@@ -76,7 +75,6 @@ function ComponentDetailPage() {
     setIsFavorite(!isFavorite);
   };
 
-  const PreviewComponent = PreviewRegistry[slug];
   const { code: liveCode, noInline } = prepareCodeForLivePreview(component.code);
 
   return (
@@ -152,14 +150,10 @@ function ComponentDetailPage() {
             <div className="flex justify-center mb-20 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 min-h-[550px] w-full rounded-lg p-2">
               <div className="bg-black min-h-[530px] w-full mx-2 justify-center flex items-center rounded-lg relative overflow-auto p-8">
                 <ErrorBoundary fallback={<div className="text-red-500 font-bold p-4">⚠️ Component Crashed</div>}>
-                  {PreviewComponent ? (
-                    <PreviewComponent />
-                  ) : (
-                    <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
-                      <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white p-4" />
-                      <LiveError className="absolute bottom-0 w-full bg-red-900 text-white p-2 text-sm overflow-y-auto max-h-32" />
-                    </LiveProvider>
-                  )}
+                  <LiveProvider code={liveCode} noInline={noInline} scope={liveScope}>
+                    <LivePreview className="w-full h-full flex flex-col items-center justify-center text-white p-4" />
+                    <LiveError className="absolute bottom-0 w-full bg-red-900 text-white p-2 text-sm overflow-y-auto max-h-32" />
+                  </LiveProvider>
                 </ErrorBoundary>
               </div>
             </div>

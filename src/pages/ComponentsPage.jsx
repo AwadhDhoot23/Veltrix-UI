@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 
-import { FilterTags } from "../data/Components";
+import { FilterTags } from "../utils/constants";
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import { useGSAP } from "@gsap/react";
