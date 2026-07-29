@@ -42,7 +42,7 @@ function Footer() {
         </div>
       </div>
       <div className="flex justify-center text-[12.8px] md:text-[16px] items-center p-4 mt-10 font-bold text-neutral-600">
-        © 2026 Awadh. Built with React, Tailwind, Framer and GSAP.
+        © 2026 Veltrix UI . Built with MERN Stack
       </div>
     </div>
   );

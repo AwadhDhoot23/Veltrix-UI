@@ -220,33 +220,33 @@ function HomePage() {
         <div className="track flex w-max items-center">
           {/* HALF 1 */}
           <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 font-medium text-sm md:text-base tracking-wider">
-            <span>Production-Ready Animated React Components</span>
+            <span>Premium Curated UI Component Library</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Live Interactive JSX Sandboxes</span>
+            <span>Live Interactive Component Sandboxes</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Hardware-Accelerated GSAP 3 & Framer Motion</span>
+            <span>Rapid Design-to-Development Workflow</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Engineered for High-Performance Modern Web Apps</span>
+            <span>Stunning & Modern Interface Aesthetics</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>One-Click Copy & Paste Dark Mode Aesthetics</span>
+            <span>Continuously Expanding Component Collection</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Curated Tailwind CSS Design System</span>
+            <span>Instant Copy & Paste Prototyping</span>
             <span className="text-neutral-600 text-xs mr-6">✦</span>
           </div>
 
           {/* HALF 2 (Exact Duplicate of Half 1 for 100% seamless infinite loop) */}
           <div className="flex gap-14 shrink-0 items-center justify-center px-8 text-neutral-300 font-medium text-sm md:text-base tracking-wider">
-            <span>Production-Ready Animated React Components</span>
+            <span>Premium Curated UI Component Library</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Live Interactive JSX Sandboxes</span>
+            <span>Live Interactive Component Sandboxes</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Hardware-Accelerated GSAP 3 & Framer Motion</span>
+            <span>Rapid Design-to-Development Workflow</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Engineered for High-Performance Modern Web Apps</span>
+            <span>Stunning & Modern Interface Aesthetics</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>One-Click Copy & Paste Dark Mode Aesthetics</span>
+            <span>Continuously Expanding Component Collection</span>
             <span className="text-neutral-600 text-xs">✦</span>
-            <span>Curated Tailwind CSS Design System</span>
+            <span>Instant Copy & Paste Prototyping</span>
             <span className="text-neutral-600 text-xs mr-6">✦</span>
           </div>
         </div>

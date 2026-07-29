@@ -79,19 +79,16 @@ Veltrix-UI/
 │   ├── context/
 │   │   ├── AuthContext.jsx       # JWT auth state management
 │   │   └── ComponentsContext.jsx # Global components state
-│   ├── data/
-│   │   ├── Components.js         # Filter tags data
-│   │   └── PreviewRegistry.jsx   # Maps slugs to static preview components
 │   ├── pages/
 │   │   ├── HomePage.jsx          # Landing page
 │   │   ├── ComponentsPage.jsx    # Browse all components
 │   │   ├── ComponentDetailPage.jsx # Single component view
 │   │   ├── AdminPage.jsx         # Secret admin panel (/veltrix-admin)
 │   │   └── NotFound.jsx          # 404 page
-│   ├── ui/                       # Static component preview files
 │   └── utils/
 │       ├── api.js                # Axios instance
 │       ├── cn.js                 # classnames utility
+│       ├── constants.js          # Routes, social links & filter tags
 │       └── livePreviewHelpers.js # Code sandboxing for react-live
 │
 └── server/                       # Backend (Node.js)
