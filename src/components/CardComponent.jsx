@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-const FAVORITES_KEY = 'veltrix_favorites';
-
-function getFavorites() {
-  try {
-    return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
-  } catch {
-    return [];
-  }
-}
+import { useFavorites } from '../hooks/useFavorites';
 
 function isNewComponent(createdAt) {
   if (!createdAt) return false;
@@ -21,47 +12,36 @@ function isNewComponent(createdAt) {
   return new Date(createdAt) > sevenDaysAgo;
 }
 
-function getComponentCategory(name = "") {
-  const n = name.toLowerCase();
-  if (n.includes("navbar") || n.includes("dock") || n.includes("header")) return "Navigation";
-  if (n.includes("bento") || n.includes("grid") || n.includes("layout")) return "Layout";
-  if (n.includes("text") || n.includes("reveal") || n.includes("blur") || n.includes("typography")) return "Typography";
-  if (n.includes("button") || n.includes("btn") || n.includes("shimmer")) return "Interactive";
-  if (n.includes("card") || n.includes("spotlight") || n.includes("pricing")) return "Cards";
-  return "UI Primitive";
-}
-
-function CardComponent({ name, description, slug, id, viewsCount, createdAt }) {
+function CardComponent({ name, description, slug, id, viewsCount, createdAt, tags }) {
   const navigate = useNavigate();
-  const [isFavorited, setIsFavorited] = useState(false);
 
-  useEffect(() => {
-    const favs = getFavorites();
-    setIsFavorited(favs.includes(slug));
-  }, [slug]);
-
-  const toggleFavorite = (e) => {
-    e.stopPropagation();
-    const favs = getFavorites();
-    let newFavs;
-    if (isFavorited) {
-      newFavs = favs.filter(f => f !== slug);
-    } else {
-      newFavs = [...favs, slug];
-    }
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavs));
-    setIsFavorited(!isFavorited);
-  };
+  // Single hook call replaces the inline getFavorites / toggle copy-paste
+  const { isFavorite, toggleFavorite } = useFavorites(slug);
 
   const isNew = isNewComponent(createdAt);
-  const category = getComponentCategory(name);
+
+  /*
+   * Use the first actual DB tag as the category badge.
+   * Capitalise the first letter for display.
+   * Falls back to "Component" if the component has no tags.
+   * This replaces the brittle name-heuristic getComponentCategory() function.
+   */
+  const category =
+    tags?.[0]
+      ? tags[0].charAt(0).toUpperCase() + tags[0].slice(1)
+      : 'Component';
+
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation(); // Prevent card navigation when clicking the heart
+    toggleFavorite();
+  };
 
   return (
     <div className="w-full h-auto">
       <motion.div
         initial={{ scale: 0.99 }}
         whileHover={{ y: -3 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
         onClick={() => navigate(`/components/${slug}`)}
         className="group cursor-pointer w-full bg-neutral-950 border border-neutral-800/80 hover:border-neutral-500 rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black p-6 relative"
       >
@@ -78,27 +58,40 @@ function CardComponent({ name, description, slug, id, viewsCount, createdAt }) {
             </span>
           </div>
 
-          <div 
+          <div
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            onClick={toggleFavorite}
+            onClick={handleFavoriteClick}
           >
-            <motion.div whileTap={{ scale: 0.8 }} className="cursor-pointer text-red-500 hover:text-red-400 transition-colors">
-              {isFavorited ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
+            <motion.div
+              whileTap={{ scale: 0.8 }}
+              className="cursor-pointer text-red-500 hover:text-red-400 transition-colors"
+            >
+              {isFavorite ? (
+                <FavoriteIcon fontSize="small" />
+              ) : (
+                <FavoriteBorderIcon fontSize="small" />
+              )}
             </motion.div>
           </div>
         </div>
 
         {/* Card Typography */}
         <div className="my-2">
-          <h3 className="font-bold text-lg text-white tracking-tight group-hover:text-neutral-200 transition-colors">{name}</h3>
-          <p className="text-neutral-400 mt-2 text-sm line-clamp-2 leading-relaxed">{description}</p>
+          <h3 className="font-bold text-lg text-white tracking-tight group-hover:text-neutral-200 transition-colors">
+            {name}
+          </h3>
+          <p className="text-neutral-400 mt-2 text-sm line-clamp-2 leading-relaxed">
+            {description}
+          </p>
         </div>
 
         {/* Card Footer */}
         <div className="mt-6 pt-4 border-t border-neutral-900 flex items-center justify-between text-neutral-500 text-xs font-medium">
           <div className="flex items-center gap-1.5">
             <VisibilityIcon sx={{ fontSize: 14 }} />
-            <span>{typeof viewsCount === 'number' ? viewsCount.toLocaleString() : 0} views</span>
+            <span>
+              {typeof viewsCount === 'number' ? viewsCount.toLocaleString() : 0} views
+            </span>
           </div>
           <span className="text-neutral-300 font-mono text-[11px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
             Explore ↗

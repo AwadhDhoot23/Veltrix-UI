@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
         try {
           const { data } = await api.get('/auth/me');
           setUser(data);
-        } catch (error) {
+        } catch {
           console.error("Token invalid or expired");
           localStorage.removeItem('token');
         }
@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };

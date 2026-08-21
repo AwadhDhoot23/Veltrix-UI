@@ -1,7 +1,8 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useComponents } from '../context/ComponentsContext';
-import { motion } from 'framer-motion';
+
 import HomeIcon from '@mui/icons-material/Home';
 
 function Sidebar() {

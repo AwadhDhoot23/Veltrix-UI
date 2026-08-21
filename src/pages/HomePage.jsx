@@ -78,9 +78,6 @@ function HomePage() {
   const navigate = useNavigate();
   const { components } = useComponents();
   const [scope, animate] = useAnimate();
-  useEffect(() => {
-    startAnimating();
-  }, [])
   const startAnimating = () => {
     animate("span", {
       opacity: 1,
@@ -94,6 +91,10 @@ function HomePage() {
       }
     );
   }
+
+  useEffect(() => {
+    startAnimating();
+  }, [animate])
 
   const featuredComponents = [...components].sort((a, b) => (b.viewsCount || 0) - (a.viewsCount || 0)).slice(0, 3);
   return (
@@ -129,7 +130,9 @@ function HomePage() {
       <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
       <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none "></div>
       <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none"></div>
-
+      <h2 className="w-full px-5 absolute  my-7 text-center font-extrabold text-4xl md:text-5xl tracking-tight text-white ">
+            Veltrix UI
+          </h2>
 
       {/* Hero Section */}
       <div className="flex flex-col h-screen md:flex-row items-center justify-between px-6">
@@ -266,6 +269,7 @@ function HomePage() {
                 id={item._id}
                 viewsCount={item.viewsCount}
                 createdAt={item.createdAt}
+                tags={item.tags}
               />
             </div>
           ))}

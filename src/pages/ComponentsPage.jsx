@@ -1,6 +1,4 @@
 import React, { useState, useMemo } from "react";
-
-import { FilterTags } from "../utils/constants";
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import { useGSAP } from "@gsap/react";
@@ -13,12 +11,7 @@ import { motion } from "framer-motion";
 import MobileSideBar from "../components/MobileSideBar";
 import SortIcon from "@mui/icons-material/Sort";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
-const FAVORITES_KEY = 'veltrix_favorites';
-function getFavorites() {
-  try { return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []; }
-  catch { return []; }
-}
+import { getFavoriteSlugs } from "../hooks/useFavorites";
 
 function ComponentsPage() {
   useGSAP(() => {
@@ -33,28 +26,43 @@ function ComponentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
+  const [showTags, setShowTags] = useState(false);
   const { components, loading } = useComponents();
 
-  const favorites = getFavorites();
+  /*
+   * Derive unique tags dynamically from the actual component data fetched from MongoDB.
+   * This replaces the hardcoded FilterTags array in constants.js —
+   * no more manual list to maintain and redeploy every time a new tag is introduced.
+   */
+  const dynamicTags = useMemo(() => {
+    const tagSet = new Set();
+    components.forEach((comp) => (comp.tags || []).forEach((t) => tagSet.add(t)));
+    return Array.from(tagSet).sort();
+  }, [components]);
+
+  // Read current favorites from localStorage at render time
+  const favorites = getFavoriteSlugs();
+  const favoritesKey = favorites.join(",");
 
   const filterComponents = useMemo(() => {
     let result = [...components];
 
     // 1. Tag / Favorites filter
     if (activeTag === "Favorites") {
-      result = result.filter(item => favorites.includes(item.slug));
+      result = result.filter((item) => favorites.includes(item.slug));
     } else if (activeTag !== "All") {
-      result = result.filter(item =>
-        item.tags.some(tag => tag.toLowerCase() === activeTag.toLowerCase())
+      result = result.filter((item) =>
+        item.tags.some((tag) => tag.toLowerCase() === activeTag.toLowerCase())
       );
     }
 
     // 2. Text search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      result = result.filter(item =>
-        item.name.toLowerCase().includes(q) ||
-        (item.description && item.description.toLowerCase().includes(q))
+      result = result.filter(
+        (item) =>
+          item.name.toLowerCase().includes(q) ||
+          (item.description && item.description.toLowerCase().includes(q))
       );
     }
 
@@ -66,9 +74,7 @@ function ComponentsPage() {
     }
 
     return result;
-  }, [components, activeTag, searchQuery, sortBy, favorites.join(',')]);
-
-  const displayTags = ["Favorites", ...FilterTags];
+  }, [components, activeTag, searchQuery, sortBy, favoritesKey]);
 
   return (
     <motion.div
@@ -85,7 +91,7 @@ function ComponentsPage() {
           <MobileSideBar />
         </div>
 
-        {/* Highlighting Running Border Notice Pinned at Top */}
+        {/* Interactive Previews notice banner */}
         <div className=" mt-10 mb-5 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-300 to-neutral-800 shadow-lg">
           <div className="py-2.5 px-4 rounded-xl bg-neutral-950 flex items-center justify-between text-xs sm:text-sm text-neutral-300">
             <p className="flex items-center gap-2">
@@ -96,8 +102,8 @@ function ComponentsPage() {
         </div>
 
         {/* Search + Sort bar */}
-        <div className="flex flex-wrap items-center gap-3 mt-4 ml-5 mr-5">
-          <div className="relative w-[220px] md:w-[240px] lg:w-[500px] shadow-lg">
+        <div className="flex flex-wrap items-center  mt-4 ml-5">
+          <div className="relative w-[700px] shadow-lg">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <SearchIcon className="text-neutral-400" fontSize="small" />
             </div>
@@ -120,41 +126,85 @@ function ComponentsPage() {
           </div>
 
           {/* Sort dropdown */}
-          <div className="relative flex items-center gap-2">
-            <SortIcon className="text-neutral-400 ml-10" fontSize="medium" />
+          <div className="ml-5 relative flex items-center bg-neutral-800 border border-neutral-600 rounded-full px-3 py-1 cursor-pointer">
+            {/* Left custom icon */}
+            <SortIcon className="text-neutral-400 mr-2 pointer-events-none" fontSize="medium" />
+
+            {/* Native select with default dropdown arrow kept */}
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-neutral-800 text-neutral-300 text-sm border border-neutral-600 rounded-full px-2 py-1 focus:outline-none focus:border-neutral-400 cursor-pointer"
+              className=" text-neutral-300 text-sm focus:outline-none cursor-pointer pr-1"
             >
-              <option value="newest">Newest First</option>
-              <option value="most_viewed">Most Viewed</option>
+              <option className="bg-neutral-800" value="newest">Newest First</option>
+              <option className="bg-neutral-800" value="most_viewed">Most Viewed</option>
             </select>
           </div>
+
         </div>
 
-        {/* Tag filters */}
-        <div className="relative flex mt-4 flex-wrap pl-5 items-center gap-3 font-bold">
-          {displayTags.map((tag) => {
+        {/* Tag filter pills — dynamically derived from real DB tags */}
+        
+        <div className="top-20 flex mt-4 flex-wrap pl-5 items-center gap-3 font-bold z-10">
+          {/* Always visible: All and Favorites */}
+          {["All", "Favorites"].map((tag) => {
             const isActive = activeTag === tag;
             const isFavTag = tag === "Favorites";
             return (
               <div
                 key={tag}
                 onClick={() => setActiveTag(tag)}
-                className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-300 capitalize flex items-center gap-1 ${
-                  isActive
+                className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-300 capitalize flex items-center gap-1 ${isActive
                     ? "bg-white text-black border-white"
                     : isFavTag
-                    ? "bg-red-950/40 text-red-400 border-red-900/50 hover:bg-red-900/60 hover:text-red-200"
-                    : "bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 text-neutral-300/80 border-neutral-500 hover:text-white hover:border-neutral-200"
-                }`}
+                      ? "bg-red-950/40 text-red-400 border-red-900/50 hover:bg-red-900/60 hover:text-red-200"
+                      : "bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 text-neutral-300/80 border-neutral-500 hover:text-white hover:border-neutral-200"
+                  }`}
               >
                 {isFavTag && <FavoriteIcon sx={{ fontSize: 11 }} />}
                 {tag}
               </div>
             );
           })}
+
+          {/* Tags Dropdown Toggle */}
+          {dynamicTags.length > 0 && (
+            <div className="relative">
+              <button
+                onClick={() => setShowTags(!showTags)}
+                className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-300 capitalize flex items-center gap-1 ${
+                  activeTag !== "All" && activeTag !== "Favorites"
+                    ? "bg-white text-black border-white"
+                    : "bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600 text-neutral-300/80 border-neutral-500 hover:text-white hover:border-neutral-200"
+                }`}
+              >
+                {activeTag !== "All" && activeTag !== "Favorites" ? `Tag: ${activeTag}` : "Filter Tags"}
+                <span className="ml-1 text-[10px]">{showTags ? '▲' : '▼'}</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showTags && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-neutral-900 border border-neutral-700 rounded-xl shadow-xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
+                  {dynamicTags.map((tag) => (
+                    <div
+                      key={tag}
+                      onClick={() => {
+                        setActiveTag(tag);
+                        setShowTags(false);
+                      }}
+                      className={`text-xs cursor-pointer px-3 py-2 rounded-lg transition-colors ${
+                        activeTag === tag
+                          ? "bg-neutral-700 text-white"
+                          : "text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200"
+                      }`}
+                    >
+                      {tag}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* No results message */}
@@ -176,6 +226,7 @@ function ComponentsPage() {
                 id={item._id}
                 viewsCount={item.viewsCount}
                 createdAt={item.createdAt}
+                tags={item.tags}
               />
             </div>
           ))}

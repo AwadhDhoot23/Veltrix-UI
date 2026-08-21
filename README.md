@@ -25,7 +25,7 @@
 ## ✨ Features
 
 - 🎨 **Component Library** — Browse a growing collection of handcrafted React UI components
-- 👁️ **Live Preview** — See every component rendered live in the browser before copying
+- 👁️ **Live Preview** — See every component rendered live via a custom Babel JSX compiler in an adaptive-height iframe
 - 📋 **One-Click Copy** — Instantly copy the JSX code for any component
 - ❤️ **Favourites** — Favourite components locally, no account required
 - 🆕 **New Badge** — Components uploaded in the last 7 days are highlighted with a "New" badge
@@ -47,7 +47,8 @@
 | **Tailwind CSS** | Styling |
 | **Framer Motion** | Animations & micro-interactions |
 | **GSAP** | Advanced scroll animations |
-| **react-live** | In-browser React component rendering |
+| **Babel Standalone** | In-browser JSX compilation |
+| **ESM.sh** | Native ES module resolution |
 | **Monaco Editor** | VS Code-like code editor in the browser |
 | **React Router v6** | Client-side routing |
 | **Axios** | HTTP requests |
@@ -72,6 +73,7 @@ Veltrix-UI/
 ├── src/                          # Frontend (React)
 │   ├── components/
 │   │   ├── CardComponent.jsx     # Component card with live preview
+│   │   ├── LivePreview.jsx       # Custom Babel + ESM iframe compiler
 │   │   ├── Sidebar.jsx           # Navigation sidebar
 │   │   ├── MobileSideBar.jsx     # Mobile navigation
 │   │   ├── DependenciesDropdown.jsx
@@ -88,8 +90,7 @@ Veltrix-UI/
 │   └── utils/
 │       ├── api.js                # Axios instance
 │       ├── cn.js                 # classnames utility
-│       ├── constants.js          # Routes, social links & filter tags
-│       └── livePreviewHelpers.js # Code sandboxing for react-live
+│       └── constants.js          # Routes & social links
 │
 └── server/                       # Backend (Node.js)
     └── src/

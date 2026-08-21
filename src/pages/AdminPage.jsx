@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 import Editor from '@monaco-editor/react';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -131,7 +131,6 @@ function AdminPage() {
         <button onClick={()=>{navigate("/")}} className="px-4 py-2 text-sm absolute right-5 top-5 rounded-lg border border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-400 transition-colors cursor-pointer">Home</button>
         </div>
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <Toaster theme="dark" position="bottom-right" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,8 +179,6 @@ function AdminPage() {
   // ─── Admin Dashboard ─────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-black text-white">
-      <Toaster theme="dark" position="bottom-right" />
-
       {/* Header */}
       <div className="border-b border-neutral-800 px-8 py-4 flex items-center justify-between">
         <div>
