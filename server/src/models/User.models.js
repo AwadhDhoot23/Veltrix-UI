@@ -12,10 +12,7 @@ password:{
     required:[true,"Password is required"],
     minlength:[6,"Password must be atleast 6 characters long"],
 },
-favorites:[{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Component"
-}],
+
 },{timestamps:true});
 
 module.exports=mongoose.model("User",userSchema);
