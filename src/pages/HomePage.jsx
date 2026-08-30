@@ -76,7 +76,7 @@ function HomePage() {
   }, []);
   const text = "Build Faster with Reusable UI Components";
   const navigate = useNavigate();
-  const { components } = useComponents();
+  const { components, loading } = useComponents();
   const [scope, animate] = useAnimate();
   const startAnimating = () => {
     animate("span", {
@@ -259,21 +259,38 @@ function HomePage() {
       </div>
 
       <div className="mt-10 componentSection flex justify-center px-6">
-        <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full items-start">
-          {featuredComponents.map((item) => (
-            <div key={item.slug} className="componentCard col-span-1">
-              <CardComponent
-                name={item.name}
-                description={item.description}
-                slug={item.slug}
-                id={item._id}
-                viewsCount={item.viewsCount}
-                createdAt={item.createdAt}
-                tags={item.tags}
-              />
+        {loading ? (
+          <div className="flex flex-col items-center gap-3 py-16 text-neutral-500">
+            <div className="flex items-center gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="inline-block w-1.5 h-1.5 rounded-full bg-neutral-500"
+                  style={{
+                    animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
+                  }}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+            <span className="text-xs tracking-[0.25em] uppercase font-medium">Fetching components…</span>
+          </div>
+        ) : (
+          <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full items-start">
+            {featuredComponents.map((item) => (
+              <div key={item.slug} className="componentCard col-span-1">
+                <CardComponent
+                  name={item.name}
+                  description={item.description}
+                  slug={item.slug}
+                  id={item._id}
+                  viewsCount={item.viewsCount}
+                  createdAt={item.createdAt}
+                  tags={item.tags}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

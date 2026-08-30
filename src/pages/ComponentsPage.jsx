@@ -216,21 +216,38 @@ function ComponentsPage() {
         )}
 
         {/* Component Catalog Grid */}
-        <div className="overflow-y-hidden px-6 mt-6 grid gridBox grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start pb-24 flex-1 min-h-screen gap-6">
-          {filterComponents.map((item) => (
-            <div key={item.slug} className="componentCard col-span-1">
-              <CardComponent
-                name={item.name}
-                description={item.description}
-                slug={item.slug}
-                id={item._id}
-                viewsCount={item.viewsCount}
-                createdAt={item.createdAt}
-                tags={item.tags}
-              />
+        {loading ? (
+          <div className="flex flex-col items-center gap-3 py-24 text-neutral-500">
+            <div className="flex items-center gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="inline-block w-1.5 h-1.5 rounded-full bg-neutral-500"
+                  style={{
+                    animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
+                  }}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+            <span className="text-xs tracking-[0.25em] uppercase font-medium">Fetching components…</span>
+          </div>
+        ) : (
+          <div className="overflow-y-hidden px-6 mt-6 grid gridBox grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start pb-24 flex-1 min-h-screen gap-6">
+            {filterComponents.map((item) => (
+              <div key={item.slug} className="componentCard col-span-1">
+                <CardComponent
+                  name={item.name}
+                  description={item.description}
+                  slug={item.slug}
+                  id={item._id}
+                  viewsCount={item.viewsCount}
+                  createdAt={item.createdAt}
+                  tags={item.tags}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );
