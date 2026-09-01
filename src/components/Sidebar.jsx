@@ -24,7 +24,25 @@ function Sidebar() {
         Components
         <div className='h-[2.5px] w-22 bg-gradient-to-r from-transparent via-neutral-500 to-transparent mt-1 group-hover:w-38 group-hover:via-neutral-200 transition-all duration-500 ease-out '></div>
       </motion.h2>
-      
+      <div >
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0.9 }}
+          animate={location.pathname === '/' ? { scale: 1.05, opacity: 1 } : { scale: 1, opacity: 0.9 }}
+          transition={{ duration: 0.7 }}
+        >
+          <Link
+            to="/"
+            className={`relative font-semibold py-3 flex items-center w-full px-4 mb-2 rounded-md transition ${
+              location.pathname === '/'
+                ? 'text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600'
+                : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
+            }`}
+          >
+            <HomeIcon fontSize="small" className='mr-2' /> Home
+          </Link>
+          <div className="mt-auto pt-4 border-t border-neutral-800"></div>
+        </motion.div>
+      </div>
       <div className="flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {components.map((item) => {
           const isActive = item.slug === currentSlug;
@@ -54,25 +72,7 @@ function Sidebar() {
         })}
       </div>
 
-      {/* Home link at the bottom */}
-      <div className="mt-auto pt-4 border-t border-neutral-800">
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0.9 }}
-          animate={location.pathname === '/' ? { scale: 1.05, opacity: 1 } : { scale: 1, opacity: 0.9 }}
-          transition={{ duration: 0.7 }}
-        >
-          <Link
-            to="/"
-            className={`relative flex items-center gap-2 w-full px-4 py-2 mb-2 rounded-md transition ${
-              location.pathname === '/'
-                ? 'text-white bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-600'
-                : 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
-            }`}
-          >
-            <HomeIcon fontSize="small" /> Home
-          </Link>
-        </motion.div>
-      </div>
+      
     </div>
   );
 }
