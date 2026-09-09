@@ -141,13 +141,11 @@ function ComponentDetailPage() {
 
           {/* ── PREVIEW TAB — powered by LivePreview (babel + importmap + esm.sh) ── */}
           {activeTab === "preview" && (
-            <div className="flex justify-center mb-20 border-zinc-600 border-2 items-center bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-600 min-h-[550px] w-full rounded-lg p-2">
-              <div className="bg-black min-h-[530px] w-full mx-2 rounded-lg relative overflow-hidden">
+            <div className="flex justify-center mb-20 border-zinc-600 border-2 items-center bg-black min-h-[550px] w-full rounded-lg p-2">
                 <LivePreview
                   code={component.code}
                   dependencies={component.dependencies}
                 />
-              </div>
             </div>
           )}
 
