@@ -182,7 +182,8 @@ function LivePreview({ code, dependencies = [] }) {
         // Small delay so the iframe paint is visible before we fade the overlay
         setTimeout(() => setIsLoading(false), 150);
       } else if (e.data?.type === 'VELTRIX_RESIZE' && e.data.height) {
-        setIframeHeight(Math.max(330, e.data.height) + 'px');
+        // Clamp height between 330px and 800px. If content is taller, the iframe will scroll.
+        setIframeHeight(Math.min(Math.max(330, e.data.height), 800) + 'px');
       }
     };
     window.addEventListener('message', handler);
