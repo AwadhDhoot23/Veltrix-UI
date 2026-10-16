@@ -176,7 +176,7 @@ Backend API will listen at `http://localhost:5000`.
 
 ### Public Endpoints
 - `GET /api/components` — Fetch all published components (sorted by newest or filtered by tag).
-- `GET /api/components/:slug` — Fetch component details and atomically increment `viewsCount`.
+- `GET /api/components/:slug` — Fetch component details and atomically increment `viewsCount` (supports `?track=false` for deduplicated session views).
 
 ### Authentication Endpoints
 - `POST /api/auth/login` — Authenticate admin credentials and receive signed JWT.
