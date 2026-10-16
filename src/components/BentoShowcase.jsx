@@ -1,133 +1,544 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Home, Search, Bell, User, Settings } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  Shield,
+  Sparkles,
+  Home,
+  Search,
+  Bell,
+  User,
+  Settings,
+} from "lucide-react";
 
-// --- Actual Component 1: Glare Hover Card (from database) ---
-function ActualGlareCard() {
-  const ref = useRef(null);
-  const [style, setStyle] = useState({ rotX: 0, rotY: 0, glareX: 50, glareY: 50, opacity: 0 });
+// ============================================================================
+// 1. COMPONENT: Lumen Auth
+// ============================================================================
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0">
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.91a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08 0 3.68-2.92 3.68-7.1z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18A10.97 10.97 0 0 0 1 12c0 1.77.43 3.45 1.18 4.94l3.66-2.84z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+      />
+    </svg>
+  );
+}
 
-  const onMove = (e) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const rotY = ((e.clientX - cx) / (r.width / 2)) * 18;
-    const rotX = -((e.clientY - cy) / (r.height / 2)) * 18;
-    setStyle({
-      rotX,
-      rotY,
-      glareX: ((e.clientX - r.left) / r.width) * 100,
-      glareY: ((e.clientY - r.top) / r.height) * 100,
-      opacity: 0.28,
-    });
-  };
+function GithubIconSmall() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 shrink-0 text-white">
+      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+    </svg>
+  );
+}
 
-  const onLeave = () => setStyle({ rotX: 0, rotY: 0, glareX: 50, glareY: 50, opacity: 0 });
+function ActualLumenAuth() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("Veltrix@2026");
+  const [email, setEmail] = useState("developer@veltrix.dev");
+
+  const strength =
+    password.length === 0
+      ? 0
+      : Math.min(
+          4,
+          [
+            password.length >= 8,
+            /[A-Z]/.test(password),
+            /[0-9]/.test(password),
+            /[^A-Za-z0-9]/.test(password),
+          ].filter(Boolean).length
+        );
+
+  const strengthLabels = ["Empty", "Weak", "Moderate", "Good", "Strong"];
+  const strengthColors = [
+    "bg-neutral-700",
+    "bg-rose-500",
+    "bg-amber-400",
+    "bg-sky-400",
+    "bg-emerald-400",
+  ];
 
   return (
-    <div className="flex items-center justify-center w-full py-2">
-      <div
-        ref={ref}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        className="relative w-full max-w-[280px] sm:max-w-xs rounded-2xl overflow-hidden select-none cursor-pointer"
-        style={{
-          transform: `perspective(1000px) rotateX(${style.rotX}deg) rotateY(${style.rotY}deg)`,
-          transition: "transform 0.1s ease",
-          transformStyle: "preserve-3d",
-          background: "linear-gradient(145deg, #0f0f1e 0%, #171730 50%, #0c0c1d 100%)",
-          boxShadow: "0 30px 60px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(99,102,241,0.18)",
-        }}
-      >
-        {/* Specular Glare */}
-        <div
-          className="absolute inset-0 rounded-2xl pointer-events-none z-10"
-          style={{
-            background: `radial-gradient(circle at ${style.glareX}% ${style.glareY}%, rgba(255,255,255,${style.opacity}) 0%, transparent 58%)`,
-            transition: "background 0.05s",
-          }}
-        />
+    <div className="relative w-full rounded-2xl bg-gradient-to-b from-neutral-900/90 to-neutral-950 border border-neutral-800 p-4 sm:p-5 overflow-hidden shadow-2xl">
+      {/* Ambient background glow orb */}
+      <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-indigo-500/15 blur-[60px] pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-emerald-500/10 blur-[60px] pointer-events-none" />
 
-        {/* Card Content */}
-        <div className="relative p-5 sm:p-6 z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-mono text-indigo-300"
-              style={{
-                background: "linear-gradient(135deg, #1e1b4b, #312e81)",
-                boxShadow: "0 0 16px rgba(99, 102, 241, 0.4)",
-              }}
-            >
-              ✦
-            </div>
-            <div>
-              <p className="text-white font-bold text-xs sm:text-sm">Veltrix UI</p>
-              <p className="text-neutral-500 text-[10px]">3D Interactive</p>
-            </div>
+      {/* Header */}
+      <div className="flex items-center justify-between pb-3 mb-4 border-b border-neutral-800/80">
+        <div className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.05]">
+            <Sparkles className="h-3.5 w-3.5 text-indigo-300" />
           </div>
-          <h3 className="text-white font-extrabold text-base sm:text-lg mb-1.5">
-            Glare Hover Card
-          </h3>
-          <p className="text-neutral-400 text-xs leading-relaxed mb-4">
-            3D perspective tilt and dynamic specular light glare.
-          </p>
-          <div className="flex gap-1.5 flex-wrap">
-            {["3D Tilt", "Glare", "Interactive"].map((t) => (
-              <span
-                key={t}
-                className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-              >
-                {t}
-              </span>
+          <span className="text-xs font-bold text-white tracking-tight">Lumen Auth</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-mono">
+          <Shield className="h-3 w-3 text-emerald-400" />
+          <span>Encrypted</span>
+        </div>
+      </div>
+
+      {/* Social Buttons */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <button
+          type="button"
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900/80 hover:bg-neutral-800/90 py-1.5 text-xs text-neutral-300 transition-colors"
+        >
+          <GoogleIcon />
+          <span>Google</span>
+        </button>
+        <button
+          type="button"
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900/80 hover:bg-neutral-800/90 py-1.5 text-xs text-neutral-300 transition-colors"
+        >
+          <GithubIconSmall />
+          <span>GitHub</span>
+        </button>
+      </div>
+
+      {/* Email input */}
+      <div className="mb-2.5">
+        <label className="block text-[11px] font-mono text-neutral-400 mb-1">Email</label>
+        <div className="flex items-center rounded-lg border border-neutral-800 bg-neutral-950/70 px-3 py-1.5 focus-within:border-neutral-500 transition-colors">
+          <Mail className="h-3.5 w-3.5 text-neutral-500 mr-2 shrink-0" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            placeholder="you@domain.com"
+            className="w-full bg-transparent text-xs text-white placeholder-neutral-600 outline-none font-mono"
+          />
+        </div>
+      </div>
+
+      {/* Password input with show/hide and strength meter */}
+      <div className="mb-3">
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-[11px] font-mono text-neutral-400">Password</label>
+          <span className="text-[10px] text-neutral-500 font-mono">Type to test strength</span>
+        </div>
+        <div className="flex items-center rounded-lg border border-neutral-800 bg-neutral-950/70 px-3 py-1.5 focus-within:border-neutral-500 transition-colors">
+          <Lock className="h-3.5 w-3.5 text-neutral-500 mr-2 shrink-0" />
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            placeholder="Enter password..."
+            className="w-full bg-transparent text-xs text-white placeholder-neutral-600 outline-none font-mono"
+          />
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowPassword(!showPassword);
+            }}
+            className="text-neutral-500 hover:text-white transition-colors ml-1.5"
+          >
+            {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+          </button>
+        </div>
+
+        {/* Strength meter bar */}
+        <div className="mt-2 flex items-center gap-1.5">
+          <div className="flex-1 flex gap-1">
+            {[1, 2, 3, 4].map((level) => (
+              <div
+                key={level}
+                className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                  level <= strength ? strengthColors[strength] : "bg-neutral-800"
+                }`}
+              />
             ))}
           </div>
+          <span className="text-[10px] font-mono text-neutral-400 min-w-[50px] text-right">
+            {strengthLabels[strength]}
+          </span>
         </div>
+      </div>
+
+      {/* Sign in action */}
+      <button
+        type="button"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full py-2 rounded-lg bg-white text-black hover:bg-neutral-200 text-xs font-semibold tracking-tight transition-colors shadow"
+      >
+        Sign In
+      </button>
+    </div>
+  );
+}
+
+// ============================================================================
+// 2. COMPONENT: Animated Testimonial Carousel
+// ============================================================================
+const TESTIMONIALS = [
+  {
+    quote: "Veltrix UI completely transformed how we build interfaces. The components feel alive and the code quality is exceptional.",
+    name: "Sarah Chen",
+    role: "Lead Designer at Figma",
+    av: "SC",
+    color: "#818cf8",
+  },
+  {
+    quote: "The attention to micro-interactions is unmatched. Our conversion rate went up 40% after switching to Veltrix UI components.",
+    name: "Marcus Johnson",
+    role: "CTO at Vercel",
+    av: "MJ",
+    color: "#34d399",
+  },
+  {
+    quote: "I've tried every UI library out there. Veltrix is the only one that consistently wows both developers and clients.",
+    name: "Priya Sharma",
+    role: "Frontend Architect",
+    av: "PS",
+    color: "#f472b6",
+  },
+  {
+    quote: "The live previews are incredible. Being able to see and copy production-ready code instantly is a real game-changer.",
+    name: "Alex Rivera",
+    role: "Product Engineer at Linear",
+    av: "AR",
+    color: "#fbbf24",
+  },
+];
+
+function ActualTestimonialCarousel() {
+  const [i, setI] = useState(0);
+  const [dir, setDir] = useState(1);
+
+  const go = (next) => {
+    setDir(next > i ? 1 : -1);
+    setI(next);
+  };
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setDir(1);
+      setI((p) => (p + 1) % TESTIMONIALS.length);
+    }, 4500);
+    return () => clearInterval(t);
+  }, []);
+
+  const current = TESTIMONIALS[i];
+
+  return (
+    <div className="w-full flex flex-col justify-between py-2">
+      <div className="relative min-h-[140px] flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait" custom={dir}>
+          <motion.div
+            key={i}
+            custom={dir}
+            initial={{ opacity: 0, x: dir > 0 ? 40 : -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: dir > 0 ? -40 : 40 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="w-full text-center px-2"
+          >
+            <div
+              className="text-3xl font-black mb-1 select-none leading-none"
+              style={{ color: current.color }}
+            >
+              "
+            </div>
+            <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed font-medium mb-4 line-clamp-3">
+              {current.quote}
+            </p>
+            <div className="flex items-center justify-center gap-2.5">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-md"
+                style={{
+                  background: `linear-gradient(135deg, ${current.color}, ${current.color}88)`,
+                }}
+              >
+                {current.av}
+              </div>
+              <div className="text-left">
+                <p className="text-white font-bold text-xs">{current.name}</p>
+                <p className="text-neutral-500 text-[10px]">{current.role}</p>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="flex justify-center gap-1.5 mt-4">
+        {TESTIMONIALS.map((t, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              go(idx);
+            }}
+            className="h-1 rounded-full transition-all duration-300 cursor-pointer"
+            style={{
+              width: idx === i ? 24 : 6,
+              background: idx === i ? t.color : "#333",
+            }}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-// --- Actual Component 2: Magnetic Hover Button (from database) ---
-function ActualMagneticButton() {
-  const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+// ============================================================================
+// 3. COMPONENT: Interactive Particle Field
+// ============================================================================
+function ActualParticleField() {
+  const canvasRef = useRef(null);
+  const mouse = useRef({ x: -9999, y: -9999 });
+  const raf = useRef(null);
 
-  const handleMouse = (e) => {
-    if (!ref.current) return;
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current.getBoundingClientRect();
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * 0.25, y: middleY * 0.25 });
-  };
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const setSize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    setSize();
 
-  const reset = () => setPosition({ x: 0, y: 0 });
-  const { x, y } = position;
+    const N = 120;
+    const pts = Array.from({ length: N }, () => ({
+      x: Math.random() * (canvas.width || 300),
+      y: Math.random() * (canvas.height || 200),
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 1.5 + 0.6,
+    }));
+
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const mx = mouse.current.x;
+      const my = mouse.current.y;
+      const R = 90;
+
+      for (let i = 0; i < N; i++) {
+        const p = pts[i];
+        const dx = p.x - mx;
+        const dy = p.y - my;
+        const d = Math.hypot(dx, dy);
+        if (d < R && d > 0) {
+          const f = ((R - d) / R) * 2.5;
+          p.vx += (dx / d) * f * 0.08;
+          p.vy += (dy / d) * f * 0.08;
+        }
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(99, 102, 241, 0.75)";
+        ctx.fill();
+
+        for (let j = i + 1; j < N; j++) {
+          const q = pts[j];
+          const dd = Math.hypot(p.x - q.x, p.y - q.y);
+          if (dd < 85) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(129, 140, 248, ${0.18 * (1 - dd / 85)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      raf.current = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const onMove = (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const onLeave = () => {
+      mouse.current = { x: -9999, y: -9999 };
+    };
+
+    canvas.addEventListener("mousemove", onMove);
+    canvas.addEventListener("mouseleave", onLeave);
+    window.addEventListener("resize", setSize);
+
+    return () => {
+      cancelAnimationFrame(raf.current);
+      canvas.removeEventListener("mousemove", onMove);
+      canvas.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("resize", setSize);
+    };
+  }, []);
 
   return (
-    <div className="flex items-center justify-center w-full py-6">
-      <motion.button
-        ref={ref}
-        onMouseMove={handleMouse}
-        onMouseLeave={reset}
-        animate={{ x, y }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-        className="relative px-8 py-3.5 bg-white/10 text-white font-medium rounded-full overflow-hidden hover:bg-white/20 transition-colors border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.08)] cursor-pointer text-sm"
-      >
-        <span className="relative z-10 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Magnetic Hover</span>
-        </span>
-      </motion.button>
+    <div className="relative w-full h-52 sm:h-60 rounded-2xl bg-black border border-neutral-800/80 overflow-hidden cursor-crosshair">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-4 text-center">
+        <h4 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight drop-shadow-lg">
+          Particle Physics Field
+        </h4>
+        <p className="text-neutral-400 text-xs mt-1.5 font-mono tracking-wide">
+          Move cursor to repel particles · Auto-connects nearby nodes
+        </p>
+      </div>
     </div>
   );
 }
 
-// --- Actual Component 3: Morphing Dock (from database) ---
-function DockIcon({ icon: Icon, mouseX }) {
+// ============================================================================
+// 4. COMPONENT: Endless Scrolling Marquee
+// ============================================================================
+const CodeIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </svg>
+);
+
+const FigmaIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z" />
+    <path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z" />
+    <path d="M12 9h3.5a3.5 3.5 0 1 1 0 7H12V9z" />
+    <path d="M5 18.5A3.5 3.5 0 0 1 8.5 15H12v3.5a3.5 3.5 0 1 1-7 0z" />
+    <path d="M5 12a3.5 3.5 0 0 1 3.5-3.5H12v7H8.5A3.5 3.5 0 0 1 5 12z" />
+  </svg>
+);
+
+const GithubIconMarquee = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const FramerIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 16h7.5L19 23V16h5.5L12 2h-7v7h14l-7 7H5z" />
+  </svg>
+);
+
+const TwitterIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  </svg>
+);
+
+const CpuIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="16" height="16" x="4" y="4" rx="2" />
+    <rect width="6" height="6" x="9" y="9" rx="1" />
+    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
+  </svg>
+);
+
+function ActualScrollingMarquee() {
+  const icons = [CodeIcon, FigmaIcon, GithubIconMarquee, FramerIcon, TwitterIcon, CpuIcon];
+
+  return (
+    <div
+      style={{
+        maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+        WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+      }}
+      className="w-full overflow-hidden py-3"
+    >
+      <div className="flex w-max gap-12 animate-marquee">
+        {[...icons, ...icons, ...icons].map((Icon, idx) => (
+          <div
+            key={idx}
+            className="flex items-center justify-center text-neutral-500 hover:text-white transition-colors duration-300"
+          >
+            <Icon className="w-8 h-8 sm:w-9 sm:h-9" />
+          </div>
+        ))}
+      </div>
+      <style>{`
+        @keyframes marqueeScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        .animate-marquee {
+          animation: marqueeScroll 18s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// ============================================================================
+// 5. COMPONENT: Liquid Swipe Tabs
+// ============================================================================
+const LIQUID_TABS = ["Overview", "Integrations", "Activity", "Settings"];
+
+function ActualLiquidTabs() {
+  const [active, setActive] = useState(LIQUID_TABS[0]);
+
+  return (
+    <div className="flex items-center justify-center w-full py-4">
+      <div className="flex flex-wrap gap-1 p-1.5 rounded-full bg-neutral-900 border border-white/10 w-fit">
+        {LIQUID_TABS.map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActive(tab);
+            }}
+            className={`relative px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
+              active === tab ? "text-black" : "text-neutral-400 hover:text-white"
+            }`}
+          >
+            {active === tab && (
+              <motion.div
+                layoutId="bento-liquid-pill"
+                className="absolute inset-0 bg-white rounded-full z-0"
+                transition={{ type: "spring", bounce: 0.22, duration: 0.55 }}
+              />
+            )}
+            <span className="relative z-10">{tab}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// 6. COMPONENT: Apple-Style Morphing Dock
+// ============================================================================
+function DockItem({ icon: Icon, mouseX }) {
   const ref = useRef(null);
 
   const distance = useTransform(mouseX, (val) => {
@@ -135,7 +546,7 @@ function DockIcon({ icon: Icon, mouseX }) {
     return val - bounds.x - bounds.width / 2;
   });
 
-  const widthSync = useTransform(distance, [-120, 0, 120], [36, 64, 36]);
+  const widthSync = useTransform(distance, [-120, 0, 120], [38, 64, 38]);
   const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   return (
@@ -154,49 +565,23 @@ function ActualMorphingDock() {
   const icons = [Home, Search, Bell, User, Settings];
 
   return (
-    <div className="flex items-center justify-center w-full py-4">
+    <div className="flex items-center justify-center w-full py-2">
       <div
-        className="flex gap-3 sm:gap-4 p-3.5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 items-end h-[90px]"
+        className="flex gap-3 sm:gap-4 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 items-end h-[85px]"
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
       >
         {icons.map((Icon, idx) => (
-          <DockIcon key={idx} icon={Icon} mouseX={mouseX} />
+          <DockItem key={idx} icon={Icon} mouseX={mouseX} />
         ))}
       </div>
     </div>
   );
 }
 
-// --- Actual Component 4: Shimmer Action Button (from database) ---
-function ActualShimmerButton() {
-  return (
-    <div className="flex items-center justify-center w-full py-6">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="relative inline-flex items-center justify-center p-0.5 overflow-hidden rounded-full font-medium transition-all duration-300 group shadow-[0_0_30px_rgba(255,255,255,0.12)] hover:shadow-[0_0_45px_rgba(255,255,255,0.25)] cursor-pointer"
-      >
-        <motion.span
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-          className="absolute -inset-[100%] bg-gradient-to-r from-transparent via-white to-transparent opacity-70"
-        />
-        <span className="relative px-7 py-3 bg-neutral-950 rounded-full group-hover:bg-neutral-900 transition-colors duration-300 flex items-center gap-2.5">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.9)]" />
-          <span className="text-xs sm:text-sm font-bold tracking-wide text-white group-hover:text-cyan-300 transition-colors">
-            Deploy Architecture
-          </span>
-          <span className="font-mono text-xs text-neutral-400 group-hover:text-white">
-            &rarr;
-          </span>
-        </span>
-      </motion.button>
-    </div>
-  );
-}
-
-// --- Actual Component 5: Futuristic Terminal Box (from database) ---
+// ============================================================================
+// 7. COMPONENT: Futuristic Terminal Box
+// ============================================================================
 function ActualFuturisticTerminal() {
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
@@ -234,6 +619,7 @@ function ActualFuturisticTerminal() {
               onChange={(e) => setValue(e.target.value)}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Type command..."
               className="w-full bg-transparent text-white placeholder:text-neutral-600 font-mono text-xs focus:outline-none"
             />
@@ -268,7 +654,9 @@ function ActualFuturisticTerminal() {
   );
 }
 
-// --- Main BentoShowcase Container with Direct Links ---
+// ============================================================================
+// MAIN BENTO SHOWCASE: Exactly the 7 Requested Components
+// ============================================================================
 function BentoShowcase() {
   const navigate = useNavigate();
 
@@ -276,132 +664,105 @@ function BentoShowcase() {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
       <div className="text-center mb-12">
         <div className="text-xs font-mono uppercase tracking-[0.25em] text-neutral-400 mb-2">
-          Interactive Component Showcase
+          Featured Library Showcase
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-          Live Interactive Components
+          Signature Components
         </h2>
         <p className="mt-3 text-neutral-400 max-w-xl mx-auto text-sm sm:text-base">
-          Interact with actual components from the library below. Click any card to inspect full code.
+          Interact with live production components directly in the sandbox below.
+          Click any card to inspect full source code.
         </p>
       </div>
 
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-        {/* Cell 1: Actual Glare 3D Card */}
+        {/* 1. Lumen Auth (Span 2 on lg) */}
         <div
-          onClick={() => navigate("/components/glare-hover-3d-card")}
-          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
+          onClick={() => navigate("/components/lumen-auth")}
+          className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
         >
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
-              3D Card
+              Authentication
             </span>
             <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
               Explore ↗
             </span>
           </div>
           <div className="my-auto py-2">
-            <ActualGlareCard />
+            <ActualLumenAuth />
           </div>
-          <div className="pt-3 border-t border-neutral-900">
+          <div className="pt-3 border-t border-neutral-900 mt-3">
             <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Glare Hover 3D Card
+              Lumen Auth
             </h3>
             <p className="text-neutral-500 text-xs mt-0.5">
-              Move mouse over card to test tilt and specular glare reflection.
+              Split-screen sign-in with live password strength analysis and social provider buttons.
             </p>
           </div>
         </div>
 
-        {/* Cell 2: Actual Magnetic Button */}
+        {/* 2. Liquid Swipe Tabs (Span 1) */}
         <div
-          onClick={() => navigate("/components/magnetic-hover-button")}
+          onClick={() => navigate("/components/liquid-swipe-tabs")}
           className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 rounded-full">
-              Spring Physics
-            </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
-          </div>
-          <div className="my-auto py-4">
-            <ActualMagneticButton />
-          </div>
-          <div className="pt-3 border-t border-neutral-900">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Magnetic Hover Button
-            </h3>
-            <p className="text-neutral-500 text-xs mt-0.5">
-              Cursor attraction with spring damping and zero-jitter physics.
-            </p>
-          </div>
-        </div>
-
-        {/* Cell 3: Actual Metallic Shimmer Action Button */}
-        <div
-          onClick={() =>
-            navigate("/components/futuristic-shimmer-metallic-action-button")
-          }
-          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
-              Sheen Border
+              Navigation
             </span>
             <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
               Explore ↗
             </span>
           </div>
-          <div className="my-auto py-4">
-            <ActualShimmerButton />
+          <div className="my-auto py-6">
+            <ActualLiquidTabs />
           </div>
-          <div className="pt-3 border-t border-neutral-900">
+          <div className="pt-3 border-t border-neutral-900 mt-3">
             <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Futuristic Shimmer Metallic Action
+              Liquid Swipe Tabs
             </h3>
             <p className="text-neutral-500 text-xs mt-0.5">
-              Continuous rotating sheen gradient border with hover glow.
+              Fluid spring-physics tab navigation with Framer Motion layout animations.
             </p>
           </div>
         </div>
 
-        {/* Cell 4: Actual Apple-Style Morphing Dock (Span 2 on lg) */}
+        {/* 3. Interactive Particle Field (Span 2 on lg) */}
         <div
-          onClick={() => navigate("/components/apple-style-morphing-dock")}
+          onClick={() => navigate("/components/interactive-particle-field")}
           className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
-              Navigation Dock
+          <div className="flex items-center justify-between mb-3">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
+              Physics & Canvas
             </span>
             <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
               Explore ↗
             </span>
           </div>
-          <div className="my-auto py-3">
-            <ActualMorphingDock />
+          <div className="my-auto py-2">
+            <ActualParticleField />
           </div>
-          <div className="pt-3 border-t border-neutral-900">
+          <div className="pt-3 border-t border-neutral-900 mt-3">
             <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Apple-Style Morphing Dock
+              Interactive Particle Field
             </h3>
             <p className="text-neutral-500 text-xs mt-0.5">
-              Fluid icon magnification and parabolic neighbor scaling.
+              Canvas-based particle system with dynamic distance clustering and cursor repulsion.
             </p>
           </div>
         </div>
 
-        {/* Cell 5: Actual Futuristic Terminal Box */}
+        {/* 4. Futuristic Terminal Box (Span 1) */}
         <div
           onClick={() => navigate("/components/futuristic-terminal-box")}
-          className="md:col-span-1 lg:col-span-1 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
+          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
         >
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 rounded-full">
-              Terminal
+              CLI Terminal
             </span>
             <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
               Explore ↗
@@ -410,12 +771,90 @@ function BentoShowcase() {
           <div className="my-auto py-2">
             <ActualFuturisticTerminal />
           </div>
-          <div className="pt-3 border-t border-neutral-900">
+          <div className="pt-3 border-t border-neutral-900 mt-3">
             <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
               Futuristic Terminal Box
             </h3>
             <p className="text-neutral-500 text-xs mt-0.5">
-              Interactive terminal input, blinking prompt, and quick-run chips.
+              Developer command console with glowing focus halos and quick-run badges.
+            </p>
+          </div>
+        </div>
+
+        {/* 5. Apple-Style Morphing Dock (Span 2 on lg) */}
+        <div
+          onClick={() => navigate("/components/apple-style-morphing-dock")}
+          className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
+              macOS Dock
+            </span>
+            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
+              Explore ↗
+            </span>
+          </div>
+          <div className="my-auto py-3">
+            <ActualMorphingDock />
+          </div>
+          <div className="pt-3 border-t border-neutral-900 mt-3">
+            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
+              Apple-Style Morphing Dock
+            </h3>
+            <p className="text-neutral-500 text-xs mt-0.5">
+              Proximity-based icon magnification with organic spring damping physics.
+            </p>
+          </div>
+        </div>
+
+        {/* 6. Animated Testimonial Carousel (Span 1) */}
+        <div
+          onClick={() => navigate("/components/animated-testimonial-carousel")}
+          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-pink-400 bg-pink-950/50 border border-pink-800/40 rounded-full">
+              Social Proof
+            </span>
+            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
+              Explore ↗
+            </span>
+          </div>
+          <div className="my-auto py-2">
+            <ActualTestimonialCarousel />
+          </div>
+          <div className="pt-3 border-t border-neutral-900 mt-3">
+            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
+              Animated Testimonial Carousel
+            </h3>
+            <p className="text-neutral-500 text-xs mt-0.5">
+              Smooth slide transitions with AnimatePresence and auto-play indicators.
+            </p>
+          </div>
+        </div>
+
+        {/* 7. Endless Scrolling Marquee (Span 3 on lg - Full Width Card) */}
+        <div
+          onClick={() => navigate("/components/endless-scrolling-marquee")}
+          className="md:col-span-2 lg:col-span-3 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-400 bg-neutral-900 border border-neutral-800 rounded-full">
+              Continuous Motion
+            </span>
+            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
+              Explore ↗
+            </span>
+          </div>
+          <div className="my-auto py-4">
+            <ActualScrollingMarquee />
+          </div>
+          <div className="pt-3 border-t border-neutral-900 mt-2">
+            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
+              Endless Scrolling Marquee
+            </h3>
+            <p className="text-neutral-500 text-xs mt-0.5">
+              Hardware-accelerated CSS marquee with smooth edge masking. Hover to pause.
             </p>
           </div>
         </div>
