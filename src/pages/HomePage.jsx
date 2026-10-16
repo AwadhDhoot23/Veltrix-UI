@@ -123,14 +123,14 @@ function HomePage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
       className="min-h-screen mb-10 relative w-full overflow-hidden bg-black text-white"
     >
-      {/* ShapeGrid Background Engine */}
-      <div style={{ width: '100%', height: '600px', position: 'absolute', top: 0, left: 0, overflow: 'hidden', zIndex: 0 }}>
+      {/* ShapeGrid Background Engine - Full Viewport Fixed Coverage */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-screen h-screen">
         <ShapeGrid
           shape="square"
           direction="down"
@@ -147,6 +147,7 @@ function HomePage() {
           trail={0.9}
           glow={0.5}
           twinkle={0.1}
+          fade={0}
         />
       </div>
 
