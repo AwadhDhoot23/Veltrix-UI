@@ -257,7 +257,7 @@ function HomePage() {
         Popular Components
       </div>
 
-      <div className="mt-10 componentSection flex justify-center px-6">
+      <div className="mt-10 componentSection flex justify-center px-6 overflow-visible">
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-16 text-neutral-500">
             <div className="flex items-center gap-1.5">
@@ -274,7 +274,7 @@ function HomePage() {
             <span className="text-xs tracking-[0.25em] uppercase font-medium">Fetching components…</span>
           </div>
         ) : (
-          <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full items-start">
+          <div className="grid mb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full items-start overflow-visible pt-4">
             {featuredComponents.map((item) => (
               <div key={item.slug} className="componentCard col-span-1">
                 <CardComponent

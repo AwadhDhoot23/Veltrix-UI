@@ -37,13 +37,13 @@ function CardComponent({ name, description, slug, id, viewsCount, createdAt, tag
   };
 
   return (
-    <div className="w-full h-auto">
+    <div className="w-full h-auto py-1 overflow-visible">
       <motion.div
         initial={{ scale: 0.99 }}
-        whileHover={{ y: -3 }}
+        whileHover={{ y: -4 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
         onClick={() => navigate(`/components/${slug}`)}
-        className="group cursor-pointer w-full bg-neutral-950 border border-neutral-800/80 hover:border-neutral-500 rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black p-6 relative"
+        className="group cursor-pointer w-full bg-neutral-950/90 border border-neutral-800/80 hover:border-neutral-500 rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black p-6 relative"
       >
         {/* Top Badges Area */}
         <div className="flex items-center justify-between gap-2 mb-4">
