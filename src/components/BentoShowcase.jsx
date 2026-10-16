@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 
 // ============================================================================
-// 1. COMPONENT: Lumen Auth
+// 1. COMPONENT: Lumen Auth (Full Split-Screen Layout - BIG)
 // ============================================================================
 function GoogleIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0">
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0">
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.91a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08 0 3.68-2.92 3.68-7.1z"
@@ -43,16 +43,17 @@ function GoogleIcon() {
 
 function GithubIconSmall() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 shrink-0 text-white">
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0 text-white">
       <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
     </svg>
   );
 }
 
-function ActualLumenAuth() {
+function ActualLumenAuthFull() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("Veltrix@2026");
   const [email, setEmail] = useState("developer@veltrix.dev");
+  const [rememberMe, setRememberMe] = useState(true);
 
   const strength =
     password.length === 0
@@ -77,115 +78,183 @@ function ActualLumenAuth() {
   ];
 
   return (
-    <div className="relative w-full rounded-2xl bg-gradient-to-b from-neutral-900/90 to-neutral-950 border border-neutral-800 p-4 sm:p-5 overflow-hidden shadow-2xl">
-      {/* Ambient background glow orb */}
-      <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-indigo-500/15 blur-[60px] pointer-events-none" />
-      <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-emerald-500/10 blur-[60px] pointer-events-none" />
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      className="relative w-full rounded-2xl bg-[#0a0b0b] border border-neutral-800 overflow-hidden shadow-2xl"
+    >
+      {/* Background Animated Gradient Orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ x: [0, 30, 0], y: [0, -25, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-indigo-500/[0.08] blur-[80px]"
+        />
+        <motion.div
+          animate={{ x: [0, -35, 0], y: [0, 30, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-16 -right-10 h-80 w-80 rounded-full bg-emerald-500/[0.06] blur-[90px]"
+        />
+      </div>
 
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 mb-4 border-b border-neutral-800/80">
-        <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.05]">
-            <Sparkles className="h-3.5 w-3.5 text-indigo-300" />
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
+        {/* Left Branding Showcase Panel */}
+        <div className="hidden lg:flex flex-col justify-between p-8 sm:p-10 border-r border-neutral-900 bg-neutral-950/40">
+          <div>
+            <div className="flex items-center gap-2.5 mb-8">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05]">
+                <Sparkles className="h-5 w-5 text-indigo-300" />
+              </div>
+              <span className="text-base font-bold text-white tracking-tight">Veltrix UI</span>
+            </div>
+
+            <h3 className="text-3xl font-extrabold text-white leading-tight tracking-tight mb-3">
+              Where great interfaces <span className="text-neutral-500">come to life.</span>
+            </h3>
+
+            <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-6">
+              Join 12,000+ designers and engineers building their most ambitious applications with production-grade animated components.
+            </p>
+
+            {/* Social Proof Avatars */}
+            <div className="flex items-center gap-3 pt-2">
+              <div className="flex -space-x-2">
+                {["bg-indigo-600", "bg-purple-600", "bg-cyan-600", "bg-emerald-600"].map((bg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-black text-[11px] font-bold text-white ${bg}`}
+                  >
+                    {["A", "M", "K", "R"][idx]}
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-white">Loved by builders</p>
+                <p className="text-[10px] text-neutral-500 font-mono">4.9/5 from 2,300+ reviews</p>
+              </div>
+            </div>
           </div>
-          <span className="text-xs font-bold text-white tracking-tight">Lumen Auth</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-mono">
-          <Shield className="h-3 w-3 text-emerald-400" />
-          <span>Encrypted</span>
-        </div>
-      </div>
 
-      {/* Social Buttons */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        <button
-          type="button"
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900/80 hover:bg-neutral-800/90 py-1.5 text-xs text-neutral-300 transition-colors"
-        >
-          <GoogleIcon />
-          <span>Google</span>
-        </button>
-        <button
-          type="button"
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900/80 hover:bg-neutral-800/90 py-1.5 text-xs text-neutral-300 transition-colors"
-        >
-          <GithubIconSmall />
-          <span>GitHub</span>
-        </button>
-      </div>
-
-      {/* Email input */}
-      <div className="mb-2.5">
-        <label className="block text-[11px] font-mono text-neutral-400 mb-1">Email</label>
-        <div className="flex items-center rounded-lg border border-neutral-800 bg-neutral-950/70 px-3 py-1.5 focus-within:border-neutral-500 transition-colors">
-          <Mail className="h-3.5 w-3.5 text-neutral-500 mr-2 shrink-0" />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            placeholder="you@domain.com"
-            className="w-full bg-transparent text-xs text-white placeholder-neutral-600 outline-none font-mono"
-          />
+          <div className="flex items-center gap-2 text-xs text-neutral-500 pt-8 border-t border-neutral-900/80">
+            <Shield className="h-4 w-4 text-emerald-400" />
+            <span>SOC 2 Type II certified · Zero runtime lock-in</span>
+          </div>
         </div>
-      </div>
 
-      {/* Password input with show/hide and strength meter */}
-      <div className="mb-3">
-        <div className="flex items-center justify-between mb-1">
-          <label className="text-[11px] font-mono text-neutral-400">Password</label>
-          <span className="text-[10px] text-neutral-500 font-mono">Type to test strength</span>
-        </div>
-        <div className="flex items-center rounded-lg border border-neutral-800 bg-neutral-950/70 px-3 py-1.5 focus-within:border-neutral-500 transition-colors">
-          <Lock className="h-3.5 w-3.5 text-neutral-500 mr-2 shrink-0" />
-          <input
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            placeholder="Enter password..."
-            className="w-full bg-transparent text-xs text-white placeholder-neutral-600 outline-none font-mono"
-          />
+        {/* Right Interactive Form Panel (Allowing Full Interaction & Typing) */}
+        <div className="p-6 sm:p-8 flex flex-col justify-center">
+          <div className="mb-6">
+            <h4 className="text-2xl font-bold tracking-tight text-white mb-1">
+              Welcome back
+            </h4>
+            <p className="text-xs text-neutral-400">
+              Interactive live demo. Type below to test password strength analysis.
+            </p>
+          </div>
+
+          {/* Social Auth Buttons */}
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <button
+              type="button"
+              className="flex items-center justify-center gap-2 rounded-xl border border-neutral-800 bg-neutral-900/60 hover:bg-neutral-800 py-2.5 text-xs font-medium text-neutral-200 transition-colors cursor-pointer"
+            >
+              <GoogleIcon />
+              <span>Google</span>
+            </button>
+            <button
+              type="button"
+              className="flex items-center justify-center gap-2 rounded-xl border border-neutral-800 bg-neutral-900/60 hover:bg-neutral-800 py-2.5 text-xs font-medium text-neutral-200 transition-colors cursor-pointer"
+            >
+              <GithubIconSmall />
+              <span>GitHub</span>
+            </button>
+          </div>
+
+          <div className="my-3 flex items-center gap-3">
+            <div className="h-px flex-1 bg-neutral-800" />
+            <span className="text-[10px] uppercase font-mono text-neutral-500">or with email</span>
+            <div className="h-px flex-1 bg-neutral-800" />
+          </div>
+
+          {/* Email field */}
+          <div className="mb-3.5">
+            <label className="block text-[11px] font-mono text-neutral-400 mb-1">Email</label>
+            <div className="flex items-center rounded-xl border border-neutral-800 bg-neutral-950 px-3.5 py-2.5 focus-within:border-neutral-500 transition-colors">
+              <Mail className="h-4 w-4 text-neutral-500 mr-2.5 shrink-0" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@company.com"
+                className="w-full bg-transparent text-xs sm:text-sm text-white placeholder-neutral-600 outline-none font-mono"
+              />
+            </div>
+          </div>
+
+          {/* Password field with Live Strength Calculation */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[11px] font-mono text-neutral-400">Password</label>
+              <span className="text-[10px] font-mono text-indigo-400">Live Analysis</span>
+            </div>
+            <div className="flex items-center rounded-xl border border-neutral-800 bg-neutral-950 px-3.5 py-2.5 focus-within:border-neutral-500 transition-colors">
+              <Lock className="h-4 w-4 text-neutral-500 mr-2.5 shrink-0" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Type password..."
+                className="w-full bg-transparent text-xs sm:text-sm text-white placeholder-neutral-600 outline-none font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-neutral-500 hover:text-white transition-colors ml-2 cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+
+            {/* Dynamic Strength Meter */}
+            <div className="mt-2.5 flex items-center gap-2">
+              <div className="flex-1 flex gap-1.5">
+                {[1, 2, 3, 4].map((lvl) => (
+                  <div
+                    key={lvl}
+                    className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                      lvl <= strength ? strengthColors[strength] : "bg-neutral-800"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-[11px] font-mono text-neutral-300 min-w-[55px] text-right font-medium">
+                {strengthLabels[strength]}
+              </span>
+            </div>
+          </div>
+
+          {/* Remember me & Sign In */}
+          <div className="flex items-center justify-between mb-4 text-xs">
+            <label className="flex items-center gap-2 text-neutral-400 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="rounded accent-white cursor-pointer"
+              />
+              <span>Remember 30 days</span>
+            </label>
+            <span className="text-neutral-500 hover:text-neutral-300 cursor-pointer">Forgot password?</span>
+          </div>
+
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowPassword(!showPassword);
-            }}
-            className="text-neutral-500 hover:text-white transition-colors ml-1.5"
+            className="w-full py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs sm:text-sm font-bold tracking-tight transition-colors shadow-lg cursor-pointer"
           >
-            {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+            Sign In to Workspace
           </button>
         </div>
-
-        {/* Strength meter bar */}
-        <div className="mt-2 flex items-center gap-1.5">
-          <div className="flex-1 flex gap-1">
-            {[1, 2, 3, 4].map((level) => (
-              <div
-                key={level}
-                className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                  level <= strength ? strengthColors[strength] : "bg-neutral-800"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-[10px] font-mono text-neutral-400 min-w-[50px] text-right">
-            {strengthLabels[strength]}
-          </span>
-        </div>
       </div>
-
-      {/* Sign in action */}
-      <button
-        type="button"
-        onClick={(e) => e.stopPropagation()}
-        className="w-full py-2 rounded-lg bg-white text-black hover:bg-neutral-200 text-xs font-semibold tracking-tight transition-colors shadow"
-      >
-        Sign In
-      </button>
     </div>
   );
 }
@@ -244,7 +313,10 @@ function ActualTestimonialCarousel() {
   const current = TESTIMONIALS[i];
 
   return (
-    <div className="w-full flex flex-col justify-between py-2">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="w-full flex flex-col justify-between py-2"
+    >
       <div className="relative min-h-[140px] flex items-center justify-center overflow-hidden">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
@@ -288,10 +360,7 @@ function ActualTestimonialCarousel() {
           <button
             key={idx}
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              go(idx);
-            }}
+            onClick={() => go(idx)}
             className="h-1 rounded-full transition-all duration-300 cursor-pointer"
             style={{
               width: idx === i ? 24 : 6,
@@ -399,7 +468,10 @@ function ActualParticleField() {
   }, []);
 
   return (
-    <div className="relative w-full h-52 sm:h-60 rounded-2xl bg-black border border-neutral-800/80 overflow-hidden cursor-crosshair">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="relative w-full h-52 sm:h-60 rounded-2xl bg-black border border-neutral-800/80 overflow-hidden cursor-crosshair"
+    >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-4 text-center">
         <h4 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight drop-shadow-lg">
@@ -465,6 +537,7 @@ function ActualScrollingMarquee() {
 
   return (
     <div
+      onClick={(e) => e.stopPropagation()}
       style={{
         maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
         WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
@@ -498,45 +571,7 @@ function ActualScrollingMarquee() {
 }
 
 // ============================================================================
-// 5. COMPONENT: Liquid Swipe Tabs
-// ============================================================================
-const LIQUID_TABS = ["Overview", "Integrations", "Activity", "Settings"];
-
-function ActualLiquidTabs() {
-  const [active, setActive] = useState(LIQUID_TABS[0]);
-
-  return (
-    <div className="flex items-center justify-center w-full py-4">
-      <div className="flex flex-wrap gap-1 p-1.5 rounded-full bg-neutral-900 border border-white/10 w-fit">
-        {LIQUID_TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActive(tab);
-            }}
-            className={`relative px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
-              active === tab ? "text-black" : "text-neutral-400 hover:text-white"
-            }`}
-          >
-            {active === tab && (
-              <motion.div
-                layoutId="bento-liquid-pill"
-                className="absolute inset-0 bg-white rounded-full z-0"
-                transition={{ type: "spring", bounce: 0.22, duration: 0.55 }}
-              />
-            )}
-            <span className="relative z-10">{tab}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// 6. COMPONENT: Apple-Style Morphing Dock
+// 5. COMPONENT: Apple-Style Morphing Dock
 // ============================================================================
 function DockItem({ icon: Icon, mouseX }) {
   const ref = useRef(null);
@@ -565,7 +600,10 @@ function ActualMorphingDock() {
   const icons = [Home, Search, Bell, User, Settings];
 
   return (
-    <div className="flex items-center justify-center w-full py-2">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="flex items-center justify-center w-full py-2"
+    >
       <div
         className="flex gap-3 sm:gap-4 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 items-end h-[85px]"
         onMouseMove={(e) => mouseX.set(e.pageX)}
@@ -580,7 +618,7 @@ function ActualMorphingDock() {
 }
 
 // ============================================================================
-// 7. COMPONENT: Futuristic Terminal Box
+// 6. COMPONENT: Futuristic Terminal Box (Fully Interactive Typing)
 // ============================================================================
 function ActualFuturisticTerminal() {
   const [focused, setFocused] = useState(false);
@@ -588,7 +626,11 @@ function ActualFuturisticTerminal() {
   const commands = ["deploy --prod", "build --watch", "init veltrix"];
 
   return (
-    <div className="flex flex-col items-center justify-center w-full py-2">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      className="flex flex-col items-center justify-center w-full py-2"
+    >
       <div className="w-full relative group">
         <div
           className={`absolute -inset-1 bg-gradient-to-r from-emerald-500/30 via-cyan-500/30 to-neutral-700 rounded-2xl blur-md transition-opacity duration-500 ${
@@ -619,8 +661,7 @@ function ActualFuturisticTerminal() {
               onChange={(e) => setValue(e.target.value)}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
-              onClick={(e) => e.stopPropagation()}
-              placeholder="Type command..."
+              placeholder="Click to type command (try: deploy --prod)..."
               className="w-full bg-transparent text-white placeholder:text-neutral-600 font-mono text-xs focus:outline-none"
             />
             <motion.div
@@ -638,10 +679,7 @@ function ActualFuturisticTerminal() {
               <button
                 key={cmd}
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setValue(cmd);
-                }}
+                onClick={() => setValue(cmd)}
                 className="text-[10px] font-mono bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-800 px-2 py-0.5 rounded transition-colors cursor-pointer"
               >
                 {cmd}
@@ -655,7 +693,7 @@ function ActualFuturisticTerminal() {
 }
 
 // ============================================================================
-// MAIN BENTO SHOWCASE: Exactly the 7 Requested Components
+// MAIN BENTO SHOWCASE: Lumen Auth (Big), Particle Field, Terminal, Dock, Carousel, Marquee
 // ============================================================================
 function BentoShowcase() {
   const navigate = useNavigate();
@@ -671,188 +709,164 @@ function BentoShowcase() {
         </h2>
         <p className="mt-3 text-neutral-400 max-w-xl mx-auto text-sm sm:text-base">
           Interact with live production components directly in the sandbox below.
-          Click any card to inspect full source code.
+          Type into inputs and test interactions without disruption.
         </p>
       </div>
 
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-        {/* 1. Lumen Auth (Span 2 on lg) */}
-        <div
-          onClick={() => navigate("/components/lumen-auth")}
-          className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
-              Authentication
+        {/* 1. Lumen Auth (FULL WIDTH BIG CARD - Span 3 on lg) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-3 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
+          <div className="flex items-center justify-between mb-4">
+            <span className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
+              Full-Scale Component · Authentication
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/lumen-auth")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore Code</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-2">
-            <ActualLumenAuth />
+            <ActualLumenAuthFull />
           </div>
-          <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Lumen Auth
-            </h3>
-            <p className="text-neutral-500 text-xs mt-0.5">
-              Split-screen sign-in with live password strength analysis and social provider buttons.
-            </p>
-          </div>
-        </div>
-
-        {/* 2. Liquid Swipe Tabs (Span 1) */}
-        <div
-          onClick={() => navigate("/components/liquid-swipe-tabs")}
-          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
-              Navigation
-            </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
-          </div>
-          <div className="my-auto py-6">
-            <ActualLiquidTabs />
-          </div>
-          <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Liquid Swipe Tabs
-            </h3>
-            <p className="text-neutral-500 text-xs mt-0.5">
-              Fluid spring-physics tab navigation with Framer Motion layout animations.
-            </p>
+          <div className="pt-4 border-t border-neutral-900 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 className="font-bold text-base text-white">Lumen Auth</h3>
+              <p className="text-neutral-500 text-xs mt-0.5">
+                Split-screen sign-in with live password strength analysis, glowing orbs, and social provider integration.
+              </p>
+            </div>
+            <button
+              onClick={() => navigate("/components/lumen-auth")}
+              className="text-xs font-mono text-indigo-400 hover:text-indigo-300 self-start sm:self-auto cursor-pointer"
+            >
+              View Full Source & Props &rarr;
+            </button>
           </div>
         </div>
 
-        {/* 3. Interactive Particle Field (Span 2 on lg) */}
-        <div
-          onClick={() => navigate("/components/interactive-particle-field")}
-          className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
+        {/* 2. Interactive Particle Field (Span 2 on lg) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
               Physics & Canvas
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/interactive-particle-field")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-2">
             <ActualParticleField />
           </div>
           <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Interactive Particle Field
-            </h3>
+            <h3 className="font-bold text-sm text-white">Interactive Particle Field</h3>
             <p className="text-neutral-500 text-xs mt-0.5">
               Canvas-based particle system with dynamic distance clustering and cursor repulsion.
             </p>
           </div>
         </div>
 
-        {/* 4. Futuristic Terminal Box (Span 1) */}
-        <div
-          onClick={() => navigate("/components/futuristic-terminal-box")}
-          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
+        {/* 3. Futuristic Terminal Box (Span 1) */}
+        <div className="col-span-1 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 rounded-full">
               CLI Terminal
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/futuristic-terminal-box")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-2">
             <ActualFuturisticTerminal />
           </div>
           <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Futuristic Terminal Box
-            </h3>
+            <h3 className="font-bold text-sm text-white">Futuristic Terminal Box</h3>
             <p className="text-neutral-500 text-xs mt-0.5">
-              Developer command console with glowing focus halos and quick-run badges.
+              Developer command console with glowing focus halos and quick-run badges. Click to type freely.
             </p>
           </div>
         </div>
 
-        {/* 5. Apple-Style Morphing Dock (Span 2 on lg) */}
-        <div
-          onClick={() => navigate("/components/apple-style-morphing-dock")}
-          className="md:col-span-2 lg:col-span-2 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
+        {/* 4. Apple-Style Morphing Dock (Span 2 on lg) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
               macOS Dock
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/apple-style-morphing-dock")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-3">
             <ActualMorphingDock />
           </div>
           <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Apple-Style Morphing Dock
-            </h3>
+            <h3 className="font-bold text-sm text-white">Apple-Style Morphing Dock</h3>
             <p className="text-neutral-500 text-xs mt-0.5">
               Proximity-based icon magnification with organic spring damping physics.
             </p>
           </div>
         </div>
 
-        {/* 6. Animated Testimonial Carousel (Span 1) */}
-        <div
-          onClick={() => navigate("/components/animated-testimonial-carousel")}
-          className="group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
+        {/* 5. Animated Testimonial Carousel (Span 1) */}
+        <div className="col-span-1 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-pink-400 bg-pink-950/50 border border-pink-800/40 rounded-full">
               Social Proof
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/animated-testimonial-carousel")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-2">
             <ActualTestimonialCarousel />
           </div>
           <div className="pt-3 border-t border-neutral-900 mt-3">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Animated Testimonial Carousel
-            </h3>
+            <h3 className="font-bold text-sm text-white">Animated Testimonial Carousel</h3>
             <p className="text-neutral-500 text-xs mt-0.5">
               Smooth slide transitions with AnimatePresence and auto-play indicators.
             </p>
           </div>
         </div>
 
-        {/* 7. Endless Scrolling Marquee (Span 3 on lg - Full Width Card) */}
-        <div
-          onClick={() => navigate("/components/endless-scrolling-marquee")}
-          className="md:col-span-2 lg:col-span-3 group cursor-pointer bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black"
-        >
+        {/* 6. Endless Scrolling Marquee (Span 3 on lg - Full Width Card) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-3 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-2">
             <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-400 bg-neutral-900 border border-neutral-800 rounded-full">
               Continuous Motion
             </span>
-            <span className="text-xs text-neutral-500 group-hover:text-white transition-colors font-mono">
-              Explore ↗
-            </span>
+            <button
+              onClick={() => navigate("/components/endless-scrolling-marquee")}
+              className="text-xs text-neutral-400 hover:text-white transition-colors font-mono flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 cursor-pointer"
+            >
+              <span>Explore</span>
+              <span>↗</span>
+            </button>
           </div>
           <div className="my-auto py-4">
             <ActualScrollingMarquee />
           </div>
           <div className="pt-3 border-t border-neutral-900 mt-2">
-            <h3 className="font-bold text-sm text-white group-hover:text-neutral-200">
-              Endless Scrolling Marquee
-            </h3>
+            <h3 className="font-bold text-sm text-white">Endless Scrolling Marquee</h3>
             <p className="text-neutral-500 text-xs mt-0.5">
               Hardware-accelerated CSS marquee with smooth edge masking. Hover to pause.
             </p>

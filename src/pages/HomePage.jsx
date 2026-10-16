@@ -8,6 +8,7 @@ import { motion, useAnimate, stagger } from 'framer-motion';
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import BentoShowcase from "../components/BentoShowcase";
+import ShapeGrid from "../components/ShapeGrid";
 import { Check, Copy } from "lucide-react";
 
 function HomePage() {
@@ -18,15 +19,6 @@ function HomePage() {
 
   useGSAP(() => {
     const tl = gsap.timeline();
-
-    // Floating ambient background blobs (original animation)
-    gsap.to(".background", {
-      y: 400,
-      repeat: -1,
-      ease: "sine.inOut",
-      duration: 12,
-      yoyo: true,
-    });
 
     // 3D Codeblock entrance
     gsap.from(".codeBlock", {
@@ -136,16 +128,27 @@ function HomePage() {
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.35 }}
       className="min-h-screen mb-10 relative w-full overflow-hidden bg-black text-white"
-      style={{
-        backgroundImage:
-          "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
-        backgroundSize: "26px 26px",
-      }}
     >
-      {/* Ambient Animated Gradient Blobs (Matching All Other Pages) */}
-      <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none" />
-      <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none" />
-      <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none" />
+      {/* ShapeGrid Background Engine */}
+      <div style={{ width: '100%', height: '600px', position: 'absolute', top: 0, left: 0, overflow: 'hidden', zIndex: 0 }}>
+        <ShapeGrid
+          shape="square"
+          direction="down"
+          lineColor="#343434"
+          hoverColor="#96919a"
+          hoverFillColor="#817f80"
+          fillOpacity={0.2}
+          cellSize={29}
+          speed={0.25}
+          tiltX={38}
+          tiltY={0}
+          rainbow={false}
+          radius={1.6}
+          trail={0.9}
+          glow={0.5}
+          twinkle={0.1}
+        />
+      </div>
 
       {/* Brand Wordmark (Strictly No Emojis) */}
       <h2
