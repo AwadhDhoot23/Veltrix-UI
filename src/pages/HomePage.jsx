@@ -9,7 +9,6 @@ import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import BentoShowcase from "../components/BentoShowcase";
 import ShapeGrid from "../components/ShapeGrid";
-import { Check, Copy } from "lucide-react";
 
 function HomePage() {
   const text = "Build Faster with Reusable UI Components";
@@ -54,20 +53,6 @@ function HomePage() {
       duration: 28,
       repeat: -1,
       ease: "none",
-    });
-
-    // Workflow section cards entrance (GSAP ScrollTrigger)
-    gsap.from(".workflowCard", {
-      opacity: 0,
-      y: 35,
-      stagger: 0.15,
-      duration: 0.7,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".workflowSection",
-        start: "top 85%",
-        toggleActions: "play none none reverse",
-      },
     });
 
     // Popular components section entrance
@@ -304,9 +289,6 @@ function HomePage() {
         <BentoShowcase />
       </div>
 
-      {/* --- SECTION: DEVELOPER INTEGRATION & QUICKSTART --- */}
-      <IntegrationSection />
-
       {/* --- SECTION: POPULAR COMPONENTS --- */}
       <div className="popularSection relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16">
         <div className="popularHeader flex flex-col sm:flex-row items-center justify-between gap-4 mb-10 pb-4 border-b border-neutral-900">
@@ -368,137 +350,5 @@ function HomePage() {
   );
 }
 
-function IntegrationSection() {
-  const [pkg, setPkg] = useState("npm");
-  const [copied, setCopied] = useState(false);
-
-  const commands = {
-    npm: "npm install framer-motion lucide-react clsx tailwind-merge",
-    pnpm: "pnpm add framer-motion lucide-react clsx tailwind-merge",
-    yarn: "yarn add framer-motion lucide-react clsx tailwind-merge",
-    bun: "bun add framer-motion lucide-react clsx tailwind-merge",
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(commands[pkg]);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="workflowSection relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 border-t border-neutral-900">
-      <div className="text-center mb-12">
-        <div className="text-xs font-mono uppercase tracking-[0.25em] text-neutral-400 mb-2">
-          Integration Standard
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Ready for Your Stack
-        </h2>
-        <p className="mt-3 text-neutral-400 text-sm sm:text-base max-w-xl mx-auto">
-          No third-party runtime or black-box npm packages. Install standard open-source primitives and drop component source directly into your project.
-        </p>
-      </div>
-
-      {/* Interactive Package Manager Terminal */}
-      <div className="max-w-2xl mx-auto mb-12 bg-neutral-950 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-900/60 border-b border-neutral-800">
-          <div className="flex items-center gap-1.5">
-            {["npm", "pnpm", "yarn", "bun"].map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setPkg(p)}
-                className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
-                  pkg === p
-                    ? "bg-white text-black font-semibold"
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-800"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono text-neutral-300 hover:text-white bg-neutral-800/80 hover:bg-neutral-800 transition-colors cursor-pointer"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400">Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Copy</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        <div className="p-4 sm:p-5 flex items-center font-mono text-xs sm:text-sm text-neutral-200 overflow-x-auto">
-          <span className="text-emerald-400 mr-3 select-none">$</span>
-          <span className="text-neutral-100">{commands[pkg]}</span>
-        </div>
-      </div>
-
-      {/* 3 Concrete Technical Pillar Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="workflowCard bg-neutral-950/70 border border-neutral-800/80 rounded-2xl p-6 flex flex-col justify-between">
-          <div>
-            <div className="text-xs font-mono text-indigo-400 mb-3 tracking-widest">
-              01 / SOURCE OWNERSHIP
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">
-              Direct Copy & Paste
-            </h3>
-            <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-              Every component is completely self-contained in a single file. Paste it into your <code className="text-neutral-300 bg-neutral-900 px-1.5 py-0.5 rounded font-mono text-xs">/components</code> folder and modify whatever you want.
-            </p>
-          </div>
-          <div className="mt-6 pt-4 border-t border-neutral-900 text-[11px] font-mono text-neutral-500">
-            Zero Dependency Lock-in
-          </div>
-        </div>
-
-        <div className="workflowCard bg-neutral-950/70 border border-neutral-800/80 rounded-2xl p-6 flex flex-col justify-between">
-          <div>
-            <div className="text-xs font-mono text-cyan-400 mb-3 tracking-widest">
-              02 / TAILWIND UTILITY
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">
-              Theme Token Integration
-            </h3>
-            <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-              Components use standard Tailwind CSS classes. They immediately inherit your design system, color palettes, and dark mode configuration.
-            </p>
-          </div>
-          <div className="mt-6 pt-4 border-t border-neutral-900 text-[11px] font-mono text-neutral-500">
-            Tailwind v3 & v4 Ready
-          </div>
-        </div>
-
-        <div className="workflowCard bg-neutral-950/70 border border-neutral-800/80 rounded-2xl p-6 flex flex-col justify-between">
-          <div>
-            <div className="text-xs font-mono text-emerald-400 mb-3 tracking-widest">
-              03 / MODERN RUNTIME
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">
-              Next.js 14/15 & React 19
-            </h3>
-            <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-              Tested across modern bundlers including Vite, Next.js App Router (Server & Client Components), Astro, and Remix with full SSR compatibility.
-            </p>
-          </div>
-          <div className="mt-6 pt-4 border-t border-neutral-900 text-[11px] font-mono text-neutral-500">
-            60fps GPU Hardware Motion
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default HomePage;
+
