@@ -7,7 +7,6 @@ gsap.registerPlugin(ScrollTrigger);
 import { motion, useAnimate, stagger } from 'framer-motion';
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
-import InteractiveBackground from "../components/InteractiveBackground";
 import BentoShowcase from "../components/BentoShowcase";
 
 function HomePage() {
@@ -19,9 +18,18 @@ function HomePage() {
   useGSAP(() => {
     const tl = gsap.timeline();
 
+    // Floating ambient background blobs (original animation)
+    gsap.to(".background", {
+      y: 400,
+      repeat: -1,
+      ease: "sine.inOut",
+      duration: 12,
+      yoyo: true,
+    });
+
     // 3D Codeblock entrance
     gsap.from(".codeBlock", {
-      x: 300,
+      x: 350,
       opacity: 0,
       scale: 1.4,
       ease: "power3.out",
@@ -50,7 +58,7 @@ function HomePage() {
     // Infinite Marquee track
     gsap.to(".track", {
       xPercent: -50,
-      duration: 30,
+      duration: 28,
       repeat: -1,
       ease: "none",
     });
@@ -122,34 +130,32 @@ function HomePage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.35 }}
-      className="min-h-screen relative w-full overflow-x-hidden bg-[#09090b] text-white"
+      className="min-h-screen mb-10 relative w-full overflow-hidden bg-black text-white"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+        backgroundSize: "26px 26px",
+      }}
     >
-      {/* Living Interactive Dot & Spotlight Background Engine */}
-      <InteractiveBackground />
+      {/* Ambient Animated Gradient Blobs (Matching All Other Pages) */}
+      <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none" />
+      <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none" />
+      <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none" />
 
-      {/* Clean Brand Wordmark (Strictly No Emojis) */}
-      <div className="relative z-10 w-full px-6 pt-5 pb-2 flex items-center justify-between">
-        <h1
-          onClick={() => navigate("/")}
-          className="cursor-pointer font-bold text-lg md:text-xl tracking-tight text-white hover:text-neutral-200 transition-colors"
-        >
-          Veltrix UI
-        </h1>
-        <button
-          onClick={() => navigate("/components")}
-          className="text-xs font-mono text-neutral-400 hover:text-white transition-colors flex items-center gap-1.5"
-        >
-          <span>Library</span>
-          <span className="text-[10px]">↗</span>
-        </button>
-      </div>
+      {/* Brand Wordmark (Strictly No Emojis) */}
+      <h2
+        onClick={() => navigate("/")}
+        className="w-full px-5 absolute my-7 text-center font-extrabold text-4xl md:text-5xl tracking-tight text-white cursor-pointer z-20 hover:text-neutral-200 transition-colors"
+      >
+        Veltrix UI
+      </h2>
 
       {/* --- HERO SECTION --- */}
-      <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto pt-8 md:pt-0">
+      <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-6 sm:px-10 max-w-7xl mx-auto pt-24 md:pt-0">
         {/* Left Column: Value Proposition */}
         <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
           <div
@@ -175,7 +181,7 @@ function HomePage() {
           <div className="flex flex-wrap items-center gap-4 btn1 mt-8">
             <button
               onClick={() => navigate("/components")}
-              className="px-7 py-3 cursor-pointer bg-white text-black hover:bg-neutral-200 transition-all duration-300 rounded-xl text-sm font-semibold tracking-tight shadow-xl shadow-white/10 active:scale-95"
+              className="px-8 py-3.5 cursor-pointer bg-white text-black hover:bg-neutral-200 transition-all duration-300 rounded-xl text-sm font-semibold tracking-tight shadow-xl shadow-white/10 active:scale-95"
             >
               Explore Components
             </button>
@@ -184,24 +190,21 @@ function HomePage() {
                 const el = document.getElementById("bento-showcase");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-6 py-3 cursor-pointer bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700/80 text-neutral-300 hover:text-white transition-all duration-300 rounded-xl text-sm font-medium tracking-tight"
+              className="px-6 py-3.5 cursor-pointer bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700/80 text-neutral-300 hover:text-white transition-all duration-300 rounded-xl text-sm font-medium tracking-tight"
             >
               Live Showcase ↓
             </button>
           </div>
         </div>
 
-        {/* Right Column: Signature 3D Code Window (PRESERVED AS IS) */}
+        {/* Right Column: Signature 3D Code Window (EXACT ORIGINAL BROAD BORDERS & OFFSET SHADOW RESTORED) */}
         <div className="w-full md:w-[42%] md:pl-10 relative flex justify-center items-center mt-12 md:mt-0 mb-10 md:mb-0">
-          {/* Subtle Ambient Halo behind 3D window for depth */}
-          <div className="absolute w-72 h-72 rounded-full bg-indigo-500/10 blur-[80px] pointer-events-none" />
-
           <div
-            className="relative codeBlock p-5 sm:p-7 w-72 sm:w-80 md:w-90 md:h-110 bg-black/60 border border-neutral-700/80 rounded-2xl backdrop-blur-xl shadow-2xl scale-95 sm:scale-100 md:scale-100"
+            className="relative codeBlock p-7 w-80 md:w-90 md:h-110 bg-black/40 border border-neutral-500 rounded-xl backdrop-blur-lg shadow-2xl scale-95 sm:scale-100 md:scale-100"
             style={{
               transformStyle: "preserve-3d",
               transform: "perspective(1000px) rotateY(-25deg) rotateX(10deg)",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.15)",
+              boxShadow: "5px 3px 1px 1px rgba(180, 200, 180, 0.5)",
             }}
           >
             {/* Fake Window Controls */}
@@ -214,7 +217,7 @@ function HomePage() {
             {/* Fake Code Lines (Skeleton Loader Style) */}
             <div className="space-y-3 codeBlock opacity-80">
               <div className="flex gap-2 mb-5">
-                <span className="text-pink-400 font-mono text-sm">import</span>
+                <span className="text-pink-500 font-mono text-sm">import</span>
                 <span className="text-white font-mono text-sm">React</span>
               </div>
               <div className="flex gap-2">
@@ -234,13 +237,13 @@ function HomePage() {
               <div className="text-white font-mono text-sm">{`}`}</div>
               <div className="flex codeBlock gap-1.5">
                 <div className="text-orange-400 text-sm font-mono">export default</div>
-                <div className="text-sm text-violet-400 font-mono">App;</div>
+                <div className="text-sm text-violet-500 font-mono">App;</div>
               </div>
               <div
                 style={{ transform: "translateZ(120px)" }}
-                className="absolute font-bold flex gap-2 items-center -right-2 text-xs md:text-sm -bottom-16 md:-bottom-25 bg-black/80 border border-neutral-700 text-white rounded-2xl px-4 py-2 backdrop-blur-md shadow-xl"
+                className="absolute font-bold flex gap-2 items-center -right-2 text-xs md:text-sm -bottom-20 md:-bottom-25 bg-black/60 border border-neutral-500 text-white rounded-2xl px-4 py-2 backdrop-blur-md shadow-xl"
               >
-                <div className="h-2 w-2 rounded-full animate-pulse bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]"></div>
+                <div className="h-2 w-2 rounded-full animate-pulse bg-blue-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
                 <span className="font-mono text-xs">Live Preview</span>
               </div>
             </div>
@@ -291,7 +294,7 @@ function HomePage() {
         </div>
       </div>
 
-      {/* --- SECTION: INTERACTIVE LIVING BENTO SHOWCASE --- */}
+      {/* --- SECTION: INTERACTIVE LIVING BENTO SHOWCASE (ACTUAL DATABASE COMPONENTS) --- */}
       <div id="bento-showcase" className="relative z-10">
         <BentoShowcase />
       </div>
@@ -426,25 +429,6 @@ function HomePage() {
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* --- SECTION: BOTTOM CALL-TO-ACTION --- */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 my-20">
-        <div className="rounded-3xl bg-gradient-to-b from-neutral-900/90 to-neutral-950 border border-neutral-800 p-8 sm:p-12 text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-indigo-500/10 blur-[90px] pointer-events-none" />
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
-            Ready to upgrade your interface?
-          </h2>
-          <p className="text-neutral-400 text-sm sm:text-base max-w-md mx-auto mb-8">
-            Access 35+ animated React components with live previews and copy-ready source.
-          </p>
-          <button
-            onClick={() => navigate("/components")}
-            className="px-8 py-3.5 bg-white text-black hover:bg-neutral-200 transition-all duration-300 rounded-xl text-sm font-semibold tracking-tight shadow-xl shadow-white/10 active:scale-95 cursor-pointer"
-          >
-            Explore the Full Library
-          </button>
         </div>
       </div>
     </motion.div>
