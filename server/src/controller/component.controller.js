@@ -11,13 +11,20 @@ exports.getComponents=async(req,res)=>{
 
 exports.getComponentBySlug = async (req, res) => {
   try {
-    const component = await Component.findOne({ slug: req.params.slug });
+    const shouldIncrement = req.query.track !== 'false';
+    let component;
+    if (shouldIncrement) {
+      component = await Component.findOneAndUpdate(
+        { slug: req.params.slug },
+        { $inc: { viewsCount: 1 } },
+        { new: true }
+      );
+    } else {
+      component = await Component.findOne({ slug: req.params.slug });
+    }
     if (!component) {
       return res.status(404).json({ message: 'Component not found' });
     }
-    // Increment view count every time this component is opened
-    component.viewsCount += 1;
-    await component.save();
     res.json(component);
   } catch (error) {
     res.status(500).json({ message: error.message });

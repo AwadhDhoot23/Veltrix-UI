@@ -232,7 +232,7 @@ function AdminPage() {
                 <p className="font-bold text-white">{comp.name}</p>
                 <p className="text-neutral-500 text-xs mt-0.5 line-clamp-1">{comp.description}</p>
               </div>
-              <span className="text-neutral-400 text-sm">{comp.viewsCount || 0}</span>
+              <span className="text-neutral-400 text-sm">{(comp.viewsCount || 0).toLocaleString()}</span>
               <div className="flex flex-wrap gap-1 max-w-32">
                 {(comp.tags || []).slice(0, 2).map(tag => (
                   <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-700 text-neutral-300">{tag}</span>

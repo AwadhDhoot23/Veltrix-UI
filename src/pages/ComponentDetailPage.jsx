@@ -23,26 +23,82 @@ function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
-  const { components, refreshComponents } = useComponents();
-  const component = components.find((item) => item.slug === slug);
+  const { components, updateComponentViews, loading } = useComponents();
+  const contextComponent = components.find((item) => item.slug === slug);
+  const [fetchedComponent, setFetchedComponent] = useState(null);
+  const [localViewsCount, setLocalViewsCount] = useState(null);
+  const [isNotFound, setIsNotFound] = useState(false);
+  const component = contextComponent || fetchedComponent;
 
   // Centralised favourite logic via custom hook — no more inline localStorage code
   const { isFavorite, toggleFavorite } = useFavorites(slug);
 
   useEffect(() => {
-    // Increment view count on the server whenever the detail page is opened
-    if (slug) {
-      api
-        .get(`/components/${slug}`)
-        .then(() => {
-          if (refreshComponents) refreshComponents();
-        })
-        .catch((err) => console.error("Error updating views:", err));
+    if (!slug) return;
+
+    setIsNotFound(false);
+
+    const storageKey = `veltrix_viewed_${slug}`;
+    const alreadyViewed = typeof window !== "undefined" && Boolean(sessionStorage.getItem(storageKey));
+    const endpoint = alreadyViewed ? `/components/${slug}?track=false` : `/components/${slug}`;
+
+    if (!alreadyViewed) {
+      try {
+        sessionStorage.setItem(storageKey, "1");
+      } catch {
+        // Ignore session storage quota or access errors in private/incognito
+      }
     }
-  }, [slug, refreshComponents]);
+
+    let isMounted = true;
+
+    api
+      .get(endpoint)
+      .then((res) => {
+        if (!isMounted) return;
+        const data = res.data;
+        if (data) {
+          setFetchedComponent(data);
+          if (typeof data.viewsCount === "number") {
+            setLocalViewsCount(data.viewsCount);
+            if (updateComponentViews) {
+              updateComponentViews(slug, data.viewsCount);
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        console.error("Error fetching component details:", err);
+        if (err.response?.status === 404) {
+          setIsNotFound(true);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slug, updateComponentViews]);
+
+  if (isNotFound) {
+    return <NotFound />;
+  }
 
   if (!component) {
-    return <NotFound />;
+    return (
+      <div className="flex min-h-screen relative w-full bg-black md:pl-80 items-center justify-center">
+        <div className="hidden md:block">
+          <Sidebar />
+        </div>
+        <div className="md:hidden">
+          <MobileSideBar />
+        </div>
+        <div className="flex flex-col items-center gap-4 text-neutral-400">
+          <div className="h-8 w-8 rounded-full border-2 border-neutral-700 border-t-white animate-spin" />
+          <span className="text-sm font-mono tracking-wider">Loading component...</span>
+        </div>
+      </div>
+    );
   }
 
   const handleCopy = async () => {
@@ -61,6 +117,8 @@ function ComponentDetailPage() {
     toggleFavorite();
     toast.success(isFavorite ? "Removed from favorites" : "Added to favorites");
   };
+
+  const currentViews = localViewsCount ?? component.viewsCount ?? 0;
 
   return (
     <motion.div
@@ -96,12 +154,10 @@ function ComponentDetailPage() {
           <p className="text-lg text-neutral-300">{component.description}</p>
 
           {/* View count */}
-          {typeof component.viewsCount === "number" && (
-            <div className="flex items-center gap-1 text-neutral-500 text-sm -mt-3">
-              <VisibilityIcon sx={{ fontSize: 16 }} />
-              <span>{component.viewsCount.toLocaleString()} views</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1.5 text-neutral-400 text-sm -mt-3">
+            <VisibilityIcon sx={{ fontSize: 16 }} />
+            <span>{Number(currentViews).toLocaleString()} views</span>
+          </div>
 
           <div className="mb-10">
             {component.tags.map((tag) => (
@@ -187,7 +243,7 @@ function ComponentDetailPage() {
               <ErrorBoundary
                 fallback={
                   <div className="text-red-400 font-bold p-4">
-                    ⚠️ Component Crashed
+                    Component Crashed
                   </div>
                 }
               >

@@ -26,8 +26,25 @@ export const ComponentsProvider = ({ children }) => {
     fetchComponents();
   }, []);
 
+  const updateComponentViews = useCallback((slug, viewsCount) => {
+    if (!slug || typeof viewsCount !== 'number') return;
+    setComponents((prev) =>
+      prev.map((item) =>
+        item.slug === slug ? { ...item, viewsCount } : item
+      )
+    );
+  }, []);
+
   return (
-    <ComponentsContext.Provider value={{ components, loading, error, refreshComponents: fetchComponents }}>
+    <ComponentsContext.Provider
+      value={{
+        components,
+        loading,
+        error,
+        refreshComponents: fetchComponents,
+        updateComponentViews,
+      }}
+    >
       {children}
     </ComponentsContext.Provider>
   );
