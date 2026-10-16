@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
-import { motion, useAnimate } from 'framer-motion';
+import { motion, useAnimate, stagger } from 'framer-motion';
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import BentoShowcase from "../components/BentoShowcase";
@@ -55,7 +55,7 @@ function HomePage() {
       ease: "none",
     });
 
-    // Popular components section entrance
+    // Popular components header entrance
     gsap.from(".popularHeader", {
       opacity: 0,
       y: 30,
@@ -67,20 +67,25 @@ function HomePage() {
         toggleActions: "play none none reverse",
       },
     });
-
-    gsap.from(".componentCards", {
-      y: 50,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".componentSection",
-        start: "top 85%",
-        toggleActions: "play none none reverse",
-      },
-    });
   }, []);
+
+  // Animate component cards once data finishes loading
+  useGSAP(() => {
+    if (!loading && document.querySelectorAll(".componentCard").length > 0) {
+      gsap.from(".componentCard", {
+        y: 40,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".componentSection",
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }
+  }, [loading]);
 
   const startAnimating = () => {
     animate(
