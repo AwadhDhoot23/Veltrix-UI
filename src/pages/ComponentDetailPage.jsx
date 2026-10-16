@@ -69,21 +69,19 @@ function ComponentDetailPage() {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="flex min-h-screen relative w-full bg-black md:pl-80">
-        <div className="hidden md:block">
-          <Sidebar />
-        </div>
-        <div className="md:hidden">
-          <MobileSideBar />
-        </div>
-
-        <div className="flex-1 px-6 flex flex-col gap-5 min-w-0 pb-20">
-          <div className="flex justify-between items-center pt-14">
-            <h1 className="font-bold text-5xl">{component.name}</h1>
+      <Sidebar />
+      <MobileSideBar />
+      <div className="flex min-h-screen relative w-full bg-black md:pl-64 flex-col">
+        <div className="flex-1 px-4 sm:px-6 flex flex-col gap-4 min-w-0 pb-20">
+          <div className="flex justify-between items-start gap-3 pt-6 md:pt-12">
+            <h1 className="font-bold text-2xl sm:text-4xl md:text-5xl tracking-tight text-white leading-tight">
+              {component.name}
+            </h1>
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={handleFavorite}
-              className="text-red-500 cursor-pointer mr-5"
+              className="text-red-500 cursor-pointer shrink-0 p-2 rounded-xl hover:bg-neutral-900 transition-colors"
+              aria-label="Add to favorites"
             >
               {isFavorite ? (
                 <FavoriteIcon fontSize="large" />

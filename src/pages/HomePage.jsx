@@ -129,44 +129,74 @@ function HomePage() {
       <div className="absolute background top-[-10%] left-[-20%] h-[900px] w-[900px] bg-[radial-gradient(circle,rgba(67,56,202,0.19)_0%,transparent_65%)] pointer-events-none "></div>
       <div className="absolute background top-[-15%] left-55 h-[900px] w-[1050px] bg-[radial-gradient(circle,rgba(200,200,200,0.06)_0%,transparent_75%)] pointer-events-none "></div>
       <div className="absolute background top-[-10%] -right-100 h-[900px] w-[950px] bg-[radial-gradient(circle,rgba(207,81,254,0.12)_0%,transparent_65%)] pointer-events-none"></div>
-      <h2 className="w-full px-5 absolute  my-7 text-center font-extrabold text-4xl md:text-5xl tracking-tight text-white ">
-            Veltrix UI
-          </h2>
+      {/* Top Navbar */}
+      <header className="relative z-20 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <div
+          className="flex items-center gap-2 cursor-pointer font-extrabold text-2xl tracking-tight text-white"
+          onClick={() => navigate('/')}
+        >
+          <span className="text-amber-400">⚡</span> Veltrix UI
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/components')}
+            className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-neutral-900 border border-neutral-700 hover:border-neutral-500 text-neutral-200 transition cursor-pointer"
+          >
+            Explore Components
+          </button>
+          <a
+            href="https://github.com/AwadhDhoot23/Veltrix-UI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs px-3 py-2 rounded-xl border border-neutral-800 bg-neutral-950/80 text-neutral-400 hover:text-white transition hidden sm:inline-block"
+          >
+            GitHub ↗
+          </a>
+        </div>
+      </header>
 
       {/* Hero Section */}
-      <div className="flex flex-col h-screen md:flex-row items-center justify-between px-6">
-        <div className="md:w-[60%] text-center">
-          <div ref={scope} className="mt-15 md:mt-0 flex-wrap font-bold text-6xl drop-shadow-5xl overflow-hidden tracking-tight text-white text-center p-5 pt-15 flex justify-center">
-            {text.split(" ").map((word, idx) => <motion.span className="display:block flex flex-col max-w-5xl" style={{ opacity: 0, filter: 'blur(8px)', y: 10 }} key={word + idx}>{word} &nbsp;</motion.span>)}
+      <div className="flex flex-col md:flex-row items-center justify-between px-6 min-h-[calc(100vh-140px)] gap-10 pt-4 pb-12 max-w-7xl mx-auto">
+        <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
+          <div ref={scope} className="font-extrabold text-3xl sm:text-5xl md:text-6xl tracking-tight text-white leading-tight flex flex-wrap justify-center md:justify-start">
+            {text.split(" ").map((word, idx) => (
+              <motion.span
+                className="display:inline-block"
+                style={{ opacity: 0, filter: 'blur(8px)', y: 10 }}
+                key={word + idx}
+              >
+                {word}&nbsp;
+              </motion.span>
+            ))}
           </div>
-          <div className="flex justify-center">
-            <p className="p-4 description max-w-xl text-lg text-center text-neutral-400 ">
+          <div className="mt-4">
+            <p className="description max-w-xl text-base sm:text-lg text-neutral-400 leading-relaxed">
               A curated library of animated, production-ready React components
-              with live previews and copy-ready code.
+              with live sandboxes and copy-ready code.
             </p>
           </div>
-          <div className="flex relative btn1 justify-center mt-13 group">
-            <div className="border rounded-2xl cursor-pointer hover:border-dashed">
+          <div className="flex relative btn1 mt-8 group">
+            <div className="border border-neutral-700 rounded-2xl cursor-pointer hover:border-neutral-500 transition">
               <button
                 onClick={() => navigate("/components")}
-                className="px-8 cursor-pointer hover:translate-x-1 hover:-translate-y-1 py-3 bg-gradient-to-r from-neutral-950 via-zinc-800 to-neutral-600 text-white transition duration-400 rounded-2xl border border-neutral-500 text-lg font-bold tracking-tight"
+                className="px-8 cursor-pointer hover:translate-x-0.5 hover:-translate-y-0.5 py-3.5 bg-gradient-to-r from-neutral-950 via-zinc-800 to-neutral-700 text-white transition duration-200 rounded-2xl border border-neutral-600 text-base sm:text-lg font-bold tracking-tight shadow-xl"
               >
-                Explore Components
+                Explore All Components ↗
               </button>
             </div>
           </div>
         </div>
-        <div className="md:w-[40%] md:pl-20 relative justify-center items-center mt-15">
+        <div className="w-full md:w-[42%] flex justify-center items-center mt-6 md:mt-0">
           <div
-            className="relative codeBlock p-7 w-80 md:w-90 md:h-110 bg-black/40 border border-neutral-500 rounded-xl backdrop-blur-lg shadow-2xl"
+            className="relative codeBlock p-6 sm:p-7 w-full max-w-[330px] sm:max-w-[360px] md:h-110 bg-neutral-950/80 border border-neutral-700 rounded-2xl backdrop-blur-xl shadow-2xl"
             style={{
               transformStyle: "preserve-3d",
-              transform: "perspective(1000px) rotateY(-25deg) rotateX(10deg)", // The 3D Tilt
-              boxShadow: "5px 3px 1px 1px rgba(180, 200, 180, 0.5)",
+              transform: "perspective(1000px) rotateY(-15deg) rotateX(8deg)",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.8)",
             }}
           >
             {/* Fake Window Controls */}
-            <div className="flex codeBlock animate-pulse  gap-2 mb-10 opacity-80">
+            <div className="flex codeBlock animate-pulse gap-2 mb-8 opacity-80">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
@@ -175,13 +205,11 @@ function HomePage() {
             {/* Fake Code Lines (Skeleton Loader Style) */}
             <div className="space-y-3 codeBlock opacity-80">
               <div className="flex gap-2 mb-5">
-                <span className="text-pink-500 font-mono text-sm">import</span>
+                <span className="text-pink-400 font-mono text-sm">import</span>
                 <span className="text-white font-mono text-sm">React</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-blue-400 font-mono text-sm">
-                  function
-                </span>
+                <span className="text-blue-400 font-mono text-sm">function</span>
                 <span className="text-yellow-300 font-mono text-sm">App()</span>
                 <span className="text-white font-mono text-sm">{`{`}</span>
               </div>
@@ -197,27 +225,27 @@ function HomePage() {
               <div className="text-white font-mono text-sm">{`}`}</div>
               <div className="flex codeBlock gap-1.5">
                 <div className="text-orange-400 text-sm">export default</div>
-                <div className="text-sm text-violet-500">App ;</div>
+                <div className="text-sm text-violet-400">App;</div>
               </div>
               <div
-                style={{ transform: "translateZ(120px)" }}
-                className="absolute font-bold flex gap-2 items-center -right-2 text-xs md:text-sm -bottom-25 bg-black/60 border border-neutral-500 text-white rounded-2xl px-4 py-2 backdrop-blur-md"
+                style={{ transform: "translateZ(80px)" }}
+                className="absolute font-bold flex gap-2 items-center right-4 -bottom-4 text-xs bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3.5 py-1.5 backdrop-blur-md shadow-xl"
               >
-                <div className="h-2 w-2 rounded-full animate-pulse bg-blue-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]"></div>
-                <span>Live Preview</span>
+                <div className="h-2 w-2 rounded-full animate-pulse bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]"></div>
+                <span>Live Sandbox</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hero Section Ends */}
+      {/* Ribbon Ticker */}
       <div
         style={{
           maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
           WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
         }}
-        className="relative bg-neutral-950/40 md:t-0 md:mt-0 mt-57 w-full overflow-hidden border-y border-neutral-800 backdrop-blur-md py-4 mb-30"
+        className="relative bg-neutral-950/60 w-full overflow-hidden border-y border-neutral-800/80 backdrop-blur-md py-4 my-10 md:my-16"
       >
         <div className="track flex w-max items-center">
           {/* HALF 1 */}

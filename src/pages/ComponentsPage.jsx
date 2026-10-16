@@ -143,13 +143,9 @@ function ComponentsPage() {
       exit={{ opacity: 0, y: -15 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="flex flex-col min-h-full relative md:pl-80">
-        <div className="hidden md:block">
-          <Sidebar />
-        </div>
-        <div className="absolute md:hidden h-full z-2 w-full">
-          <MobileSideBar />
-        </div>
+      <Sidebar />
+      <MobileSideBar />
+      <div className="flex flex-col min-h-full relative md:pl-64">
 
         {/* Interactive Previews notice banner */}
         <div className="mt-8 mb-4 mx-6 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-400 to-neutral-800 shadow-lg">
