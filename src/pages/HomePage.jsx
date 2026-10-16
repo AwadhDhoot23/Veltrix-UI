@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
-import { motion, useAnimate, stagger } from 'framer-motion';
+import { motion, useAnimate } from 'framer-motion';
 import { useComponents } from "../context/ComponentsContext";
 import CardComponent from "../components/CardComponent";
 import BentoShowcase from "../components/BentoShowcase";
@@ -124,8 +124,8 @@ function HomePage() {
             lineColor="#343434"
             hoverColor="#96919a"
             hoverFillColor="#817f80"
-            fillOpacity={0.2}
-            cellSize={29}
+            fillOpacity={0.3}
+            cellSize={43}
             speed={0.25}
             tiltX={38}
             tiltY={0}
@@ -133,8 +133,8 @@ function HomePage() {
             radius={1.6}
             trail={0.9}
             glow={0.5}
-            twinkle={0.1}
-            fade={0}
+            twinkle={0.2}
+            fade={0.1}
           />
         </div>
 

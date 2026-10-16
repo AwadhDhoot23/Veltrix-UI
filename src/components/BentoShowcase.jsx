@@ -718,7 +718,7 @@ function BentoShowcase() {
         {/* 1. Lumen Auth (FULL WIDTH BIG CARD - Span 3 on lg) */}
         <div className="col-span-1 md:col-span-2 lg:col-span-3 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-4">
-            <span className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
+            <span className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               Full-Scale Component · Authentication
             </span>
             <button
@@ -741,7 +741,7 @@ function BentoShowcase() {
             </div>
             <button
               onClick={() => navigate("/components/lumen-auth")}
-              className="text-xs font-mono text-indigo-400 hover:text-indigo-300 self-start sm:self-auto cursor-pointer"
+              className="text-xs font-mono text-neutral-400 hover:text-white self-start sm:self-auto cursor-pointer"
             >
               View Full Source & Props &rarr;
             </button>
@@ -751,7 +751,7 @@ function BentoShowcase() {
         {/* 2. Interactive Particle Field (Span 2 on lg) */}
         <div className="col-span-1 md:col-span-2 lg:col-span-2 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-indigo-400 bg-indigo-950/50 border border-indigo-800/40 rounded-full">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               Physics & Canvas
             </span>
             <button
@@ -776,7 +776,7 @@ function BentoShowcase() {
         {/* 3. Futuristic Terminal Box (Span 1) */}
         <div className="col-span-1 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 rounded-full">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               CLI Terminal
             </span>
             <button
@@ -801,7 +801,7 @@ function BentoShowcase() {
         {/* 4. Apple-Style Morphing Dock (Span 2 on lg) */}
         <div className="col-span-1 md:col-span-2 lg:col-span-2 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 rounded-full">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               macOS Dock
             </span>
             <button
@@ -826,7 +826,7 @@ function BentoShowcase() {
         {/* 5. Animated Testimonial Carousel (Span 1) */}
         <div className="col-span-1 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-3">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-pink-400 bg-pink-950/50 border border-pink-800/40 rounded-full">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               Social Proof
             </span>
             <button
@@ -851,7 +851,7 @@ function BentoShowcase() {
         {/* 6. Endless Scrolling Marquee (Span 3 on lg - Full Width Card) */}
         <div className="col-span-1 md:col-span-2 lg:col-span-3 group bg-neutral-950/80 border border-neutral-800/80 hover:border-neutral-500 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-black">
           <div className="flex items-center justify-between mb-2">
-            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-400 bg-neutral-900 border border-neutral-800 rounded-full">
+            <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-neutral-300 bg-neutral-900 border border-neutral-800 rounded-full">
               Continuous Motion
             </span>
             <button
