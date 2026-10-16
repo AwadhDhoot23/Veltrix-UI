@@ -114,40 +114,42 @@ function HomePage() {
       transition={{ duration: 0.35 }}
       className="min-h-screen mb-10 relative w-full overflow-hidden bg-black text-white"
     >
-      {/* ShapeGrid Background Engine - Full Viewport Fixed Coverage */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden w-screen h-screen">
-        <ShapeGrid
-          shape="square"
-          direction="down"
-          lineColor="#343434"
-          hoverColor="#96919a"
-          hoverFillColor="#817f80"
-          fillOpacity={0.2}
-          cellSize={29}
-          speed={0.25}
-          tiltX={38}
-          tiltY={0}
-          rainbow={false}
-          radius={1.6}
-          trail={0.9}
-          glow={0.5}
-          twinkle={0.1}
-          fade={0}
-        />
-      </div>
+      {/* --- HERO / LANDING SECTION (SHAPEGRID SCOPED STRICTLY TO THIS SECTION) --- */}
+      <div className="relative w-full min-h-[90vh] md:h-screen overflow-hidden">
+        {/* ShapeGrid Background Engine - Only inside Landing Section */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden w-full h-full">
+          <ShapeGrid
+            shape="square"
+            direction="down"
+            lineColor="#343434"
+            hoverColor="#96919a"
+            hoverFillColor="#817f80"
+            fillOpacity={0.2}
+            cellSize={29}
+            speed={0.25}
+            tiltX={38}
+            tiltY={0}
+            rainbow={false}
+            radius={1.6}
+            trail={0.9}
+            glow={0.5}
+            twinkle={0.1}
+            fade={0}
+          />
+        </div>
 
-      {/* Brand Wordmark (Strictly No Emojis) */}
-      <h2
-        onClick={() => navigate("/")}
-        className="w-full px-5 absolute my-7 text-center font-extrabold text-4xl md:text-5xl tracking-tight text-white cursor-pointer z-20 hover:text-neutral-200 transition-colors"
-      >
-        Veltrix UI
-      </h2>
+        {/* Brand Wordmark (Strictly No Emojis) */}
+        <h2
+          onClick={() => navigate("/")}
+          className="w-full px-5 absolute top-0 my-7 text-center font-extrabold text-4xl md:text-5xl tracking-tight text-white cursor-pointer z-20 hover:text-neutral-200 transition-colors"
+        >
+          Veltrix UI
+        </h2>
 
-      {/* --- HERO SECTION --- */}
-      <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-6 sm:px-10 max-w-7xl mx-auto pt-24 md:pt-0">
-        {/* Left Column: Value Proposition */}
-        <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
+        {/* Hero Content Grid */}
+        <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-6 sm:px-10 max-w-7xl mx-auto pt-24 md:pt-0">
+          {/* Left Column: Value Proposition */}
+          <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
           <div
             ref={scope}
             className="flex-wrap font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white p-1 pt-6 md:pt-0 flex justify-center md:justify-start"
@@ -240,6 +242,7 @@ function HomePage() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* --- SEAMLESS INFINITE MARQUEE CAPABILITIES RIBBON --- */}
       <div
