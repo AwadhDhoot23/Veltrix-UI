@@ -16,6 +16,11 @@ import { getFavoriteSlugs } from "../hooks/useFavorites";
 const INITIAL_CHUNK_SIZE = 12;
 const CHUNK_INCREMENT = 6;
 
+const SORT_OPTIONS = [
+  { value: "newest", label: "Newest First" },
+  { value: "most_viewed", label: "Most Viewed" },
+];
+
 function ComponentsPage() {
   useGSAP(() => {
     gsap.from(".componentCard", {
@@ -31,6 +36,7 @@ function ComponentsPage() {
   const [activeTag, setActiveTag] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
   const [showTags, setShowTags] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [visibleCount, setVisibleCount] = useState(INITIAL_CHUNK_SIZE);
   const { components, loading } = useComponents();
   const observerTarget = useRef(null);
@@ -143,12 +149,14 @@ function ComponentsPage() {
       exit={{ opacity: 0, y: -15 }}
       transition={{ duration: 0.35 }}
     >
-      <Sidebar />
-      <MobileSideBar />
-      <div className="flex flex-col min-h-full relative md:pl-64">
+      <div className="flex flex-col min-h-full relative md:pl-80">
+        <div className="hidden md:block">
+          <Sidebar />
+        </div>
+        <MobileSideBar />
 
         {/* Interactive Previews notice banner */}
-        <div className="mt-8 mb-4 mx-6 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-400 to-neutral-800 shadow-lg">
+        <div className="mt-16 md:mt-8 mb-4 mx-4 md:mx-6 relative rounded-xl p-[1px] w-fit overflow-hidden bg-gradient-to-r from-neutral-800 via-neutral-400 to-neutral-800 shadow-lg">
           <div className="py-2.5 px-4 rounded-xl bg-neutral-950 flex items-center justify-between text-xs sm:text-sm text-neutral-300">
             <p className="flex items-center gap-2">
               <span className="font-bold text-white tracking-wide">
@@ -163,8 +171,8 @@ function ComponentsPage() {
         </div>
 
         {/* Search + Sort bar */}
-        <div className="flex flex-wrap items-center gap-4 mt-2 px-6">
-          <div className="relative flex-1 min-w-[280px] max-w-xl shadow-lg">
+        <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2 px-4 md:px-6">
+          <div className="relative flex-1 min-w-[240px] max-w-xl shadow-lg">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
               <SearchIcon className="text-neutral-400" fontSize="small" />
             </div>
@@ -186,32 +194,58 @@ function ComponentsPage() {
             )}
           </div>
 
-          {/* Sort dropdown */}
-          <div className="relative flex items-center bg-neutral-900 border border-neutral-700/80 rounded-xl px-3 py-2 cursor-pointer shadow-sm">
-            <SortIcon
-              className="text-neutral-400 mr-2 pointer-events-none"
-              fontSize="small"
-            />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent text-neutral-300 text-xs sm:text-sm focus:outline-none cursor-pointer pr-1"
+          {/* Custom Sleek Sort Dropdown matching the website design system */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setShowSortDropdown(!showSortDropdown);
+                setShowTags(false);
+              }}
+              className="relative flex items-center bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700/80 rounded-xl px-3.5 py-2.5 cursor-pointer shadow-sm text-neutral-300 text-xs sm:text-sm font-medium transition-colors gap-2"
             >
-              <option className="bg-neutral-900 text-neutral-200" value="newest">
-                Newest First
-              </option>
-              <option
-                className="bg-neutral-900 text-neutral-200"
-                value="most_viewed"
-              >
-                Most Viewed
-              </option>
-            </select>
+              <SortIcon className="text-neutral-400" fontSize="small" />
+              <span>{sortBy === "newest" ? "Newest First" : "Most Viewed"}</span>
+              <span className="text-[9px] text-neutral-400">
+                {showSortDropdown ? "▲" : "▼"}
+              </span>
+            </button>
+
+            <AnimatePresence>
+              {showSortDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full right-0 sm:left-0 mt-2 w-44 bg-neutral-950 border border-neutral-800 rounded-xl shadow-2xl p-1.5 z-50 flex flex-col gap-1 backdrop-blur-xl"
+                >
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => {
+                        setSortBy(opt.value);
+                        setShowSortDropdown(false);
+                      }}
+                      className={`text-xs text-left px-3 py-2 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
+                        sortBy === opt.value
+                          ? "bg-white text-black font-bold"
+                          : "text-neutral-300 hover:bg-neutral-900 hover:text-white"
+                      }`}
+                    >
+                      <span>{opt.label}</span>
+                      {sortBy === opt.value && <span className="text-xs">✓</span>}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Tag filter pills & quick actions */}
-        <div className="flex mt-4 px-6 flex-wrap items-center gap-2.5 z-10">
+        {/* Tag filter pills & category dropdown */}
+        <div className="flex mt-4 px-4 md:px-6 flex-wrap items-center gap-2.5 z-10">
           {/* "All" button */}
           <button
             onClick={() => setActiveTag("All")}
@@ -253,7 +287,7 @@ function ComponentsPage() {
             )}
           </button>
 
-          {/* Active Tag pill with deselect cross (if a custom tag is selected) */}
+          {/* Active Tag pill with deselect cross */}
           {activeTag !== "All" && activeTag !== "Favorites" && (
             <div className="text-xs px-3.5 py-2 rounded-xl border font-semibold flex items-center gap-1.5 bg-white text-black border-white shadow-md shadow-white/10 animate-in fade-in">
               <span>Tag: {activeTag}</span>
@@ -271,7 +305,10 @@ function ComponentsPage() {
           {dynamicTags.length > 0 && (
             <div className="relative">
               <button
-                onClick={() => setShowTags(!showTags)}
+                onClick={() => {
+                  setShowTags(!showTags);
+                  setShowSortDropdown(false);
+                }}
                 className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-1.5 ${
                   activeTag !== "All" && activeTag !== "Favorites"
                     ? "bg-neutral-800 text-neutral-200 border-neutral-600"
@@ -341,16 +378,6 @@ function ComponentsPage() {
             </div>
           )}
 
-          {/* Reset all filters action */}
-          {(activeTag !== "All" || searchQuery.trim() !== "") && (
-            <button
-              onClick={handleClearAllFilters}
-              className="text-xs text-neutral-400 hover:text-white underline underline-offset-4 cursor-pointer ml-1 transition-colors"
-            >
-              Clear all filters
-            </button>
-          )}
-
           {/* Results count indicator */}
           {!loading && (
             <div className="ml-auto text-xs text-neutral-500 font-mono pr-2 hidden sm:block">
@@ -382,7 +409,7 @@ function ComponentsPage() {
 
         {/* Skeleton loading grid while fetching from Render backend */}
         {loading ? (
-          <div className="px-6 pt-8 pb-24 overflow-visible">
+          <div className="px-4 md:px-6 pt-6 md:pt-8 pb-24 overflow-visible">
             <div className="mb-6 flex items-center gap-2.5 text-xs text-neutral-400 bg-neutral-900/60 border border-neutral-800 rounded-xl px-4 py-3 w-fit">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
               <span>
@@ -416,7 +443,7 @@ function ComponentsPage() {
           </div>
         ) : (
           /* Component Catalog Grid with top clearance and overflow-visible */
-          <div className="overflow-visible px-6 pt-8 pb-16 grid gridBox grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start flex-1 min-h-[60vh] gap-6">
+          <div className="overflow-visible px-4 md:px-6 pt-6 md:pt-8 pb-16 grid gridBox grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start flex-1 min-h-[60vh] gap-6">
             {displayedComponents.map((item) => (
               <div key={item.slug} className="componentCard col-span-1 overflow-visible">
                 <CardComponent
