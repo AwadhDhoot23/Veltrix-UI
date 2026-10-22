@@ -293,11 +293,8 @@ function ComponentsPage() {
         </div>
 
         {/* Tag filter pills & category dropdown
-             — horizontally scrollable on mobile, wraps on desktop */}
-        <div
-          className="mt-3 px-4 md:px-6 z-10 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
+             — overflow-visible ensures the dropdown floats cleanly over the page without clipping */}
+        <div className="mt-3 px-4 md:px-6 z-30 flex flex-wrap items-center gap-2 overflow-visible">
           {/* "All" button */}
           <button
             onClick={() => setActiveTag("All")}
@@ -344,11 +341,11 @@ function ComponentsPage() {
           {/* Active Tag pill with deselect cross */}
           {activeTag !== "All" && activeTag !== "Favorites" && (
             <div className="shrink-0 text-xs px-3.5 py-2 rounded-xl border font-semibold flex items-center gap-1.5 bg-white text-black border-white shadow-md shadow-white/10 animate-in fade-in">
-              <span>Tag: {activeTag}</span>
+              <span>Category: {activeTag}</span>
               <button
                 onClick={handleClearTag}
                 className="ml-1 p-0.5 rounded-full hover:bg-neutral-200 flex items-center justify-center transition-colors cursor-pointer"
-                title="Deselect tag (revert to All)"
+                title="Deselect category (revert to All)"
               >
                 <ClearIcon sx={{ fontSize: 13 }} />
               </button>
@@ -359,6 +356,7 @@ function ComponentsPage() {
           {dynamicTags.length > 0 && (
             <div className="relative shrink-0" ref={tagsDropdownRef}>
               <button
+                type="button"
                 id="tags-dropdown-btn"
                 aria-haspopup="listbox"
                 aria-expanded={showTags}
@@ -389,10 +387,11 @@ function ComponentsPage() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-neutral-950 border border-neutral-800 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-72 overflow-y-auto backdrop-blur-xl"
+                    className="absolute top-full left-0 mt-2 w-64 max-w-[calc(100vw-2rem)] bg-neutral-950 border border-neutral-800 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-72 overflow-y-auto backdrop-blur-xl"
                   >
                     {/* Clear / All option at top of dropdown */}
                     <button
+                      type="button"
                       onClick={() => {
                         setActiveTag("All");
                         setShowTags(false);
@@ -412,6 +411,7 @@ function ComponentsPage() {
                     {dynamicTags.map((tag) => (
                       <button
                         key={tag}
+                        type="button"
                         role="option"
                         aria-selected={activeTag === tag}
                         onClick={() => {

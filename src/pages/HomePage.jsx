@@ -154,7 +154,7 @@ function HomePage() {
         {/* Hero Content Grid */}
         <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-6 sm:px-10 max-w-7xl mx-auto pt-24 md:pt-0">
           {/* Left Column: Value Proposition */}
-          <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
+          <div className="w-full md:w-[75%] text-center md:text-left flex flex-col items-center md:items-start">
 
           {/* Apple-styled Liquid Glass Badge */}
           <motion.div
@@ -164,8 +164,8 @@ function HomePage() {
             className="mb-5 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/[0.14] bg-white/[0.06] backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),0_4px_20px_-2px_rgba(0,0,0,0.5)] hover:bg-white/[0.10] hover:border-white/25 transition-all duration-300 cursor-default"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-200 opacity-70"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-300 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
             </span>
             <span className="text-xs font-medium text-neutral-200 tracking-tight">
               Interactive Motion System
