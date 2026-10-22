@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense, useEffect, useCallback } from "react";
 import { useComponents } from "../context/ComponentsContext";
 import LivePreview from "../components/LivePreview";
 import Sidebar from "../components/Sidebar";
@@ -15,12 +15,12 @@ import { twilight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import MobileSideBar from "../components/MobileSideBar";
-import DependenciesDropdown from "../components/DependenciesDropdown";
 import { useFavorites } from "../hooks/useFavorites";
 import api from "../utils/api";
 
 function ComponentDetailPage() {
   const [copied, setCopied] = useState(false);
+  const [copiedInstall, setCopiedInstall] = useState(false);
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
   const { components, updateComponentViews, loading } = useComponents();
@@ -107,6 +107,19 @@ function ComponentDetailPage() {
       toast.success("Code Copied", { duration: 2000 });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy", { duration: 2000 });
+    }
+  };
+
+  const handleCopyInstall = async () => {
+    if (!component.dependencies?.length) return;
+    const cmd = `npm install ${component.dependencies.join(" ")}`;
+    try {
+      await navigator.clipboard.writeText(cmd);
+      toast.success("Install command copied!", { duration: 2000 });
+      setCopiedInstall(true);
+      setTimeout(() => setCopiedInstall(false), 2000);
     } catch {
       toast.error("Failed to copy", { duration: 2000 });
     }
@@ -215,9 +228,35 @@ function ComponentDetailPage() {
               }}
               className="w-full mb-20 p-4 border-2 border-zinc-600 relative rounded-lg"
             >
-              <div className="hidden md:block md:left-[12%] absolute lg:left-[6%]">
-                <DependenciesDropdown dependencies={component.dependencies} />
-              </div>
+              {/* ── Prominent install banner (musHeaer fix) ─────────────────── */}
+              {component.dependencies?.length > 0 && (
+                <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 rounded-xl bg-neutral-950 border border-amber-500/30">
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                    <span className="text-[11px] font-mono text-amber-400 font-bold uppercase tracking-wider">
+                      Required packages
+                    </span>
+                  </div>
+                  <div className="flex-1 flex items-center gap-2 min-w-0">
+                    <code className="flex-1 text-xs font-mono text-green-400 bg-black/60 px-3 py-1.5 rounded-lg border border-neutral-800 truncate">
+                      npm install {component.dependencies.join(" ")}
+                    </code>
+                    <button
+                      onClick={handleCopyInstall}
+                      title="Copy install command"
+                      className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 hover:text-white transition-colors text-[11px] font-mono cursor-pointer"
+                    >
+                      {copiedInstall ? (
+                        <DoneIcon className="text-green-400" sx={{ fontSize: 14 }} />
+                      ) : (
+                        <ContentCopyIcon sx={{ fontSize: 14 }} />
+                      )}
+                      <span>{copiedInstall ? "Copied!" : "Copy"}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-between">
                 <div>
                   <motion.button
@@ -226,6 +265,7 @@ function ComponentDetailPage() {
                     transition={{ duration: 0.7, ease: "easeInOut" }}
                     onClick={handleCopy}
                     className="cursor-pointer text-white px-2 pb-1 rounded relative"
+                    title="Copy JSX code"
                   >
                     {copied ? (
                       <DoneIcon className="text-green-300 font-bold" />

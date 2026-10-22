@@ -11,7 +11,7 @@ import BentoShowcase from "../components/BentoShowcase";
 import ShapeGrid from "../components/ShapeGrid";
 
 function HomePage() {
-  const text = "Build Faster with Reusable UI Components";
+  const text = "Animated Components You Can Try Before You Copy";
   const navigate = useNavigate();
   const { components, loading } = useComponents();
   const [scope, animate] = useAnimate();
@@ -155,9 +155,23 @@ function HomePage() {
         <div className="relative z-10 flex flex-col min-h-[90vh] md:h-screen md:flex-row items-center justify-between px-6 sm:px-10 max-w-7xl mx-auto pt-24 md:pt-0">
           {/* Left Column: Value Proposition */}
           <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
+
+          {/* Positioning badge — answers "who is this for" above the fold */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-700/80 bg-neutral-900/60 backdrop-blur-sm w-fit"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="text-[11px] font-mono text-neutral-300 tracking-wider uppercase">
+              For React devs who care about motion
+            </span>
+          </motion.div>
+
           <div
             ref={scope}
-            className="flex-wrap font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white p-1 pt-6 md:pt-0 flex justify-center md:justify-start"
+            className="flex-wrap font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white p-1 pt-2 md:pt-0 flex justify-center md:justify-start"
           >
             {text.split(" ").map((word, idx) => (
               <motion.span
@@ -170,9 +184,11 @@ function HomePage() {
             ))}
           </div>
 
+          {/* Rewritten value prop — leads with the live sandbox differentiator */}
           <p className="p-1 mt-4 description max-w-xl text-base md:text-lg text-neutral-400 leading-relaxed text-center md:text-left">
-            A curated library of animated, production-ready React components
-            with live interactive sandboxes and copy-ready code.
+            Unlike shadcn or Aceternity, every component here runs live in your browser —{" "}
+            <span className="text-neutral-200 font-medium">type into forms, drag, hover</span>{" "}
+            — before you copy a single line of JSX. Animations are not optional: they ship with the component.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 btn1 mt-8">

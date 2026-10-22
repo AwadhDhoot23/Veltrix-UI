@@ -40,6 +40,32 @@ function ComponentsPage() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_CHUNK_SIZE);
   const { components, loading } = useComponents();
   const observerTarget = useRef(null);
+  const sortDropdownRef = useRef(null);
+  const tagsDropdownRef = useRef(null);
+
+  // Close dropdowns on Escape key or click outside
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setShowSortDropdown(false);
+        setShowTags(false);
+      }
+    };
+    const handleClickOutside = (e) => {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(e.target)) {
+        setShowSortDropdown(false);
+      }
+      if (tagsDropdownRef.current && !tagsDropdownRef.current.contains(e.target)) {
+        setShowTags(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   /*
    * Derive unique tags dynamically and compute occurrence counts.
@@ -170,18 +196,21 @@ function ComponentsPage() {
           </div>
         </div>
 
-        {/* Search + Sort bar */}
-        <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2 px-4 md:px-6">
-          <div className="relative flex-1 min-w-[240px] max-w-xl shadow-lg">
+        {/* Search + Sort bar — stacked on mobile, side-by-side on desktop */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 md:gap-4 mt-2 px-4 md:px-6">
+          {/* Search: full width on mobile, flexible on desktop */}
+          <div className="relative w-full sm:flex-1 sm:max-w-xl shadow-lg">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
               <SearchIcon className="text-neutral-400" fontSize="small" />
             </div>
             <input
-              className="w-full bg-neutral-900/90 text-white pl-10 pr-10 py-2.5 rounded-xl border border-neutral-700/80 focus:outline-none focus:border-neutral-400 transition-colors placeholder:text-neutral-500 shadow-inner text-sm"
+              id="component-search"
+              aria-label="Search components"
+              className="w-full bg-neutral-900/90 text-white pl-10 pr-10 py-3 sm:py-2.5 rounded-xl border border-neutral-700/80 focus:outline-none focus:border-neutral-400 transition-colors placeholder:text-neutral-500 shadow-inner text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               type="text"
-              placeholder="Search 35+ components by name or description..."
+              placeholder="Search components by name or description…"
             />
             {searchQuery && (
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -194,10 +223,17 @@ function ComponentsPage() {
             )}
           </div>
 
+          {/* Sort + results count sit on same row as search on desktop,
+              and below search (their own row) on mobile */}
+          <div className="flex items-center gap-3">
           {/* Custom Sleek Sort Dropdown matching the website design system */}
-          <div className="relative">
+          <div className="relative" ref={sortDropdownRef}>
             <button
               type="button"
+              id="sort-dropdown-btn"
+              aria-haspopup="listbox"
+              aria-expanded={showSortDropdown}
+              aria-label={`Sort by: ${sortBy === "newest" ? "Newest First" : "Most Viewed"}`}
               onClick={() => {
                 setShowSortDropdown(!showSortDropdown);
                 setShowTags(false);
@@ -214,6 +250,8 @@ function ComponentsPage() {
             <AnimatePresence>
               {showSortDropdown && (
                 <motion.div
+                  role="listbox"
+                  aria-labelledby="sort-dropdown-btn"
                   initial={{ opacity: 0, y: 6, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.98 }}
@@ -224,6 +262,8 @@ function ComponentsPage() {
                     <button
                       key={opt.value}
                       type="button"
+                      role="option"
+                      aria-selected={sortBy === opt.value}
                       onClick={() => {
                         setSortBy(opt.value);
                         setShowSortDropdown(false);
@@ -242,20 +282,33 @@ function ComponentsPage() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Results count — visible inline on mobile too */}
+          {!loading && (
+            <div className="text-xs text-neutral-500 font-mono whitespace-nowrap">
+              {displayedComponents.length} / {filterComponents.length}
+            </div>
+          )}
+          </div>{/* end flex row for sort+count */}
         </div>
 
-        {/* Tag filter pills & category dropdown */}
-        <div className="flex mt-4 px-4 md:px-6 flex-wrap items-center gap-2.5 z-10">
+        {/* Tag filter pills & category dropdown
+             — horizontally scrollable on mobile, wraps on desktop */}
+        <div
+          className="mt-3 px-4 md:px-6 z-10 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           {/* "All" button */}
           <button
             onClick={() => setActiveTag("All")}
-            className={`text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-1.5 ${
+            aria-pressed={activeTag === "All"}
+            className={`shrink-0 text-xs cursor-pointer px-4 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-1.5 ${
               activeTag === "All"
                 ? "bg-white text-black border-white shadow-md shadow-white/10"
                 : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-600"
             }`}
           >
-            All Components ({components.length})
+            All ({components.length})
           </button>
 
           {/* "Favorites" button with deselect cross */}
@@ -263,7 +316,8 @@ function ComponentsPage() {
             onClick={() =>
               setActiveTag(activeTag === "Favorites" ? "All" : "Favorites")
             }
-            className={`text-xs cursor-pointer px-3.5 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-1.5 ${
+            aria-pressed={activeTag === "Favorites"}
+            className={`shrink-0 text-xs cursor-pointer px-3.5 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-1.5 ${
               activeTag === "Favorites"
                 ? "bg-red-500 text-white border-red-400 shadow-md shadow-red-500/20"
                 : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-red-300 hover:border-red-900/60"
@@ -272,7 +326,7 @@ function ComponentsPage() {
             <FavoriteIcon sx={{ fontSize: 13 }} />
             <span>Favorites</span>
             {favorites.length > 0 && (
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/40">
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-black/40">
                 {favorites.length}
               </span>
             )}
@@ -289,7 +343,7 @@ function ComponentsPage() {
 
           {/* Active Tag pill with deselect cross */}
           {activeTag !== "All" && activeTag !== "Favorites" && (
-            <div className="text-xs px-3.5 py-2 rounded-xl border font-semibold flex items-center gap-1.5 bg-white text-black border-white shadow-md shadow-white/10 animate-in fade-in">
+            <div className="shrink-0 text-xs px-3.5 py-2 rounded-xl border font-semibold flex items-center gap-1.5 bg-white text-black border-white shadow-md shadow-white/10 animate-in fade-in">
               <span>Tag: {activeTag}</span>
               <button
                 onClick={handleClearTag}
@@ -303,8 +357,12 @@ function ComponentsPage() {
 
           {/* Tags Dropdown Toggle */}
           {dynamicTags.length > 0 && (
-            <div className="relative">
+            <div className="relative shrink-0" ref={tagsDropdownRef}>
               <button
+                id="tags-dropdown-btn"
+                aria-haspopup="listbox"
+                aria-expanded={showTags}
+                aria-label="Filter by category"
                 onClick={() => {
                   setShowTags(!showTags);
                   setShowSortDropdown(false);
@@ -325,6 +383,8 @@ function ComponentsPage() {
               <AnimatePresence>
                 {showTags && (
                   <motion.div
+                    role="listbox"
+                    aria-labelledby="tags-dropdown-btn"
                     initial={{ opacity: 0, y: 8, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.98 }}
@@ -337,6 +397,8 @@ function ComponentsPage() {
                         setActiveTag("All");
                         setShowTags(false);
                       }}
+                      role="option"
+                      aria-selected={activeTag === "All"}
                       className="text-xs text-left px-3 py-2 rounded-lg transition-colors flex items-center justify-between text-neutral-300 hover:bg-neutral-800/80 hover:text-white font-medium cursor-pointer"
                     >
                       <span>All Categories</span>
@@ -350,6 +412,8 @@ function ComponentsPage() {
                     {dynamicTags.map((tag) => (
                       <button
                         key={tag}
+                        role="option"
+                        aria-selected={activeTag === tag}
                         onClick={() => {
                           setActiveTag(tag);
                           setShowTags(false);
@@ -375,14 +439,6 @@ function ComponentsPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          )}
-
-          {/* Results count indicator */}
-          {!loading && (
-            <div className="ml-auto text-xs text-neutral-500 font-mono pr-2 hidden sm:block">
-              Showing {displayedComponents.length} of {filterComponents.length}{" "}
-              components
             </div>
           )}
         </div>
