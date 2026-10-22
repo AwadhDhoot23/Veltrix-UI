@@ -156,16 +156,23 @@ function HomePage() {
           {/* Left Column: Value Proposition */}
           <div className="w-full md:w-[58%] text-center md:text-left flex flex-col items-center md:items-start">
 
-          {/* Positioning badge — answers "who is this for" above the fold */}
+          {/* Apple-styled Liquid Glass Badge */}
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-700/80 bg-neutral-900/60 backdrop-blur-sm w-fit"
+            className="mb-5 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/[0.14] bg-white/[0.06] backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),0_4px_20px_-2px_rgba(0,0,0,0.5)] hover:bg-white/[0.10] hover:border-white/25 transition-all duration-300 cursor-default"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-[11px] font-mono text-neutral-300 tracking-wider uppercase">
-              For React devs who care about motion
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+            </span>
+            <span className="text-xs font-medium text-neutral-200 tracking-tight">
+              Interactive Motion System
+            </span>
+            <span className="text-neutral-600 font-light select-none">·</span>
+            <span className="text-xs text-neutral-400 font-normal">
+              React & Tailwind CSS
             </span>
           </motion.div>
 
@@ -184,11 +191,9 @@ function HomePage() {
             ))}
           </div>
 
-          {/* Rewritten value prop — leads with the live sandbox differentiator */}
+          {/* Factual, distinguished value proposition */}
           <p className="p-1 mt-4 description max-w-xl text-base md:text-lg text-neutral-400 leading-relaxed text-center md:text-left">
-            Unlike shadcn or Aceternity, every component here runs live in your browser —{" "}
-            <span className="text-neutral-200 font-medium">type into forms, drag, hover</span>{" "}
-            — before you copy a single line of JSX. Animations are not optional: they ship with the component.
+            Production-grade React components engineered with <span className="text-neutral-200 font-medium">fluid gesture physics</span> and <span className="text-neutral-200 font-medium">zero configuration overhead</span>. Test interactive behaviors live in isolated browser sandboxes, inspect clean self-contained JSX, and copy directly into your codebase.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 btn1 mt-8">
