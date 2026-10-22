@@ -232,7 +232,6 @@ function ComponentDetailPage() {
               {component.dependencies?.length > 0 && (
                 <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 rounded-xl bg-neutral-950 border border-amber-500/30">
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
                     <span className="text-[11px] font-mono text-amber-400 font-bold uppercase tracking-wider">
                       Required packages
                     </span>
